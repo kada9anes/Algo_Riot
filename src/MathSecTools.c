@@ -42,7 +42,7 @@ int gcd(int a, int b){
 int lcm(int a, int b){ 
     return a*b / gcd(a,b);
 }
-int modExp(int base, int exp, int mod){
+int modExp(int base, int exp, int mod){ // hadi mt7sbch a3dad lkbira 
     int tmp ; 
     tmp = base ; 
     for (int i = 2 ; i <= exp ; i++ ){
@@ -50,4 +50,15 @@ int modExp(int base, int exp, int mod){
     }
     return base % mod ; 
 
+}
+int modExp2(int base ,int exp ,int mod){  // 5asiya fi mwafa9at 
+    int sub , tmp ;
+    sub  = base % mod ;
+    tmp = sub ;
+    for (int i = 2 ; i <= exp ; i ++ ){
+        tmp = tmp * sub ;
+    }
+    return tmp % mod ;
+
+    
 }
