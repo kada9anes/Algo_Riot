@@ -89,6 +89,7 @@ int classifyNumber(int n) {
     if (superabundant(n)) return 2; // Deficient
     return 0;                      // Perfect
 }
+
 bool superabundant(int n ){
     int sumdivisor = sumProperDivisors(n);
     int ratio = (float)sumdivisor / n;
@@ -185,6 +186,6 @@ int main() {
             printf("%d is a mysterious number\n", i);
         }
     }
-        */
+        */ //
    return 0;
 }
