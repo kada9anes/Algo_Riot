@@ -221,4 +221,4 @@ void sortAscending(int T[], int n){ //sort using selection sort algorithm
 }
 
 // 5lili chwia 5dmthm g3 rak 
-// a5dm w7da b w7da (w7da liya wtda lik )
+// a5dm w7da b w7da (w7da liya wtda lik ) 5alili brk 
