@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include "../library/project.h"
+#include <math.h>
+#include <time.h>
+#include <stdlib.h>
 int isEven(int n){
     if ( n % 2  == 0 ){// detction of eveness
         return 1;
@@ -54,7 +57,7 @@ int gcd(int a, int b){
 int lcm(int a, int b){ 
     return a*b / gcd(a,b);
 }
-long long  globalmodExp(long long  base , long long exponent, long long  mod){ //handles big numbers
+long long  globalmodExp(long long  base , long long exponent, long long  mod){ //handles big numbers but in project sheet say int 
     long long  result = 1 ; 
     base = base % mod;
     while (exponent > 0){
@@ -217,3 +220,6 @@ void sortAscending(int T[], int n){ //sort using selection sort algorithm
         }
     }
 }
+
+// 5lili chwia 5dmthm g3 rak 
+// a5dm w7da b w7da (w7da liya wtda lik )
