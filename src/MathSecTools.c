@@ -9,7 +9,6 @@ int isEven(int n){
     }else {
         return -1 ; // note that this return int not bool
     }
-    
 }
 int countDigits(int n){
     if ( n == 0 ){
