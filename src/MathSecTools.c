@@ -219,6 +219,54 @@ void sortAscending(int T[], int n){ //sort using selection sort algorithm
         }
     }
 }
+void displayMatrix(struct Matrix M){
+    for(int i = 0 ; i < M.n ; i ++){
+        for (int j = 0 ; j < M.p ; j++){
+            printf("%d ",M.data[i][j]);
+        }
+        printf("\n");
+    }
+}
+void addMatrices(struct Matrix A, struct Matrix B, struct Matrix *C){
+    if (A.n != B.n || A.p != B.p ){
+        printf("Matrix A and B need to be the same in size.");
+    }
+    else {
+        C->n = A.n ;
+        C->p = B.p ;
+        for (int i = 0 ; i < C->n ; i++){
+            for (int j = 0 ;j < C->p ;j++){
+                C->data[i][j] = A.data[i][j]+B.data[i][j];
+            }
+        }
+    }
+}
+/*void multiplyMatrices(struct Matrix A, struct Matrix B,struct Matrix C){
+    if (A.p = B.n){
+        C.n = A.n ;
+        C.p = B.p ; 
+        for (int i = 0 ; i < C.n ; i++){
+            for(int j = 0 ; j < B.p; j ++){
+                // 5lili nkmlha mn b3d nfh * nt3 matrix 
 
-// 5lili chwia 5dmthm g3 rak 
-// a5dm w7da b w7da (w7da liya wtda lik ) 5alili brk 
+                } 
+            }
+        }
+
+
+    else
+    {
+        printf("multiplication is impossible :( ");
+    }*/
+    
+
+void transposeMatrix(struct Matrix A, struct Matrix *T){
+    T->n = A.p ; 
+    T->p = A.n ; 
+    for (int i =0 ; i < T->p ; i ++){
+        for (int j = 0 ; j < T->n ; j ++){
+            T->data[j][i]=A.data[i][j];
+        }
+    }
+}
+// mtms walo kchma kyn 9oli ftlgram ;D 

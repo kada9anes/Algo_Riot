@@ -3,6 +3,10 @@
 //Encryption 
 
 //MathSecTool
+struct Matrix{
+int data[10][10];
+int n, p;
+};
 int isEven(int n);
 int countDigits(int n);
 int isPrime(int n);
@@ -22,6 +26,11 @@ float averageArray(int T[], int n);
 int maxArray(int T[], int n);
 int minArray(int T[], int n);
 void sortAscending(int T[], int n);
+void displayMatrix(struct Matrix M);
+void addMatrices(struct Matrix A, struct Matrix B, struct Matrix *C);
+void multiplyMatrices(struct Matrix A, struct Matrix B,struct Matrix *C);
+void transposeMatrix(struct Matrix A, struct Matrix *T);
+
 
 
 
