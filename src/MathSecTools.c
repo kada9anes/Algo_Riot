@@ -270,3 +270,5 @@ void transposeMatrix(struct Matrix A, struct Matrix *T){
     }
 }
 // mtms walo kchma kyn 9oli ftlgram ;D 
+// you are using pointers which is forbidden 
+//either use global variable or just not use pointer in your syntax you were able to manipulate it 
