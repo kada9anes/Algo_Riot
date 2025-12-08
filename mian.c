@@ -5,24 +5,34 @@
 #include <time.h>
 int main(){ 
   struct Matrix A ={
-    .data={{1,2,6,13},{1,3,15,44},{4,5,3,3}},
-    .n = 3,
-    .p = 4,
+    .data= {
+    { 1,  0,  0, 0,  0 },
+    { 0,  1,   0,  0,  0 },
+    { 0,  0,  1,  0,  0 },
+    {  0,   0, 0, 1,  0 },
+    {  0,   8,   0,  0,   1 }},
+    .n = 5,
+    .p = 5,
   };
-  struct Matrix B ={
-    .data={{1,1},{1,1},{1,1}},
-    .n = 3,
-    .p = 2,
-  };
-  struct Matrix C ={
+  /*struct Matrix B ={
+    .data={
+    {  2,  -3, -10,   3,   1 },
+    { -9,   0,  -6,   6,   8 },
+    {  6,  -1,   7,  -7,   4 },
+    { -3,  -8,  -2,  -4,   3 },
+    {  7,   3,   9,  -9,   0 }},
+    .n = 5,
+    .p = 5,
+  }*/
+  /*struct Matrix C ={
     .data={},
     .n = 3,
-    .p = 4,
-  };
-  displayMatrix(A);
-  transposeMatrix(A,&C);
-  displayMatrix(C);
-    
+    .p = 3,
+  };*/
+  //multiplyMatrices(A,B,&C);
+  //displayMatrix(C);
+  printf("%d", isIdentity(A));
+  
     
 }
      

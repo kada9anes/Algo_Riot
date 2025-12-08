@@ -241,23 +241,24 @@ void addMatrices(struct Matrix A, struct Matrix B, struct Matrix *C){
         }
     }
 }
-/*void multiplyMatrices(struct Matrix A, struct Matrix B,struct Matrix C){
+void multiplyMatrices(struct Matrix A, struct Matrix B,struct Matrix *C){
     if (A.p = B.n){
-        C.n = A.n ;
-        C.p = B.p ; 
-        for (int i = 0 ; i < C.n ; i++){
+        C->n = A.n ;
+        C->p = B.p ; 
+        for (int i = 0 ; i < C->n ; i++){
             for(int j = 0 ; j < B.p; j ++){
-                // 5lili nkmlha mn b3d nfh * nt3 matrix 
-
-                } 
-            }
+                C->data [i][j] = 0 ;
+                for(int k = 0 ;k < A.n ; k ++){
+                    C->data[i][j] = A.data[i][k]*B.data[k][j] + C->data[i][j];
+                 }
+            } 
         }
-
-
+    }
     else
     {
         printf("multiplication is impossible :( ");
-    }*/
+    }
+}
     
 
 void transposeMatrix(struct Matrix A, struct Matrix *T){
@@ -269,4 +270,55 @@ void transposeMatrix(struct Matrix A, struct Matrix *T){
         }
     }
 }
-// mtms walo kchma kyn 9oli ftlgram ;D 
+int determinant2x2(int A[2][2]){
+    return A[0][0]*A[1][1]-A[0][1]*A[1][0];
+}
+int isSymmetric(struct Matrix M){
+    int cont = 0 ;
+    if (M.n != M.p){
+        return -1 ;
+    }
+    else{
+        for(int i = 0 ; i < M.n ; i ++){
+            for (int j = 0; j < M.p; j++)
+            {
+                if(M.data[i][j] = M.data[j][i]){
+                    cont++ ;
+                }
+            }   
+        }
+    }
+    if (cont == M.p*M.n){
+        return 1 ; 
+    }
+    else {
+        return -1 ;
+    }
+}
+int isIdentity(struct Matrix M){
+    int cont = 0 ,cont0 = 0 ; 
+    if (M.n != M.p){
+        return -1 ; 
+    }
+    else{
+        for (int i = 0 ; i < M.n; i ++ ){
+            if (M.data[i][i]==1){
+                cont ++;
+            }
+            for (int j = 0; j < M.n; j++)
+            {
+                if (M.data [i][j] == 0){
+                    cont0 ++;
+                }
+            }
+            
+        }
+    }
+    if (cont == M.n && cont0 == M.n*(M.n-1)){
+        return 1 ;
+    }
+    else{
+        return -1 ;
+    }
+}
+// chof ida jatek fikra jdida fkach algo ectbha w5ali l9dima ok ? 

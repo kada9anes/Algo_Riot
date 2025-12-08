@@ -30,6 +30,9 @@ void displayMatrix(struct Matrix M);
 void addMatrices(struct Matrix A, struct Matrix B, struct Matrix *C);
 void multiplyMatrices(struct Matrix A, struct Matrix B,struct Matrix *C);
 void transposeMatrix(struct Matrix A, struct Matrix *T);
+int determinant2x2(int A[2][2]);
+int isSymmetric(struct Matrix M);
+int isIdentity(struct Matrix M);
 
 
 
