@@ -32,6 +32,7 @@ int main(){
   //multiplyMatrices(A,B,&C);
   //displayMatrix(C);
   printf("%d \n", isIdentity(A));
+  printf("test");
   
     
 }
