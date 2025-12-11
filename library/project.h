@@ -1,6 +1,15 @@
 #ifndef algo_project
 #define algo_project
 //Encryption 
+struct Message{
+char text[200];
+int length;
+};
+void inputMessage(struct Message m[]); 
+// for u 
+int isUppercase(char c); 
+//
+int isAlphabetic(char c);
 
 //MathSecTool
 struct Matrix{
