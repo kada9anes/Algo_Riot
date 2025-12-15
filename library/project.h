@@ -6,10 +6,11 @@ char text[200];
 int length;
 };
 void inputMessage(struct Message m[]); 
-// for u 
-int isUppercase(char c); 
-//
-int isAlphabetic(char c);
+void displaymessage(struct Message m[]); // 2 written by kada
+bool isLowercase(char c); //  4 written by kada
+bool isUppercase(char c); 
+void toUppercase(struct Message m[]);
+bool isAlphabetic(char c);
 
 //MathSecTool
 struct Matrix{
