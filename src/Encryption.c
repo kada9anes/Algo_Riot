@@ -35,8 +35,7 @@ bool isAlphabetic(char c){
       }
 }
 void toUppercase(struct Message m[] ){
-    for(int i = 0 ; i < .length ; i++){
+    for(int i = 0 ; i < m. ; i++){
       if()
     }
 }
-// mzal mkmltch ida kayn bugs 5lihm 76li brk commant ;)
