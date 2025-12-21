@@ -43,6 +43,12 @@ void toUppercase(struct Message *m ){
       }
 
 }
-void reverseMessage(struct Message *m);{
-
+void reverseMessage(struct Message *m){
+      char tmp ; 
+      for (int i = 0 ; i < m->length -i  ; i ++){
+            tmp = m->text[i];
+            m->text[i] = m->text[m->length -1 - i] ;
+            m->text[m->length -1 - i] = tmp ;
+      }
 }
+
