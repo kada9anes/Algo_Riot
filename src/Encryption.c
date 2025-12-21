@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include "../library/project.h"
 #include <math.h>
-void inputMessage(struct Message m[]){
-      printf("Enter the length of your massage ;)");scanf("%i",&m->length);
-      printf("Enter the message ;)");scanf("%s",&m->text );
+#include <string.h>
+void inputMessage(struct Message *m){
+      printf("Enter the message ;)");fgets(m->text , sizeof(m->text) , stdin);
+      m->length = strlen(m->text);
 }
-void displaymessage(struct Message m[]){
-      printf("%s \n" , &m->text);
+void displaymessage(struct Message *m){
+      printf("%s \n" , m->text);
 }
 
 bool isUppercase(char c){
@@ -34,8 +35,14 @@ bool isAlphabetic(char c){
             return false ; // brghot sad that we chould use 1 and 0 best then 0 and -1  
       }
 }
-void toUppercase(struct Message m[] ){
-    for(int i = 0 ; i < m. ; i++){
-      if()
-    }
+void toUppercase(struct Message *m ){
+    for(int i = 0 ; i < m->length ; i++){
+      if(m->text[i] >= 97 && m->text[i] <= 122){
+            m->text[i] = m->text[i] - 32 ;
+      }
+      }
+
+}
+void reverseMessage(struct Message *m);{
+
 }

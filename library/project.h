@@ -5,12 +5,13 @@ struct Message{
 char text[200];
 int length;
 };
-void inputMessage(struct Message m[]); 
-void displaymessage(struct Message m[]); // 2 written by kada
+void inputMessage(struct Message *m); 
+void displaymessage(struct Message *m); // 2 written by kada
 bool isLowercase(char c); //  4 written by kada
 bool isUppercase(char c); 
-void toUppercase(struct Message m[]); //written by kada
+void toUppercase(struct Message *m); //written by kada
 bool isAlphabetic(char c);
+void reverseMessage(struct Message *m);;
 
 //MathSecTool
 struct Matrix{
@@ -43,6 +44,7 @@ void transposeMatrix(struct Matrix A, struct Matrix *T);
 int determinant2x2(int A[2][2]);
 int isSymmetric(struct Matrix M);
 int isIdentity(struct Matrix M);
+
 
 
 
