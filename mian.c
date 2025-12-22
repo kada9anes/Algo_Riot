@@ -5,7 +5,7 @@ int main(){
     .length = 0,
     .text="",
   };
-  //every time you write a function pls write that you are the one who wrote it like this : written by koussei
+  
   inputMessage(&m);
   displaymessage(&m);
   printf("%i \n",isUppercase(c));

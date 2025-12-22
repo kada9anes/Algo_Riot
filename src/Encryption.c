@@ -12,7 +12,7 @@ void displaymessage(struct Message *m){
 }
 
 bool isUppercase(char c){
-      if ( c <= 90 && c >=65 ){
+      if ( c <= 'Z' && c >='A' ){
             return true ;
       }
       else{
@@ -29,20 +29,27 @@ bool isLowercase(char c ){ // not tested
 }
 
 bool isAlphabetic(char c){
-      if ( (c <= 90 && c >=65) || (c <= 122 && c>= 97) ){
+      if ( (c <= 'z' && c >='a') || (c <= 'Z' && c>= 'A') ){
             return true ;
       }
       else{
-            return false ; // brghot sad that we chould use 1 and 0 best then 0 and -1  
+            return false ; 
       }
 }
-void toUppercase(struct Message *m ){ // i dont know how it work but it work 
+void toUppercase(struct Message *m ){ 
     for(int i = 0 ; i < m->length ; i++){
-      if(m->text[i] >= 97 && m->text[i] <= 122){
-            m->text[i] = m->text[i] - 32 ;
+      if(m->text[i] >= 'a' && m->text[i] <= 'z'){
+            m->text[i] -= ('a' - 'A');  // BASICALLY THE SAME AS 32
       }
       }
 
+}
+void toLowercase(struct Message m[]){
+      for(int o =0 ; i < m->length ; i++){
+            if(m->text[i] >= 'A' && m->text[i] <='Z'){
+                  m->text[i] += ('a' - 'A');
+            }
+      }
 }
 void reverseMessage(struct Message *m){
       char tmp ; 
@@ -84,16 +91,19 @@ void encryptSubstitution(struct Message *m, char key[26]){
       }
 
 }
-int isValidKey(char key[27]) {
+bool isValidKey(char key[27]) {
     int freq[26] = {0};
     int idx ;
+    if (key == NULL)
+        return false;
+
 
     for (int i = 0; i < 26; i++) {
         char c = key[i];
         if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))){ 
             return false ;
         }
-        if (c >= 65 && c <=90)
+        if (c >= 'A' && c <='Z')
           idx = c - 'A';
         else{
           idx = c -'a';
@@ -125,6 +135,6 @@ float coincidenceIndex(struct Message m){
             r += f * (f - 1 ); 
       }
       if (m.length <= 1)return 0.0 ;
-      return r/((m.length-1)*(m.length-2));
+      return r/((m.length-1)*(m.length-2)); // i think this is false note that you count the length with strlen so it wont include \0 so it was better to write m.length * m.length -1
 }
 
