@@ -1,5 +1,10 @@
 #ifndef algo_project
 #define algo_project
+#include <stdio.h>
+#include "library/project.h"
+#include <math.h>
+#include <stdlib.h>
+#include <time.h>
 //Encryption 
 struct Message{
 char text[200];

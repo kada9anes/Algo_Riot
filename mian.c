@@ -1,8 +1,4 @@
-#include <stdio.h>
 #include "library/project.h"
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
 int main(){ 
   char c = 'a';
   struct Message m={
@@ -14,7 +10,6 @@ int main(){
   displaymessage(&m);
   printf("%i \n",isUppercase(c));
   printf("%i \n ",isUppercase(c));
-    
 }
      
       

@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include "../library/project.h"
-#include <math.h>
+
 void inputMessage(struct Message m[]){
       printf("Enter the length of your massage ;)");scanf("%i",&m->length);
       printf("Enter the message ;)");scanf("%s",&m->text );
