@@ -1,3 +1,8 @@
+#include  <project.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
 
 int isEven(int n){
     if ( n % 2  == 0 ){// detction of eveness
