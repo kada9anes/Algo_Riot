@@ -84,4 +84,47 @@ void encryptSubstitution(struct Message *m, char key[26]){
       }
 
 }
+int isValidKey(char key[27]) {
+    int freq[26] = {0};
+    int idx ;
+
+    for (int i = 0; i < 26; i++) {
+        char c = key[i];
+        if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))){ 
+            return false ;
+        }
+        if (c >= 65 && c <=90)
+          idx = c - 'A';
+        else{
+          idx = c -'a';
+        }
+        if (freq[idx] > 0){
+            return false;
+        }
+        freq[idx] = 1;
+    }
+    return true;
+}
+int countCharacter(struct Message m, char c){
+      int r = 0 ; 
+      for (int  i = 0; i < m.length; i++)
+      {
+            if (m.text[i]== c){
+                  r++ ;
+            }
+      }
+      return r ;
+}
+float coincidenceIndex(struct Message m){
+      float r = 0.000000 ;
+      int f ;
+      toUppercase(&m);
+      for (int i = 0; i <=25; i++)
+      {
+            f = countCharacter(m, i+'A') ;
+            r += f * (f - 1 ); 
+      }
+      if (m.length <= 1)return 0.0 ;
+      return r/((m.length-1)*(m.length-2));
+}
 
