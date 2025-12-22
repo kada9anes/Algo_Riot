@@ -4,9 +4,13 @@
 #include <string.h>
 #include <stdbool.h>
 void inputMessage(struct Message *m){
-      printf("Enter the message ;)");fgets(m->text , sizeof(m->text) , stdin);
+      printf("Enter the message : ");fgets(m->text , sizeof(m->text) , stdin);
       m->length = strlen(m->text);
-}
+      if(m->text[m->length -1 ] == '\n'){
+            m->text[m->length -1 ] = '\0' ;
+            m->length -- ;
+      }
+}      
 void displaymessage(struct Message *m){
       printf("%s \n" , m->text);
 }
@@ -44,9 +48,9 @@ void toUppercase(struct Message *m ){
       }
 
 }
-void toLowercase(struct Message m[]){
-      for(int o =0 ; i < m->length ; i++){
-            if(m->text[i] >= 'A' && m->text[i] <='Z'){
+void toLowercase(struct Message *m){
+      for(int i =0 ; i < m->length ; i++){
+            if(isUppercase(m->text[i])){
                   m->text[i] += ('a' - 'A');
             }
       }
@@ -62,10 +66,10 @@ void reverseMessage(struct Message *m){
 void encryptCesar(struct Message *m, int key){
       for (int i = 0 ; i <m->length ; i++ ){
             if (isLowercase(m->text[i])){
-                  m->text[i] =  'a'+(m->text[i] - 'a' + key)%26 ;
+                  m->text[i] =  ( (m->text[i] - 'a' + key + 26) % 26 ) + 'a' ;
             }
             if(isUppercase(m->text[i])){
-                  m->text[i] = 'A'+(m->text[i] - 'A' + key)%26 ;
+                  m->text[i] = ( (m->text[i] - 'A' + key + 26) % 26 ) + 'A';
             }
       }
 

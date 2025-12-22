@@ -7,7 +7,7 @@
 #include <time.h>
 //Encryption 
 struct Message{
-char text[200];
+char text[1024];
 int length;
 };
 void inputMessage(struct Message *m); 
@@ -15,11 +15,14 @@ void displaymessage(struct Message *m); // 2 written by kada
 bool isLowercase(char c); //  4 written by kada
 bool isUppercase(char c); 
 void toUppercase(struct Message *m); //written by kada
+void toLowercase(struct Message *m);
+void encryptCesar(struct Message *m, int key);
+
 bool isAlphabetic(char c);
 void reverseMessage(struct Message *m);
 void encryptXOR(struct Message *m, int key);
 void encryptSubstitution(struct Message *m, char key[26]);
-int isValidKey(char key[27]);
+bool isValidKey(char key[27]);
 int countCharacter(struct Message m, char c);
 float coincidenceIndex(struct Message m);
 
