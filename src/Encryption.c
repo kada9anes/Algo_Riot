@@ -63,4 +63,25 @@ void encryptCesar(struct Message *m, int key){
       }
 
 }
+void encryptXOR(struct Message *m, int key){
+      for (int i = 0 ; i < m->length -1; i++ ){
+            m->text[i]=m->text[i]^key ;
+      }
+}
+void encryptSubstitution(struct Message *m, char key[26]){
+      for(int j = 0 ; j < 26 ; j++){
+      if(key[j] >= 97 && key[j] <= 122){
+            key[j] = key[j] - 32 ;
+      }
+      }
+      for (int i = 0 ; i < m->length ; i++){
+            if (isUppercase(m->text[i])){
+                  m->text[i]= key[ m->text[i]-'A'];
+            }
+            if (isLowercase(m->text[i])){
+                  m->text[i]= key[ m->text[i]-'a']+32;
+            }
+      }
+
+}
 

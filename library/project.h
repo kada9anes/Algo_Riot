@@ -11,7 +11,9 @@ bool isLowercase(char c); //  4 written by kada
 bool isUppercase(char c); 
 void toUppercase(struct Message *m); //written by kada
 bool isAlphabetic(char c);
-void reverseMessage(struct Message *m);;
+void reverseMessage(struct Message *m);
+void encryptXOR(struct Message *m, int key);
+void encryptSubstitution(struct Message *m, char key[26]);
 
 //MathSecTool
 struct Matrix{
