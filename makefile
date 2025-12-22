@@ -1,15 +1,14 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -lm
+CFLAGS = -Wall -Wextra -I./library
+LDFLAGS = -lm
 
-# Automatically find all C files everywhere
 SRC := $(shell find . -type f -name "*.c")
-
 TARGET = mian
 
 all: $(TARGET)
 
 $(TARGET):
-	$(CC) $(SRC) -o $(TARGET) $(CFLAGS)
+	$(CC) $(SRC) -o $(TARGET) $(CFLAGS) $(LDFLAGS)
 
 clean:
 	rm -f $(TARGET) *.o

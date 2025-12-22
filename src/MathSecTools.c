@@ -1,6 +1,7 @@
-#include  <project.h>
+#include "../library/project.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <time.h>
 #include <math.h>
 
@@ -243,7 +244,7 @@ void addMatrices(struct Matrix A, struct Matrix B, struct Matrix *C){
     }
 }
 void multiplyMatrices(struct Matrix A, struct Matrix B,struct Matrix *C){
-    if (A.p = B.n){
+    if (A.p == B.n){
         C->n = A.n ;
         C->p = B.p ; 
         for (int i = 0 ; i < C->n ; i++){
@@ -283,7 +284,7 @@ int isSymmetric(struct Matrix M){
         for(int i = 0 ; i < M.n ; i ++){
             for (int j = 0; j < M.p; j++)
             {
-                if(M.data[i][j] = M.data[j][i]){
+                if(M.data[i][j] == M.data[j][i]){
                     cont++ ;
                 }
             }   
@@ -322,4 +323,4 @@ int isIdentity(struct Matrix M){
         return -1 ;
     }
 }
-// chof ida jatek fikra jdida fkach algo ectbha w5ali l9dima ok ? 
+// chof ida jatek fikra jdida fkach algo ectbha w5ali l9dima ok ?

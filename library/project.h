@@ -1,7 +1,8 @@
 #ifndef algo_project
 #define algo_project
 #include <stdio.h>
-#include "library/project.h"
+#include <stdbool.h>
+#include <string.h>
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>

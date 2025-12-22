@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#include "../library/project.h"
+#include "library/project.h"
 
 int main() {
     struct Message msg;
