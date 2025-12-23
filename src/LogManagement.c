@@ -47,3 +47,26 @@ void addUser(struct User users[], int *n){
 
 
 }
+int searchUser(struct User users[], int n, char name[]){
+      for (int i = 1 ; i<= n ; i++){
+            if (strcmp(users[i].name,name) == 0){
+                  return i ;
+            }
+      }
+      return -1 ;
+}
+bool checkLogin(struct User users[], int n, char name[], char pass[]){
+      for (int i = 1 ; i<=n ; i++){
+            if (strcmp(users[i].name,name) == 0 && strcmp(users[i].password,pass) == 0){
+                  return true ;
+            }
+      }
+      return false ;
+}
+void blockUser(struct User users[], int n, char name[]){
+      if (searchUser(users , n , name) != -1) users[searchUser(users , n , name)].state = 1 ;
+      else{
+            printf("this user isn't exist");
+      } 
+      
+}
