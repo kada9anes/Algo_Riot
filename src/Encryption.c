@@ -86,10 +86,16 @@ void encryptCesar(struct Message *m, int key){
       }
 
 }
+void decryptCesar(struct Message *m, int key){
+      encryptCesar(m, -key);
+}
 void encryptXOR(struct Message *m, int key){
-      for (int i = 0 ; i < m->length -1; i++ ){
+      for (int i = 0 ; i < m->length ; i++ ){
             m->text[i]=m->text[i]^key ;
       }
+}
+void decryptXOR(struct Message *m, int key){ // same as encrypt 
+      encryptXOR(m, key);
 }
 void encryptSubstitution(struct Message *m, char key[26]){
       for(int j = 0 ; j < 26 ; j++){
@@ -105,6 +111,9 @@ void encryptSubstitution(struct Message *m, char key[26]){
                   m->text[i]= key[ m->text[i]-'a']+32;
             }
       }
+
+}
+void decryptSubstitution(struct Message *m , char key[26]){
 
 }
 bool isValidKey(char key[27]) {
@@ -131,6 +140,10 @@ bool isValidKey(char key[27]) {
     }
     return true;
 }
+bool compareMessages(struct Message *m1 , struct Message *m2){
+
+
+}
 int countCharacter(struct Message m, char c){
       int r = 0 ; 
       for (int  i = 0; i < m.length; i++)
@@ -140,6 +153,9 @@ int countCharacter(struct Message m, char c){
             }
       }
       return r ;
+}
+void frequencyAnalysis(struct Message *m){
+      
 }
 float coincidenceIndex(struct Message m){
       float r = 0.000000 ;
