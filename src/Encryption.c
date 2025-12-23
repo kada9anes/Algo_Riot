@@ -4,7 +4,8 @@
 #include <string.h>
 #include <stdbool.h>
 void inputMessage(struct Message *m){
-      printf("Enter the message : ");fgets(m->text , sizeof(m->text) , stdin);
+      printf("Enter the message : ");
+      fgets(m->text , sizeof(m->text) , stdin);
       m->length = strlen(m->text);
       if(m->text[m->length -1 ] == '\n'){
             m->text[m->length -1 ] = '\0' ;
@@ -42,7 +43,7 @@ bool isAlphabetic(char c){
 }
 void toUppercase(struct Message *m ){ 
     for(int i = 0 ; i < m->length ; i++){
-      if(m->text[i] >= 'a' && m->text[i] <= 'z'){
+      if(isLowercase(m->text[i])){
             m->text[i] -= ('a' - 'A');  // BASICALLY THE SAME AS 32 
       }
       }
@@ -56,20 +57,19 @@ void toLowercase(struct Message *m){
       }
 }
 void removeSpaces(struct Message *m){
+      int j =0;
       for(int i = 0 ; i < m->length ; i ++){
-            int j = i+1 ;
-            while (m->text[i]==' ')
-            {
-                   
-                  m->text[i]=m->text[j];
-                  m->text[j]=' ';
-                  j++ ;     
-            }
+           if(m->text[i] != ' '){
+               m->text[j]=m->text[i];
+               j++;
+            }   
       }
+      m->text[j] = '\0';
+      m->length = j ;
 }
 void reverseMessage(struct Message *m){
       char tmp ; 
-      for (int i = 0 ; i < m->length -i  ; i ++){
+      for (int i = 0 ; i < m->length / 2  ; i ++){
             tmp = m->text[i];
             m->text[i] = m->text[m->length -1 - i] ;
             m->text[m->length -1 - i] = tmp ;
@@ -113,8 +113,18 @@ void encryptSubstitution(struct Message *m, char key[26]){
       }
 
 }
-void decryptSubstitution(struct Message *m , char key[26]){
-
+void getreversekey(char key[26] , char reverse[26]){
+      for ( int i =0 ; i < 26 ; i++){
+            reverse[key[i] - 'A'] = 'A' + i ;
+      }
+}
+void decryptSubstitution(struct Message *m , char reverse[26]){
+     for( int i = 0 ; i < m->length ; i++){
+      if (isUppercase(m->text[i]))
+            m->text[i] = reverse[m->text[i] - 'A'];
+        else if (isLowercase(m->text[i]))
+            m->text[i] = reverse[m->text[i] - 'a'] + ('a' - 'A');
+      }
 }
 bool isValidKey(char key[27]) {
     int freq[26] = {0};
@@ -141,8 +151,15 @@ bool isValidKey(char key[27]) {
     return true;
 }
 bool compareMessages(struct Message *m1 , struct Message *m2){
+      if (!m1 || !m2 ) // check if its null
+    return false;
 
-
+     int i=0;
+     while ( m1->text[i] !='\0' && m2->text[i] !='\0'){
+      if(m1->text[i] != m2->text[i]) return false ;
+      i++;
+     }
+     return m1->text[i] =='\0' && m2->text[i]=='\0';
 }
 int countCharacter(struct Message m, char c){
       int r = 0 ; 
@@ -155,7 +172,20 @@ int countCharacter(struct Message m, char c){
       return r ;
 }
 void frequencyAnalysis(struct Message *m){
-      
+     int freq[26] = {0};
+     for(int i = 0 ; i < m->length ; i++){
+      if(isLowercase(m->text[i])){
+            freq[m->text[i] - 'a']++;
+      }
+      if(isUppercase(m->text[i])){
+            freq[m->text[i] - 'A']++;
+      }
+     }
+     for(int i =0 ; i <26 ; i++){
+      if(freq[i] > 0){
+            printf("%c : %d \n" , 'A' + i, freq[i]);
+      }
+     }
 }
 float coincidenceIndex(struct Message m){
       float r = 0.000000 ;
@@ -167,6 +197,6 @@ float coincidenceIndex(struct Message m){
             r += f * (f - 1 ); 
       }
       if (m.length <= 1)return 0.0 ;
-      return r/((m.length-1)*(m.length-2)); // i think this is false note that you count the length with strlen so it wont include \0 so it was better to write m.length * m.length -1
+      return r/((m.length)*(m.length-1)); // i think this is false note that you count the length with strlen so it wont include \0 so it was better to write m.length * m.length -1
 }
 
