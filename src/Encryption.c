@@ -43,7 +43,7 @@ bool isAlphabetic(char c){
 void toUppercase(struct Message *m ){ 
     for(int i = 0 ; i < m->length ; i++){
       if(m->text[i] >= 'a' && m->text[i] <= 'z'){
-            m->text[i] -= ('a' - 'A');  // BASICALLY THE SAME AS 32
+            m->text[i] -= ('a' - 'A');  // BASICALLY THE SAME AS 32 
       }
       }
 
@@ -52,6 +52,18 @@ void toLowercase(struct Message *m){
       for(int i =0 ; i < m->length ; i++){
             if(isUppercase(m->text[i])){
                   m->text[i] += ('a' - 'A');
+            }
+      }
+}
+void removeSpaces(struct Message *m){
+      for(int i = 0 ; i < m->length ; i ++){
+            int j = i+1 ;
+            while (m->text[i]==' ')
+            {
+                   
+                  m->text[i]=m->text[j];
+                  m->text[j]=' ';
+                  j++ ;     
             }
       }
 }
