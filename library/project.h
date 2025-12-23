@@ -18,7 +18,7 @@ bool isUppercase(char c);
 void toUppercase(struct Message *m); //written by kada
 void toLowercase(struct Message *m);
 void encryptCesar(struct Message *m, int key);
-
+void removeSpaces(struct Message *m)
 bool isAlphabetic(char c);
 void reverseMessage(struct Message *m);
 void encryptXOR(struct Message *m, int key);
@@ -58,6 +58,13 @@ void transposeMatrix(struct Matrix A, struct Matrix *T);
 int determinant2x2(int A[2][2]);
 int isSymmetric(struct Matrix M);
 int isIdentity(struct Matrix M);
+// LogMangement :
+struct User{
+      char name[128];
+      char password[128];
+      int role; // 0: user, 1: admin
+      int state; // 0: active, 1: blocked
+};
 
 
 
