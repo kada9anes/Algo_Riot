@@ -198,5 +198,6 @@ float coincidenceIndex(struct Message m){
       }
       if (m.length <= 1)return 0.0 ;
       return r/((m.length)*(m.length-1)); // i think this is false note that you count the length with strlen so it wont include \0 so it was better to write m.length * m.length -1
+      // try to avoid use function of string.h if u able to write it 
 }
 
