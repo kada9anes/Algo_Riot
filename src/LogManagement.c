@@ -73,10 +73,65 @@ bool checkLogin(struct User users[], int n, char name[], char pass[]){
       return false ;
 }
 void blockUser(struct User users[], int n, char name[]){
-      int inx = searchUser(users , n , name) ;
-      if (inx != -1) users[inx].state = 1 ;
+      int idx = searchUser(users , n , name) ;
+      if (idx != -1) users[idx].state = 1 ;
       else{
             printf("this user isn't exist");
       } 
+      
+}
+void changeRole(struct User users[], int n, char name[],int role){
+      if (role != 1 && role != 0) return; 
+      int idx = searchUser(users , n , name) ;
+      if (idx != -1){
+      users[idx].role = role ;
+      }
+      else{
+            printf("this user isn't exist");
+      } 
+      
+}
+int stringLength(char str[]){
+      int i = 0;
+      while (str[i]!= '\0')
+      {
+            i++;
+      }
+      return i ;
+      
+}
+bool containsUppercase(char str[]){
+      for (int i = 0 ; i < stringLength(str) ; i++ ){
+            if (str[i]>= 'A'&& str[i]<= 'Z'){
+                  return true ;
+            }
+            
+      }
+      return false ;
+}
+bool containsSymbol(char str[]){
+      for (int i = 0 ; i < stringLength(str) ; i++ ){
+            if ((str[i]>= 33 && str[i]<=47)||(str[i]>= 58 && str[i]<=64)||(str[i]>= 91 && str[i]<=96)||(str[i]>= 123 && str[i]<=126)){
+                  return true ;
+            }
+            
+      }
+      return false ;
+}void saveUsers(struct User users[], int n){
+      FILE *f = fopen("users.txt" , "w");
+      if (f == NULL){
+            printf("ERROR: can not open file \n");
+            return;
+      }
+      fprintf(f,"%i\n",n);
+      for (int i = 0; i < n; i++)
+      {
+            fprintf(f, "%s %s %d %d\n",
+                users[i].name,
+                users[i].password,
+                users[i].role,
+                users[i].state);
+      }
+      fclose(f);
       
 }
