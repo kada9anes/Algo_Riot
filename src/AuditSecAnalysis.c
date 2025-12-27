@@ -173,4 +173,4 @@ void top3Passwords(struct User users[], int n){// problem of users less than 3 u
       printf("the 2nd strong password is : %s",users[top[1]].password);
       printf("the 3rd strong password is : %s",users[top[2]].password);
 }
-
+// all this not test 100% there exist errors dont touch it 
