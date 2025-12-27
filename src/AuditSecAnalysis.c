@@ -13,30 +13,63 @@ int countUppercase(char text[])
 {
       int cont = 0;
       for (int i  = 0 ; i != '\0';i++){
-            if (text[i]>='A'&& text<='Z'){
+            if (isUppercase(text[i])){
                   cont ++ ;
             }
       }
       return cont ;
+}
+int countLowercase(char text[]){
+      int conter = 0;
+      for (int i = 0 ; i != '\0';i++){
+            if (isLowercase(text[i])){
+                  conter++ ;
+            }
+      } 
+      return conter ;
 }
 int countDigits(char text[]){
-      int cont = 0;
+      int conter = 0;
       for (int i  = 0 ; i != '\0';i++){
-            if (text[i]>='0'&& text<='9'){
-                  cont ++ ;
+            if (isDigit(text[i])){
+                  conter++ ;
             }
       }
-      return cont ;
+      return conter ;
+}
+float percentUppercase(char text[]){
+      int total = strlen(text);
+      int uppercase = 0;
+      if(total == 0) return 0.0f; 
+      for(int i =0 ; i < total ; i++ ){
+            if(isUppercase(text[i])) uppercase++;
+      }
+      return ((float)uppercase / total) *100.0f;
 }
 int textLength(char text[]){
-      cont = 0 ;
-      while (text[i]!='\0')
+      int conter = 0 ;
+      while (text[conter]!='\0')
       {
-            cont ++;
+            conter++;
       }
-      return cont ;
+      return conter ;
       
 }
+void displayTextStats(char text[]){
+      int size = strlen(text);
+      int uppercase = countUppercase(text);
+      int lowercase = countLowercase;
+      int digits = countDigits;
+      int special = size - uppercase - lowercase - digits ;
+      printf("===== User Statistics =====\n");
+      printf("Total characters         : %d \n" , size);
+      printf("Total uppercase letters  : %d \n" , uppercase);
+      printf("Total lowercase letters  : %d \n" , lowercase);
+      printf("Total digits             : %d \n" , digits);
+      printf("Total special characters : %d \n" , special);
+
+}
+
 bool veryStrongPassword(char pass[]){
       bool hasUpper = false ;
       bool hasLower = false ;
@@ -60,6 +93,15 @@ bool veryStrongPassword(char pass[]){
       }
       }
 }
+void generatekey(int length , char pass[]){
+      const char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      int charsetSize = sizeof(charset) -1 ;
+      for (int i = 0 ; i < length ; i++){
+            int keyIndex = rand() % charsetSize ;
+            pass[i] = charset[keyIndex];
+      }
+      pass[length] = '\0' ;
+}
 bool isHexKey(char key[]){
       for (int i = 0 ; i != 0 ; i++){
             if (!isxdigit(key[i])){ // we can use if (key[i] >=0 && ...|| key[i]>='A'&& ... || ...)
@@ -67,6 +109,35 @@ bool isHexKey(char key[]){
             }
       }
       return true ;
+}
+void generateRandomPassword(int length , char pass[]){
+      if (length < 4) { 
+        printf("Password length must be at least 4\n");
+        pass[0] = '\0';
+        return;
+    }
+    srand(time(NULL));
+    const char uppercase[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const char lowercase[] = "abcdefghijklmnopqrstuvwxyz";
+    const char digits[]    = "0123456789";
+    const char symbols[]   = "!@#$%^&*()-_=+[]{}|;:,.<>?/";
+    int i =0;
+    pass[i++] = uppercase[rand() % strlen(uppercase)];
+    pass[i++] = lowercase[rand() % strlen(lowercase)];
+    pass[i++] = digits[rand() % strlen(digits)];
+    pass[i++] = symbols[rand() % strlen(symbols)];
+    const char allchar[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:,.<>?/";
+    int size = strlen(allchar);
+    for(; i< length ; i++){
+      pass[i] = allchar[rand() % size ]; 
+    }
+    pass[length] = '\0';
+    for(int i = 0 ; i < length ; i++){
+      int j = rand() % length ;
+      char tmp = pass[i];
+      pass[i] = pass[j];
+      pass[j] = tmp ;
+    }
 }
 int passwordScore(char pass[]){
       bool hasUpper = false ;
@@ -87,39 +158,48 @@ int passwordScore(char pass[]){
       }
       return hasLower + hasSymbol*2 + longer*3 + hasUpper ;
 }
-void displaySecurityReport(struct User users[], int n){
-      int numUsersAdmin = 0 ;
-      int numUsersActive = 0 ; 
-      int numUsersStrongPass = 0 ;
-      printf("the number of users is : %d",n);
-      for (int i = 0 ; i < n ; i ++){
-            if (users[i].state == 0){
-                  numUsersActive++;
-            }
-            else if (users[i].role == 1){
-                  numUsersAdmin++;
-            }
-            else if (veryStrongPassword(users[i].password)){
-                  numUsersStrongPass++
-            } 
+float averageScore(struct User users[] , int n ){
+      if (n == 0) return 0.0f;
+      int  total = 0;
+      for (int i = 0 ; i < n ; i++){
+          total += passwordScore(users[i].password);
       }
-      printf("the number of user active is : %i and blocked users is : %i\n"numUsersActive,n-numUsersActive);
-      printf("the number of user admin is : %i and normal users is : %i\n"numUsersAdmin,n-numUsersAdmin);
-      printf("the number of user hase strong password is : %i and blocked users is : %i\n"numUsersStrongPass,n-numUsersStrongPass);
-      printf("users that need to change passwords : \n");
-      for (int i = 0; i < n; i++)
-      {
-            if (!veryStrongPassword(users[i].password))
-            {
-                  printf("%s\n",users[i].name);
-                  printf("the password strong score is : %i",passwordScore(users[i].password));
-            }
-            
-      }
-      
-
-
+      return (float)total / n;
 }
+void displaySecurityReport(struct User users[], int n) {
+    if (n == 0) {
+        printf("No users to display.\n");
+        return;
+      }
+    int numUsersActive = 0;
+    int numUsersAdmin = 0;
+    int numUsersStrongPass = 0;
+    for (int i = 0; i < n; i++) {
+        if (users[i].state == 0) numUsersActive++;
+        if (users[i].role == 1) numUsersAdmin++;
+        if (veryStrongPassword(users[i].password)) numUsersStrongPass++;
+    }
+    float avgScore = averageScore(users, n);
+    printf("===== User Security Report =====\n");
+    printf("Total users               : %d\n", n);
+    printf("Active users              : %d\n", numUsersActive);
+    printf("Blocked users             : %d\n", n - numUsersActive);
+    printf("Admin users               : %d\n", numUsersAdmin);
+    printf("Regular users             : %d\n", n - numUsersAdmin);
+    printf("Users with strong password: %d\n", numUsersStrongPass);
+    printf("Users needing password update:\n");
+
+    for (int i = 0; i < n; i++) {
+        if (!veryStrongPassword(users[i].password)) {
+            printf(" - %s (Score: %d)\n", users[i].name, passwordScore(users[i].password));
+        }
+    }
+    printf("Average password score: %.2f\n", avgScore);
+    printf("================================\n");
+}
+
+
+
 void showSecurityTips(){
     printf("General Password Security Advice:\n");
     printf("- Use at least 8–12 characters\n");
@@ -131,11 +211,25 @@ void showSecurityTips(){
     printf("- Use a password manager if possible\n");
     printf("- Enable two-factor authentication (2FA)\n");
 }
+
+
+bool checkLoginFormat(char name[]){
+      if (name[0] == '\0') return false;
+      if(!(isAlphabetic(name[0]))) return false;
+      for (int i = 0 ; name[i] != '\0' ; i++){
+            char c = name[i];
+            if(!(isAlphabetic(c) || isdigit(c) || c =='_')){
+                  return false;
+            }
+      }
+      return true ;
+}
+
 bool checkLoginFormat(char name[]){
       bool empty = false ;
       bool includespaces = false ;
       bool includesymbols = false ;
-      bool startdijit = false ; 
+      bool startdijit = false ; é²  
       for (int i = 0 ; i <strlen(name) ;i++){
             if (name != '\0') empty true ; 
             else if (name[i]== ' ') includespaces = true ;
@@ -144,6 +238,17 @@ bool checkLoginFormat(char name[]){
       }
       if (empty && !includespaces && !includesymbols && !startdijit) return true;
       else return true ;
+}
+void generateHexKey(int length , char key[]){ //need to seed random
+      if(length <= 0){
+            key[0] = '\0';
+            return;
+      }
+      const char HEX[]="0123456789ABCDEF";
+      for(int i = 0 ; i < length ; i++){
+            key[i] = HEX[rand() % 16]; 
+      }
+      key[length] = '\0';
 }
 void top3Passwords(struct User users[], int n){// problem of users less than 3 users 
       int top [3]={-1,-1,-1};
@@ -172,5 +277,8 @@ void top3Passwords(struct User users[], int n){// problem of users less than 3 u
       printf("the 1st strong password is : %s",users[top[0]].password);
       printf("the 2nd strong password is : %s",users[top[1]].password);
       printf("the 3rd strong password is : %s",users[top[2]].password);
+}
+int globalSecurityLevel(struct User users[] , int n ){
+      // isnt this function the same as average score ??
 }
 // all this not test 100% there exist errors dont touch it 

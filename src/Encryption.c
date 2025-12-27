@@ -36,7 +36,14 @@ bool isLowercase(char c ){ // not tested
             return false ;
       }
 }
-
+bool isDigit(char c){
+      if ( c <= '9' && c >='0' ){
+            return true ;
+      }
+      else{
+            return false ; 
+      }
+}
 bool isAlphabetic(char c){
       if ( (c <= 'z' && c >='a') || (c <= 'Z' && c>= 'A') ){
             return true ;
