@@ -1,9 +1,12 @@
-#include "../library/project.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <time.h>
+#include "../library/project.h"
+#include "../library/AuditSecAnalysis.h"
+#include "../library/Encryption.h"
+#include "../library/LogManagement.h"
+#include "../library/MathSecTool.h"
 #include <math.h>
+#include <string.h>
+#include <stdbool.h>
 
 int isEven(int n){
     if ( n % 2  == 0 ){// detction of eveness
