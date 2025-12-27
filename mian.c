@@ -3,7 +3,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
-#include "library/project.h"
+//#include "library/project.h"
+#include "library/Encryption.h"
+#include "library/MathSecTool.h"
+#include "library/LogManagement.h"
+#include "library/UserManagement.h"
+#include "library/AuditSecAnalysis.h"
 
 // ==================== UTILITY FUNCTIONS ====================
 
