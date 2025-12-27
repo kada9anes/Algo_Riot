@@ -60,6 +60,17 @@ void addUser(struct User users[], int *n){
 
 
 }
+void deleteUser(struct User users[], int *n, const char name[]) {
+    int idx = searchUser(users, *n, name);
+    if (idx == -1) {
+        printf("User not found\n");
+        return;
+    }
+    for (int i = idx; i < *n - 1; i++) {
+        users[i] = users[i + 1];
+    }
+    (*n)--;
+}
 int searchUser(struct User users[], int n, char name[]){
       for (int i = 0 ; i< n ; i++){
             if (strcmp(users[i].name,name) == 0){
@@ -67,6 +78,32 @@ int searchUser(struct User users[], int n, char name[]){
             }
       }
       return -1 ;
+}
+void ChangePassword(struct User users[] , int n , char name[]){
+      int idx = searchUser(users , n , name);
+      if(idx != -1){
+            char newpass[128];
+            int len = 0 ;
+            printf("what is the new password : ");
+            if(fgets(newpass , sizeof(newpass), stdin) != NULL){
+                   len = strlen(newpass);
+                  if(len > 0 && newpass[len -1] == '\n'){
+                        newpass[len -1] = '\0';
+                  }
+            }
+            if (len <= 1) {
+                  printf("Password cannot be empty\n");
+                  return;
+            }
+            if (!strongPassword(newpass)) {
+                  printf("Weak password\n");
+                   return;
+          }
+            strcpy(users[idx].password , newpass);
+            printf("password changed successfully \n");
+      }else{
+            printf("User not found \n");
+      }
 }
 bool checkLogin(struct User users[], int n, char name[], char pass[]){
       for (int i = 0 ; i<n ; i++){
@@ -76,13 +113,34 @@ bool checkLogin(struct User users[], int n, char name[], char pass[]){
       }
       return false ;
 }
+bool strongPassword(char str[]){
+      if (stringLength(str) < 8 ){
+            return false ;
+      }
+      if (!containsUppercase(str)){
+            return false ;
+      }
+      if(!containsDigit(str)){
+            return false ;
+      }
+      if (!containsSymbol(str)){
+            return false ;
+      }
+      return true ;
+}
 void blockUser(struct User users[], int n, char name[]){
       int idx = searchUser(users , n , name) ;
       if (idx != -1) users[idx].state = 1 ;
       else{
             printf("this user isn't exist");
       } 
-      
+}
+void unblockUser(struct User users[], int n, char name[]){
+      int idx = searchUser(users , n , name) ;
+      if (idx != -1) users[idx].state = 0 ;
+      else{
+            printf("this user isn't exist");
+      }      
 }
 void changeRole(struct User users[], int n, char name[],int role){
       if (role != 1 && role != 0) return; 
@@ -95,6 +153,14 @@ void changeRole(struct User users[], int n, char name[],int role){
       } 
       
 }
+void listAdmins(struct User users[], int n){
+      printf("List of admins : \n");
+      for (int i = 0 ; i < n ; i++ ){
+            if (users[i].role == 1){
+                  printf(" - %s \n" , users[i].name);
+            }
+      }
+}
 int stringLength(char str[]){
       int i = 0;
       while (str[i]!= '\0')
@@ -104,9 +170,25 @@ int stringLength(char str[]){
       return i ;
       
 }
+bool containsDigit(char str[]){
+      for (int i = 0 ; str[i] != '\0' ; i++ ){
+            if (str[i]>= '0' && str[i]<= '9'){
+                  return true ;
+            }
+      }
+      return false ;
+}
+bool containsLowercase(char str[]){
+      for(int i = 0 ; str[i] != '\0' ; i++){
+            if(isLowercase(str[i])){
+                  return true ;
+            }
+      }
+      return false;
+}
 bool containsUppercase(char str[]){
-      for (int i = 0 ; i != '\0' ; i++ ){
-            if (str[i]>= 'A'&& str[i]<= 'Z'){
+      for (int i = 0 ; str[i] != '\0' ; i++ ){
+            if (isUppercase(str[i])){
                   return true ;
             }
             
@@ -114,14 +196,31 @@ bool containsUppercase(char str[]){
       return false ;
 }
 bool containsSymbol(char str[]){
-      for (int i = 0 ; i < stringLength(str) ; i++ ){
-            if ((str[i]>= 33 && str[i]<=47)||(str[i]>= 58 && str[i]<=64)||(str[i]>= 91 && str[i]<=96)||(str[i]>= 123 && str[i]<=126)){
+      for (int i = 0 ; str[i] != '\0' ; i++ ){
+            char c = str[i];
+            if ((c >= '!' && c <= '/') ||(c >= ':' && c <= '@') ||(c >= '[' && c <= '`') ||(c >= '{' && c <= '~')) {
                   return true ;
             }
-            
       }
       return false ;
-}void saveUsers(struct User users[], int n){
+}
+void userStatistics(struct User users[] , int n){
+     int admins = 0 ; int blocked = 0 ; int active = 0 ; int regular = 0 ;
+      for (int i = 0 ; i < *n ; i++ ){
+            if(users[i].role == 1) admins++;
+            else regular++;
+            if(users[i].state == 1) blocked++;
+            else active++;
+
+      }
+      printf("===== User Statistics =====\n");
+      printf("Total users   : %d \n" , n);
+      printf("Active users  : %d\n", active);
+      printf("Blocked users : %d\n", blocked);
+      printf("Admins        : %d\n", admins);
+      printf("Regular users : %d\n", regular);
+}      
+void saveUsers(struct User users[], int n){
       FILE *f = fopen("users.txt" , "w");
       if (f == NULL){
             printf("ERROR: can not open file \n");
@@ -138,4 +237,28 @@ bool containsSymbol(char str[]){
       }
       fclose(f);
       
+}
+void LoadUsers(struct User users[] , int *n){
+      FILE *f = fopen("users.txt" , "r" );
+      if (f == NULL){
+            printf("ERROR: can not open file \n");
+            return;
+      }
+      if (fscanf(f, "%d", n) != 1) {
+        printf("Failed to read number of users\n");
+        fclose(f);
+        return;
+      }
+      for (int i = 0; i < *n; i++) {
+        if (fscanf(f, "%127s %127s %d %d",
+                  users[i].name,
+                  users[i].password,
+                  &users[i].role,
+                  &users[i].state) != 4) {
+            printf("Error reading user %d\n", i + 1);
+            fclose(f);
+            return;
+        }
+    }
+    fclose(f);
 }
