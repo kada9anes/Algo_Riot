@@ -12,7 +12,7 @@
 int countUppercase(char text[])
 {
       int conter = 0;
-      for (int i  = 0 ; i != '\0';i++){
+      for (int i  = 0 ; text[i] != '\0';i++){
             if (isUppercase(text[i])){
                   conter ++ ;
             }
@@ -21,7 +21,7 @@ int countUppercase(char text[])
 }
 int countLowercase(char text[]){
       int conter = 0;
-      for (int i = 0 ; i != '\0';i++){
+      for (int i = 0 ; text[i] != '\0';i++){
             if (isLowercase(text[i])){
                   conter++ ;
             }
@@ -30,7 +30,7 @@ int countLowercase(char text[]){
 }
 int countDigits(char text[]){
       int conter = 0;
-      for (int i  = 0 ; i != '\0';i++){
+      for (int i  = 0 ; text[i] != '\0';i++){
             if (isDigit(text[i])){
                   conter++ ;
             }
@@ -58,8 +58,8 @@ int textLength(char text[]){
 void displayTextStats(char text[]){
       int size = strlen(text);
       int uppercase = countUppercase(text);
-      int lowercase = countLowercase;
-      int digits = countDigits;
+      int lowercase = countLowercase(text);
+      int digits = countDigits(text);
       int special = size - uppercase - lowercase - digits ;
       printf("===== User Statistics =====\n");
       printf("Total characters         : %d \n" , size);
@@ -74,7 +74,7 @@ bool veryStrongPassword(char pass[]){
       bool hasUpper = false ;
       bool hasLower = false ;
       bool hasSymbol = false ; 
-      for (int i = 0; str[i] != '\0'; i++) {
+      for (int i = 0; generateRandomPassword[i] != '\0'; i++) {
 
             if (pass[i] >= 'A' && pass[i] <= 'Z') {
                   hasUpper = true;
@@ -88,11 +88,11 @@ bool veryStrongPassword(char pass[]){
       }
       if (hasLower && hasUpper && hasSymbol && textLength(pass)>= 12){
             return true ;
-      else{
+      }else{
             return false ;
       }
-      }
 }
+
 void generatekey(int length , char pass[]){
       const char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       int charsetSize = sizeof(charset) -1 ;
@@ -103,7 +103,7 @@ void generatekey(int length , char pass[]){
       pass[length] = '\0' ;
 }
 bool isHexKey(char key[]){
-      for (int i = 0 ; i != 0 ; i++){
+      for (int i = 0 ; key[i] != 0 ; i++){
             if (!isxdigit(key[i])){ // we can use if (key[i] >=0 && ...|| key[i]>='A'&& ... || ...)
                   return false ;
             }
@@ -281,7 +281,7 @@ bool checkLoginFormat(char name[]){
             
       }
 bool checkEmailFormat(char name[]){
-      return (oneAt(name)&& LocalPart(name)&& DomainPart(name))
+      return (oneAt(name)&& LocalPart(name)&& DomainPart(name));
 }
 
       
@@ -298,7 +298,7 @@ void generateHexKey(int length , char key[]){ //need to seed random
       }
       key[length] = '\0';
 }
-void top3Passwords(struct User users[], int n){// problem of users less than 3 users 
+void top3Passwords(struct User users[], int n){ // work 100% if more than 3 users hav same score will print only The first three users 
       int top [3]={-1,-1,-1};
       int j= 0 ;
       int k = 7 ;
