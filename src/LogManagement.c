@@ -107,3 +107,42 @@ float errorRate(struct Log logs[], int n){
     }
     return (float)errorCount / n ;
 }
+void exportLogsCSV(struct Log logs[], int n){
+    FILE *f = fopen("logs.csv" , "w");
+    if(f == NULL){
+        printf("Error : cannot create csv file \n");
+        return;
+    }
+    fprintf(f , "User,action,date,time,code\n");
+    for (int i =0 ; i < n ; i++){
+        fprintf(f, "\"%s\",\"%s\",\"%s\",\"%s\",%d\n" , logs[i].user , logs[i].action , logs[i].date , logs[i].time , logs[i].code);
+        // print it in the format : "user","action","date","time",code
+    }
+    fclose(f);
+}
+void clearLogs(struct Log logs[], int n){
+    for (int i = 0 ; i < n ; i++ ){
+        strcpy(logs[i].user, "");
+        strcpy(logs[i].action, "");
+        strcpy(logs[i].date, "");
+        strcpy(logs[i].time, "");
+        logs[i].code = -1; // invalid
+    }
+}
+void archiveLogs(struct Log logs[], int n){
+    if (n <= 0) {
+        return;
+    }
+    FILE *f = fopen("logs_archive.txt" , "a");
+    if (f == NULL){
+        printf("Error : cannot open archive file \n");
+        return;
+    }
+    for(int i =0 ; i < n ;i++){
+        fprintf(f, "User: %s | Action: %s | Date: %s | Time: %s | Code: %d\n",
+                logs[i].user, 
+                logs[i].action, logs[i].date, logs[i].time, logs[i].code);
+
+    }
+    fclose(f);
+}
