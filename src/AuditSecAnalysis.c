@@ -11,13 +11,13 @@
 #include "AuditSecAnalysis.h"
 int countUppercase(char text[])
 {
-      int cont = 0;
+      int conter = 0;
       for (int i  = 0 ; i != '\0';i++){
             if (isUppercase(text[i])){
-                  cont ++ ;
+                  conter ++ ;
             }
       }
-      return cont ;
+      return conter ;
 }
 int countLowercase(char text[]){
       int conter = 0;
@@ -224,21 +224,69 @@ bool checkLoginFormat(char name[]){
       }
       return true ;
 }
-
-bool checkLoginFormat(char name[]){
-      bool empty = false ;
-      bool includespaces = false ;
-      bool includesymbols = false ;
-      bool startdijit = false ; é²  
-      for (int i = 0 ; i <strlen(name) ;i++){
-            if (name != '\0') empty true ; 
-            else if (name[i]== ' ') includespaces = true ;
-            else if ((name[i] >= 33 && name[i] <= 47) ||(name[i] >= 58 && name[i] <= 64) ||(name[i] >= 91 && name[i] <= 96) ||(name[i] >= 123 && name[i] <= 126)) includesymbols = true ;
-            else if (name[0]>=0 && name[0]<= 9) startdijit = true;
+// this function needed for eamil checking :
+      bool oneAt(char name[]){
+            int conter = 0;
+            for (int i = 0; name[i] != '\0'; i++){
+                  if (name[i] == '@')
+                        conter++;
+            }
+            return conter == 1 ;
       }
-      if (empty && !includespaces && !includesymbols && !startdijit) return true;
-      else return true ;
+      bool LocalPart(char name[]){
+            if (name[0] == '.' || name[0] == '@')
+                  return false;
+
+            for (int i = 0; name[i] != '@'; i++){
+                  if (name[i] == '\0')
+                        return false;
+
+                  if (!((name[i] >= 'a' && name[i] <= 'z') ||(name[i] >= 'A' && name[i] <= 'Z') ||name[i] == '.' || name[i] == '_')) return false;
+
+                  if (name[i] == '.' && name[i+1] == '.')
+                        return false;
+            }
+      return true;
+      }    
+      bool DomainPart (char name[]){
+            int idxAt = -1 ;
+            int conterDots = 0;
+            for (int i = 0; name[i] != '\0'; i++)
+            {
+                  if (name[i]== '@') idxAt = i ;
+            }
+            if (idxAt == -1) return false;
+            if (name[idxAt+1]=='\0'||name[idxAt+1]=='.') return false ;
+            for (int  j=idxAt+1 ; name[j] !='\0'; j++)
+            {
+                  if (!((name[j]>='a'&& name[j]<='z')||(name[j]>='A'&& name[j]<='Z')||name[j]== '.')||((name[j]=='.')&&(name[j+1]=='.')))
+                  {
+                        return false ;
+                  }
+                  if (name[j]=='.')
+                  {
+                        conterDots++;
+                  }
+                  
+                  
+            }
+            if (conterDots == 0 )
+            {
+                  return false ;
+            }
+            if (name[strlen(name)-1]== '.')return false ;
+
+            return true ;
+            
+            
+      }
+bool checkEmailFormat(char name[]){
+      return (oneAt(name)&& LocalPart(name)&& DomainPart(name))
 }
+
+      
+
+
 void generateHexKey(int length , char key[]){ //need to seed random
       if(length <= 0){
             key[0] = '\0';
@@ -254,31 +302,37 @@ void top3Passwords(struct User users[], int n){// problem of users less than 3 u
       int top [3]={-1,-1,-1};
       int j= 0 ;
       int k = 7 ;
-      while ((top[0]==-1 ||top[1]==-1 ||top[2]==-1)&& k >0)
+      while (j < 3 && k > 0)
       {
             for (int i = 0; i < n; i++)
             {
-                  if (passwordScore(users[i].password)==k)
+                  if (passwordScore(users[i].password)==k && j < 3)
                   {
                         top[j]=i;
                         j++;
-                        if (j==3) break;
                   }
                   
             }
             k--;
-            if (j==3)
-            {
-                  break;
-            }
-            
-            
       }
-      printf("the 1st strong password is : %s",users[top[0]].password);
-      printf("the 2nd strong password is : %s",users[top[1]].password);
-      printf("the 3rd strong password is : %s",users[top[2]].password);
+    for (int i = 0; i < 3; i++) {
+        if (top[i] != -1)
+            printf("Top %d strong password: %s\n", i+1, users[top[i]].password);
+        else
+            printf("Top %d strong password: N/A\n", i+1);
+    }
 }
 int globalSecurityLevel(struct User users[] , int n ){
-      // isnt this function the same as average score ??
+      float avr = averageScore(users,n);
+      if (avr>= 6){
+            return 3 ; // level 3 strong 
+      }
+      else if (avr<6 && avr >=3){
+            return 2 ; // level 2 mid 
+      }
+      else if (avr>= 1 && avr <3){
+            return 1 ; // level 3 weak 
+      }
+      else return 0 ; // no sec
 }
 // all this not test 100% there exist errors dont touch it 
