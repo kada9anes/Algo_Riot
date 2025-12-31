@@ -331,8 +331,7 @@ int globalSecurityLevel(struct User users[] , int n ){
             return 2 ; // level 2 mid 
       }
       else if (avr>= 1 && avr <3){
-            return 1 ; // level 3 weak 
+            return 1 ; // level 1 weak 
       }
       else return 0 ; // no sec
-}
-// all this not test 100% there exist errors dont touch it 
+} 
