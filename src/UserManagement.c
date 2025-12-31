@@ -15,8 +15,8 @@ void initUsers(struct User users[], int *n){
       } while (*n <= 0);
       
       for(int i = 0 ; i < *n ; i++){
-            printf("Enter user %d name : ",i+1);scanf("%100s",users[i].name );
-            printf("Enter user %d password : ",i+1);scanf("%100s",users[i].password);
+            printf("Enter user %d name : ",i+1);scanf("%19s",users[i].name );
+            printf("Enter user %d password : ",i+1);scanf("%19s",users[i].password);
             do {
                   printf("enter user %d role [0] user , [1] admin :",i+1);scanf("%i",&users[i].role);
             }while(users[i].role != 1 && users[i].role != 0);
@@ -49,8 +49,8 @@ void displayUsers(struct User users[], int n){
 void addUser(struct User users[], int *n){
       int i = *n;
       (*n)++ ;
-      printf("Enter user %d name : ",i+1);scanf("%100s",users[i].name );
-      printf("Enter user %d password : ",i+1);scanf("%100s",users[i].password);
+      printf("Enter user %d name : ",i+1);scanf("%19s",users[i].name );
+      printf("Enter user %d password : ",i+1);scanf("%19s",users[i].password);
       do{
       printf("enter user %d role [0] user , [1] admin :",i+1);scanf("%i",&users[i].role);
       }while(users[i].role != 1 && users[i].role != 0);

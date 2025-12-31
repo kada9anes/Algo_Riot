@@ -9,8 +9,8 @@
 #include <time.h>
 // Userman  : 
 struct User{
-      char name[128];
-      char password[128];
+      char name[20];
+      char password[20];
       int role; // 0: user, 1: admin
       int state; // 0: active, 1: blocked
 };

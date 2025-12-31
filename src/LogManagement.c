@@ -7,7 +7,17 @@
 #include <math.h>
 #include <string.h>
 #include <stdbool.h>
-void initLog(struct Log logs[] , int *n ){
+#include <time.h>
+void initLogs(struct Log logs[] , int *n ){ // we get time from system not from user 
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    int year  = t->tm_year + 1900;
+    int month = t->tm_mon + 1;
+    int day   = t->tm_mday;
+    int hour  = t->tm_hour;
+    int min   = t->tm_min;
+    int sec   = t->tm_sec;
+
     do {
         printf("Enter the number of logs to initialize: ");
         scanf("%d", n);
@@ -15,18 +25,34 @@ void initLog(struct Log logs[] , int *n ){
     
     for (int i = 0 ; i < *n ; i++){
         printf("Enter log %d user: ", i+1);
-        scanf("%19s", logs[i].user);
+        scanf("%19s", logs[i].usrs);
         printf("Enter log %d action: ", i+1);
         scanf("%49s", logs[i].action);
-        printf("Enter log %d date (YYYY-MM-DD): ", i+1);
-        scanf("%19s", logs[i].date);
-        printf("Enter log %d time (HH:MM:SS): ", i+1);
-        scanf("%9s", logs[i].time);
+        snprintf(logs[i].date, sizeof(logs[i].date) ,"%04d-%02d-%02d", year, month, day);
+        snprintf(logs[i].time, sizeof(logs[i].time) ,"%02d:%02d:%02d", hour, min, sec);
         do {
             printf("Enter log %d code [0] info, [1] warning, [2] error: ", i+1);
             scanf("%d", &logs[i].code);
         } while (logs[i].code < 0 || logs[i].code > 2);
     }
+}
+void addLog(struct Log logs[], int *n, char user[], char action[], int code){
+    int i = *n ;
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    int year  = t->tm_year + 1900;
+    int month = t->tm_mon + 1;
+    int day   = t->tm_mday;
+    int hour  = t->tm_hour;
+    int min   = t->tm_min;
+    int sec   = t->tm_sec;
+    (*n)++;
+    strcpy(logs[i].user,user);
+    strcpy(logs[i].action,action);
+    logs[i].code = code;
+    snprintf(logs[i].date, sizeof(logs[i].date) ,"%04d-%02d-%02d", year, month, day);
+    snprintf(logs[i].time, sizeof(logs[i].time) ,"%02d:%02d:%02d", hour, min, sec);
+
 }
 void displayLogs(struct Log logs[], int n){
     for (int i = 0 ; i < n ; i++ ){
