@@ -190,6 +190,7 @@ void exportLogsCSV(struct Log logs[], int n){
     for (int i =0 ; i < n ; i++){
         fprintf(f, "\"%s\",\"%s\",\"%s\",\"%s\",%d\n" , logs[i].user , logs[i].action , logs[i].date , logs[i].time , logs[i].code);
         // print it in the format : "user","action","date","time",code
+        //  عدبتني ب ""
     }
     fclose(f);
 }

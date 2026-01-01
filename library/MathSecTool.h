@@ -12,7 +12,7 @@
 struct Matrix{
 int data[10][10];
 int n, p;
-} ;
+};
 int isEven(int n);
 int countDigits(int n);
 int isPrime(int n);

@@ -8,7 +8,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include "AuditSecAnalysis.h"
 int countUppercase(char text[])
 {
       int conter = 0;
