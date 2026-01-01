@@ -27,10 +27,10 @@ int countLowercase(char text[]){
       } 
       return conter ;
 }
-int countDigits(char text[]){
+int countdigits(char text[]){
       int conter = 0;
       for (int i  = 0 ; text[i] != '\0';i++){
-            if (isDigit(text[i])){
+            if (isdigit(text[i])){
                   conter++ ;
             }
       }
@@ -58,7 +58,7 @@ void displayTextStats(char text[]){
       int size = strlen(text);
       int uppercase = countUppercase(text);
       int lowercase = countLowercase(text);
-      int digits = countDigits(text);
+      int digits = countdigits(text);
       int special = size - uppercase - lowercase - digits ;
       printf("===== User Statistics =====\n");
       printf("Total characters         : %d \n" , size);
@@ -73,7 +73,7 @@ bool veryStrongPassword(char pass[]){
       bool hasUpper = false ;
       bool hasLower = false ;
       bool hasSymbol = false ; 
-      for (int i = 0; generateRandomPassword[i] != '\0'; i++) {
+      for (int i = 0; pass[i] != '\0'; i++) {
 
             if (pass[i] >= 'A' && pass[i] <= 'Z') {
                   hasUpper = true;
