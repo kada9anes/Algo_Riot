@@ -25,11 +25,11 @@ void initLogs(struct Log logs[] , int *n ){ // we get time from system not from 
     
     for (int i = 0 ; i < *n ; i++){
         printf("Enter log %d user: ", i+1);
-        scanf("%19s", logs[i].usrs);
+        scanf("%19s", logs[i].user);
         printf("Enter log %d action: ", i+1);
         scanf("%49s", logs[i].action);
-        snprintf(logs[i].date, sizeof(logs[i].date) ,"%04d-%02d-%02d", year, month, day);
-        snprintf(logs[i].time, sizeof(logs[i].time) ,"%02d:%02d:%02d", hour, min, sec);
+        snprintf(logs[i].date, sizeof(logs[i].date) ,"%4d/%2d/%2d", year, month, day);
+        snprintf(logs[i].time, sizeof(logs[i].time) ,"%2d:%2d:%2d", hour, min, sec);
         do {
             printf("Enter log %d code [0] info, [1] warning, [2] error: ", i+1);
             scanf("%d", &logs[i].code);
@@ -80,7 +80,7 @@ void displayLogs(struct Log logs[], int n){
 void searchLogsByUser(struct Log logs[], int n, char user[]){
     printf("logs of user : %s \n",user);
     for (int i = 0 ;i < n ; i++){
-        if (strcmp(logs[i].users)=0){
+        if (strcmp(logs[i].user,user)==0){
             printf("Log %d user: %s, action: %s, time: %s, code: %d\n", i+1, logs[i].user, logs[i].action, logs[i].time, logs[i].code);
         }
 
@@ -126,7 +126,7 @@ void displayLogStats(struct Log logs[], int n){
     printf("number of logs is : %i",n);
     printf("number of login events is : %i",countLoginLogs(logs , n));
     printf("number of blocked attempts is : %i",countBlockedLogs(logs,n));
-    printf("number of error entries : %i",)countBlockedLogs(logs,n);
+    printf("number of error entries : %i",countBlockedLogs(logs,n));
 
 }
 void sortLogsByDate(struct Log logs[], int n){ //Selection Sort

@@ -60,7 +60,15 @@ void addUser(struct User users[], int *n){
 
 
 }
-void deleteUser(struct User users[], int *n, const char name[]) {
+int searchUser(struct User users[], int n, char name[]){
+      for (int i = 0 ; i< n ; i++){
+            if (strcmp(users[i].name,name) == 0){
+                  return i ;
+            }
+      }
+      return -1 ;
+}
+void deleteUser(struct User users[], int *n,char name[]) {
     int idx = searchUser(users, *n, name);
     if (idx == -1) {
         printf("User not found\n");
@@ -71,13 +79,54 @@ void deleteUser(struct User users[], int *n, const char name[]) {
     }
     (*n)--;
 }
-int searchUser(struct User users[], int n, char name[]){
-      for (int i = 0 ; i< n ; i++){
-            if (strcmp(users[i].name,name) == 0){
-                  return i ;
+bool containsDigit(char str[]){
+      for (int i = 0 ; str[i] != '\0' ; i++ ){
+            if (str[i]>= '0' && str[i]<= '9'){
+                  return true ;
             }
       }
-      return -1 ;
+      return false ;
+}
+bool containsLowercase(char str[]){
+      for(int i = 0 ; str[i] != '\0' ; i++){
+            if(isLowercase(str[i])){
+                  return true ;
+            }
+      }
+      return false;
+}
+bool containsUppercase(char str[]){
+      for (int i = 0 ; str[i] != '\0' ; i++ ){
+            if (isUppercase(str[i])){
+                  return true ;
+            }
+            
+      }
+      return false ;
+}
+bool containsSymbol(char str[]){
+      for (int i = 0 ; str[i] != '\0' ; i++ ){
+            char c = str[i];
+            if ((c >= '!' && c <= '/') ||(c >= ':' && c <= '@') ||(c >= '[' && c <= '`') ||(c >= '{' && c <= '~')) {
+                  return true ;
+            }
+      }
+      return false ;
+}
+bool strongPassword(char str[]){
+      if (textLength(str) < 8 ){
+            return false ;
+      }
+      if (!containsUppercase(str)){
+            return false ;
+      }
+      if(!containsDigit(str)){
+            return false ;
+      }
+      if (!containsSymbol(str)){
+            return false ;
+      }
+      return true ;
 }
 void ChangePassword(struct User users[] , int n , char name[]){
       int idx = searchUser(users , n , name);
@@ -112,21 +161,6 @@ bool checkLogin(struct User users[], int n, char name[], char pass[]){
             }
       }
       return false ;
-}
-bool strongPassword(char str[]){
-      if (stringLength(str) < 8 ){
-            return false ;
-      }
-      if (!containsUppercase(str)){
-            return false ;
-      }
-      if(!containsDigit(str)){
-            return false ;
-      }
-      if (!containsSymbol(str)){
-            return false ;
-      }
-      return true ;
 }
 void blockUser(struct User users[], int n, char name[]){
       int idx = searchUser(users , n , name) ;
@@ -170,43 +204,10 @@ int stringLength(char str[]){
       return i ;
       
 }
-bool containsDigit(char str[]){
-      for (int i = 0 ; str[i] != '\0' ; i++ ){
-            if (str[i]>= '0' && str[i]<= '9'){
-                  return true ;
-            }
-      }
-      return false ;
-}
-bool containsLowercase(char str[]){
-      for(int i = 0 ; str[i] != '\0' ; i++){
-            if(isLowercase(str[i])){
-                  return true ;
-            }
-      }
-      return false;
-}
-bool containsUppercase(char str[]){
-      for (int i = 0 ; str[i] != '\0' ; i++ ){
-            if (isUppercase(str[i])){
-                  return true ;
-            }
-            
-      }
-      return false ;
-}
-bool containsSymbol(char str[]){
-      for (int i = 0 ; str[i] != '\0' ; i++ ){
-            char c = str[i];
-            if ((c >= '!' && c <= '/') ||(c >= ':' && c <= '@') ||(c >= '[' && c <= '`') ||(c >= '{' && c <= '~')) {
-                  return true ;
-            }
-      }
-      return false ;
-}
+
 void userStatistics(struct User users[] , int n){
      int admins = 0 ; int blocked = 0 ; int active = 0 ; int regular = 0 ;
-      for (int i = 0 ; i < *n ; i++ ){
+      for (int i = 0 ; i < n ; i++ ){
             if(users[i].role == 1) admins++;
             else regular++;
             if(users[i].state == 1) blocked++;
