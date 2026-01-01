@@ -250,7 +250,7 @@ void LoadUsers(struct User users[] , int *n){
         return;
       }
       for (int i = 0; i < *n; i++) {
-        if (fscanf(f, "%127s %127s %d %d",
+        if (fscanf(f, "%19s %19s %d %d",
                   users[i].name,
                   users[i].password,
                   &users[i].role,

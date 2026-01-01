@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 // logmanagement : 
-struct Log{
+struct Log {
     char user[20];
     char action[50];
     char date[20];
