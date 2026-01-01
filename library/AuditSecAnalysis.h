@@ -7,13 +7,9 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#include "UserManagement.h"
 // AuditSecAnalysis : 
-struct User{
-      char name[128];
-      char password[128];
-      int role; // 0: user, 1: admin
-      int state; // 0: active, 1: blocked
-};
+
 int countUppercase(char text[]);
 int countLowercase(char text[]);
 int countdigits(char text[]);

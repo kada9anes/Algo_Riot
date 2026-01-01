@@ -1,4 +1,4 @@
-#ifndef ALGO_PROJECT_H
+/*#ifndef ALGO_PROJECT_H
 #define ALGO_PROJECT_H
 
 #include <stdio.h>
@@ -98,3 +98,4 @@ struct User{
 
 
 #endif 
+*/

@@ -160,6 +160,8 @@ int detectSuspiciousActivity(struct Log logs[], int n, char user[]){
             count++;
         }
     }
+    return count;
+
 }
 int dailyConnections(struct Log logs[], int n, char date[]){
     int count = 0 ; 
@@ -202,7 +204,8 @@ void importLogsCSV(struct Log logs[], int n){
         return;
     }
     for (int i = 0 ; i<n ;i++){
-        result =fscanf(f,"\"%49[^\"]\",\"%49[^\"]\",\"%19[^\"]\",\"%19[^\"]\",%d\n" , logs[i].user , logs[i].action , logs[i].date , logs[i].time , logs[i].code);
+        result = fscanf(f, "\"%49[^\"]\",\"%49[^\"]\",\"%19[^\"]\",\"%19[^\"]\",%d\n", 
+                logs[i].user, logs[i].action, logs[i].date, logs[i].time, &logs[i].code);
         if (result == 5) {
             continue; 
         } 
@@ -257,6 +260,7 @@ void archiveLogs(struct Log logs[], int n){
     }
     fclose(f);
 }
-void showTopErrors(struct Log logs[], int n){
+/*void showTopErrors(struct Log logs[], int n){
 // I don't know what this function does
 }
+*/

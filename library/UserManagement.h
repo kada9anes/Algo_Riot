@@ -17,7 +17,7 @@ struct User{
 void initUsers(struct User users[], int *n);
 void displayUsers(struct User users[], int n);
 void addUser(struct User users[], int *n);
-void deleteUser(struct User users[], int *n, const char name[]);
+void deleteUser(struct User users[], int *n,  char name[]);
 int searchUser(struct User users[], int n, char name[]);
 void ChangePassword(struct User users[] , int n , char name[]);
 bool checkLogin(struct User users[], int n, char name[], char pass[]);

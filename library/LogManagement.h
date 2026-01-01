@@ -11,7 +11,7 @@
 struct Log{
     char user[20];
     char action[50];
-    char date[20];
+    char date[40];
     char time[10];
     int code;   // 0 info, 1 warning, 2 error
 };
