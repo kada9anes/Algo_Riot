@@ -1,5 +1,5 @@
-#ifndef ALGO_PROJECT_H
-#define ALGO_PROJECT_H
+#ifndef USER_MANAGEMENT_H
+#define USER_MANAGEMENT_H
 
 #include <stdio.h>
 #include <stdbool.h>

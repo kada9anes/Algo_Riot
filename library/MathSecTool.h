@@ -1,5 +1,5 @@
-#ifndef ALGO_PROJECT_H
-#define ALGO_PROJECT_H
+#ifndef MATHSECTOOL_H
+#define MATHSECTOOL_H
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -39,4 +39,4 @@ void transposeMatrix(struct Matrix A, struct Matrix *T);
 int determinant2x2(int A[2][2]);
 int isSymmetric(struct Matrix M);
 int isIdentity(struct Matrix M);
-#endif 
+#endif

@@ -1,5 +1,5 @@
-#ifndef ALGO_PROJECT_H
-#define ALGO_PROJECT_H
+#ifndef ENCRYPTION_H
+#define ENCRYPTION_H
 
 #include <stdio.h>
 #include <stdbool.h>

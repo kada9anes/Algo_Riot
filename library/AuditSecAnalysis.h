@@ -1,5 +1,5 @@
-#ifndef ALGO_PROJECT_H
-#define ALGO_PROJECT_H
+#ifndef AUDITSECANALYSIS_H
+#define AUDITSECANALYSIS_H
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -15,6 +15,7 @@ struct User{
       int state; // 0: active, 1: blocked
 };
 
+
 #endif
 
-void NewFunction(struct User users[]);
+
