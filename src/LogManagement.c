@@ -260,6 +260,68 @@ void archiveLogs(struct Log logs[], int n){
     }
     fclose(f);
 }
+void showTopErrors(struct Log logs[], int n) // this is chatgpt code for testing
+{
+    const int TOP_K = 5;
+    if (logs == NULL || n <= 0) {
+        printf("No logs available.\n");
+        return;
+    }
+
+    int count[n];
+    int used[n];
+
+    for (int i = 0; i < n; i++) {
+        count[i] = 0;
+        used[i] = 0;
+    }
+
+    /* Count identical ERROR actions */
+    for (int i = 0; i < n; i++) {
+        if (logs[i].code != 2)   // not an error
+            continue;
+
+        if (used[i])
+            continue;
+
+        count[i] = 1;
+        used[i] = 1;
+
+        for (int j = i + 1; j < n; j++) {
+            if (!used[j] &&
+                logs[j].code == 2 &&
+                strcmp(logs[i].action, logs[j].action) == 0)
+            {
+                count[i]++;
+                used[j] = 1;
+            }
+        }
+    }
+
+    printf("Top %d Error Actions:\n", TOP_K);
+
+    for (int k = 0; k < TOP_K; k++) {
+        int maxIdx = -1;
+        int maxCount = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (count[i] > maxCount) {
+                maxCount = count[i];
+                maxIdx = i;
+            }
+        }
+
+        if (maxIdx == -1 || maxCount == 0)
+            break;
+
+        printf("[%d] (%d times) Action: %s\n",
+               k + 1,
+               maxCount,
+               logs[maxIdx].action);
+
+        count[maxIdx] = 0;  // prevent re-selection
+    }
+}
 /*void showTopErrors(struct Log logs[], int n){
 // I don't know what this function does
 }

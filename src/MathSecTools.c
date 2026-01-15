@@ -121,7 +121,7 @@ int reverseNumber(int n){
     }
     return sign * reverse ;
 }
-int isPalindrome(int n){
+int isPalindromeNumber(int n){
     if( n < 0 ){
         return -1 ; // negative numbers are not palindrome
     }
