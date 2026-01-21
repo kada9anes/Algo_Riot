@@ -28,8 +28,8 @@ void initLogs(struct Log logs[] , int *n ){ // we get time from system not from 
         scanf("%19s", logs[i].user);
         printf("Enter log %d action: ", i+1);
         scanf("%49s", logs[i].action);
-        snprintf(logs[i].date, sizeof(logs[i].date) ,"%4d/%2d/%2d", year, month, day);
-        snprintf(logs[i].time, sizeof(logs[i].time) ,"%2d:%2d:%2d", hour, min, sec);
+        snprintf(logs[i].date, sizeof(logs[i].date) ,"%04d-%02d-%02d", year, month, day);
+        snprintf(logs[i].time, sizeof(logs[i].time) ,"%02d:%02d:%02d", hour, min, sec);
         do {
             printf("Enter log %d code [0] info, [1] warning, [2] error: ", i+1);
             scanf("%d", &logs[i].code);
@@ -204,25 +204,22 @@ void importLogsCSV(struct Log logs[], int n){
         return;
     }
     for (int i = 0 ; i<n ;i++){
-        result = fscanf(f, "\"%49[^\"]\",\"%49[^\"]\",\"%19[^\"]\",\"%19[^\"]\",%d\n", 
+        result = fscanf(f, "\"%49[^\"]\",\"%49[^\"]\",\"%19[^\"]\",\"%19[^\"]\",%d", 
                 logs[i].user, logs[i].action, logs[i].date, logs[i].time, &logs[i].code);
         if (result == 5) {
             continue; 
         } 
         else if (result == EOF) {
             printf("Warning: End of file reached after successfully reading %d logs.\n", i);
-            fclose(f);
-            return;
+            break;
         } 
         else { 
             printf("Error: Malformed log entry found at index %d (only read %d fields).\n", i, result);
-            fclose(f);
-            return;
+            break;
         }
     }
     
     fclose(f);
-    return;
 }
 
 void clearLogs(struct Log logs[], int n){

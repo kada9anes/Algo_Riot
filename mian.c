@@ -1641,8 +1641,13 @@ int main() {
     printf("\n\n");
     
     // Initialize system
-    initUsers(users, &userCount);
-    initLogs(logs, &logCount);
+    //initUsers(users, &userCount);
+    printf("Welcome to Login's page\n\n"); // then we need to add way to chose if user need to login or emport users from file ;
+    initUsers(users,&userCount);
+    //initLogs(logs, &logCount);here must rejester the 1st log of user 
+    for (int l = 0 ; l <userCount ; l++){
+        addLog(logs,&logCount,users[l].name,"login",0);
+    }
     
     // Try to load existing data
     printf(CYAN "        Loading user database...\n" RESET);
