@@ -80,12 +80,12 @@ void addLog(struct Log logs[], int *n, char user[], char action[], int code){
 void displayLogs(struct Log logs[], int n){
     printf("============================== logs info ===========================\n");
     for (int i = 0 ; i < n ; i++ ){
-        printf("log %d : \n", i+1);
-        printf("Log %d user: %s\n", i+1, logs[i].user);
-        printf("Log %d action: %s\n", i+1, logs[i].action);
-        printf("Log %d date: %s\n", i+1, logs[i].date);
-        printf("Log %d time: %s\n", i+1, logs[i].time);
-        printf("Log %d code: ", i+1);
+        printf("Log %d : ----------------\n", i+1);
+        printf("user: %s\n", logs[i].user);
+        printf("action: %s\n", logs[i].action);
+        printf("date: %s\n",  logs[i].date);
+        printf("time: %s\n", logs[i].time);
+        printf("code: ");
         switch (logs[i].code) {
             case 0:
                 printf("info\n");
@@ -147,10 +147,10 @@ int countBlockedLogs(struct Log logs[], int n){
 }
 void displayLogStats(struct Log logs[], int n){
     printf("=======================logs satats===========================\n ");
-    printf("number of logs is : %i",n);
-    printf("number of login events is : %i",countLoginLogs(logs , n));
-    printf("number of blocked attempts is : %i",countBlockedLogs(logs,n));
-    printf("number of error entries : %i",countBlockedLogs(logs,n));
+    printf("number of logs is : %i \n",n);
+    printf("number of login events is : %i \n",countLoginLogs(logs , n));
+    printf("number of blocked attempts is : %i\n",countBlockedLogs(logs,n));
+    printf("number of error entries : %i \n",countBlockedLogs(logs,n));
 
 }
 void sortLogsByDate(struct Log logs[], int n){ //Selection Sort

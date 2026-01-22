@@ -1655,8 +1655,10 @@ int main() {
         users[0].role = 1;
         users[0].state = 0;
         userCount = 1;
+        saveUsers(users, userCount);
     }
-    char username[20], passwd[20]; int stat ;
+    
+    char username[20], passwd[20];
     int logincheck;
     do {
         printf(GREEN"USERNAME : "RESET);scanf("%19s",username);
@@ -1669,6 +1671,7 @@ int main() {
             printError("blocked user ");
         }
     }while (logincheck!=1);
+    addLog(logs, &logCount,username,"Login",0);
     
     
 
