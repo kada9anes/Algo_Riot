@@ -115,7 +115,7 @@ void generateRandomPassword(int length , char pass[]){
         pass[0] = '\0';
         return;
     }
-    srand(time(NULL));
+    
     const char uppercase[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const char lowercase[] = "abcdefghijklmnopqrstuvwxyz";
     const char digits[]    = "0123456789";
@@ -280,13 +280,14 @@ bool checkLoginFormat(char name[]){
             
       }
 bool checkEmailFormat(char name[]){
+      if(name[0] == '\0' || name[0] == '@') return false;
       return (oneAt(name)&& LocalPart(name)&& DomainPart(name));
 }
 
       
 
 
-void generateHexKey(int length , char key[]){ //need to seed random
+void generateHexKey(int length , char key[]){ 
       if(length <= 0){
             key[0] = '\0';
             return;
@@ -298,6 +299,10 @@ void generateHexKey(int length , char key[]){ //need to seed random
       key[length] = '\0';
 }
 void top3Passwords(struct User users[], int n){ // work 100% if more than 3 users hav same score will print only The first three users 
+      if(!n){
+            printf("No users available.\n");
+            return ;
+      }
       int top [3]={-1,-1,-1};
       int j= 0 ;
       int k = 7 ;
@@ -320,7 +325,7 @@ void top3Passwords(struct User users[], int n){ // work 100% if more than 3 user
         else
             printf("Top %d strong password: N/A\n", i+1);
     }
-}
+}//better way is to sort but this is ok for now
 int globalSecurityLevel(struct User users[] , int n ){
       float avr = averageScore(users,n);
       if (avr>= 6){
