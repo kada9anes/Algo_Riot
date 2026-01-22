@@ -7,23 +7,43 @@
 #include <math.h>
 #include <string.h>
 #include <stdbool.h>
-void initUsers(struct User users[], int *n){
-      do
-      {
-            printf("Ener the number of user that you wont to start : ");
-            scanf("%d",n);
-      } while (*n <= 0);
-      
-      for(int i = 0 ; i < *n ; i++){
-            printf("Enter user %d name : ",i+1);scanf("%19s",users[i].name );
-            printf("Enter user %d password : ",i+1);scanf("%19s",users[i].password);
-            do {
-                  printf("enter user %d role [0] user , [1] admin :",i+1);scanf("%i",&users[i].role);
-            }while(users[i].role != 1 && users[i].role != 0);
-            do{
-                  printf("Enter user %d state [0] active [1] blocked :",i+1);scanf("%i",&users[i].state);
-            }while(users[i].state != 1 && users[i].state != 0);
-      }
+void initUsers(struct User users[], int *n) {
+    while (1) {
+        printf("Enter number of users (max 100): ");
+        if (scanf("%d", n) != 1) {
+            printf("Invalid input. Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+        if (*n > 0 && *n <= 100) {
+            break;
+        }
+        printf("Invalid number. Must be between 1 and 100.\n");
+    }
+    
+    for (int i = 0; i < *n; i++) {
+        printf("Enter user %d name: ", i+1);
+        scanf("%19s", users[i].name);
+        
+        printf("Enter user %d password: ", i+1);
+        scanf("%19s", users[i].password);
+        
+        do {
+            printf("Enter user %d role [0] user, [1] admin: ", i+1);
+            if (scanf("%d", &users[i].role) != 1) {
+                while (getchar() != '\n');
+                users[i].role = -1;
+            }
+        } while (users[i].role != 0 && users[i].role != 1);
+        
+        do {
+            printf("Enter user %d state [0] active, [1] blocked: ", i+1);
+            if (scanf("%d", &users[i].state) != 1) {
+                while (getchar() != '\n');
+                users[i].state = -1;
+            }
+        } while (users[i].state != 0 && users[i].state != 1);
+    }
 }
 void displayUsers(struct User users[], int n){
       for (int i = 0 ; i < n  ; i++ ){
@@ -46,19 +66,32 @@ void displayUsers(struct User users[], int n){
       }
 
 }
-void addUser(struct User users[], int *n){
-      int i = *n;
-      (*n)++ ;
-      printf("Enter user %d name : ",i+1);scanf("%19s",users[i].name );
-      printf("Enter user %d password : ",i+1);scanf("%19s",users[i].password);
-      do{
-      printf("enter user %d role [0] user , [1] admin :",i+1);scanf("%i",&users[i].role);
-      }while(users[i].role != 1 && users[i].role != 0);
-      do{
-      printf("Enter user %d state [0] active [1] blocked :",i+1);scanf("%i",&users[i].state);
-      }while(users[i].state != 1 && users[i].state != 0);
-
-
+void addUser(struct User users[], int *n) {
+    if (*n >= 100) {
+        printf("Error: Cannot add more users. Maximum limit reached.\n");
+        return;
+    }
+    int i = *n;
+    printf("Enter user %d name: ", i+1);
+    scanf("%19s", users[i].name);
+    printf("Enter user %d password: ", i+1);
+    scanf("%19s", users[i].password);
+    do {
+        printf("Enter user %d role [0] user, [1] admin: ", i+1);
+        if (scanf("%d", &users[i].role) != 1) {
+            while (getchar() != '\n');
+            users[i].role = -1;
+        }
+      } while (users[i].role != 0 && users[i].role != 1);
+    do {
+        printf("Enter user %d state [0] active, [1] blocked: ", i+1);
+        if (scanf("%d", &users[i].state) != 1) {
+            while (getchar() != '\n');
+            users[i].state = -1;
+        }
+      } while (users[i].state != 0 && users[i].state != 1);
+    (*n)++;
+    printf("User added successfully.\n");
 }
 int searchUser(struct User users[], int n, char name[]){
       for (int i = 0 ; i< n ; i++){
@@ -128,31 +161,29 @@ bool strongPassword(char str[]){
       }
       return true ;
 }
-void ChangePassword(struct User users[] , int n , char name[]){
-      int idx = searchUser(users , n , name);
-      if(idx != -1){
-            char newpass[128];
-            int len = 0 ;
-            printf("what is the new password : ");
-            if(fgets(newpass , sizeof(newpass), stdin) != NULL){
-                   len = strlen(newpass);
-                  if(len > 0 && newpass[len -1] == '\n'){
-                        newpass[len -1] = '\0';
-                  }
-            }
-            if (len <= 1) {
-                  printf("Password cannot be empty\n");
-                  return;
-            }
-            if (!strongPassword(newpass)) {
-                  printf("Weak password\n");
-                   return;
-          }
-            strcpy(users[idx].password , newpass);
-            printf("password changed successfully \n");
-      }else{
-            printf("User not found \n");
-      }
+void ChangePassword(struct User users[], int n, char name[]) {
+    int idx = searchUser(users, n, name);
+    if (idx == -1) {
+        printf("User not found\n");
+        return;
+    }
+    char newpass[128];
+    printf("What is the new password: ");
+    if (fgets(newpass, sizeof(newpass), stdin) == NULL) {
+        printf("Error reading password\n");
+        return;
+    }
+    newpass[strcspn(newpass, "\n")] = '\0';
+    if (strlen(newpass) == 0) {
+        printf("Password cannot be empty\n");
+        return;
+    }
+    if (!strongPassword(newpass)) {
+        printf("Weak password\n");
+        return;
+    }
+    strcpy(users[idx].password, newpass);
+    printf("Password changed successfully\n");
 }
 bool checkLogin(struct User users[], int n, char name[], char pass[]){
       for (int i = 0 ; i<n ; i++){
