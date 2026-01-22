@@ -973,7 +973,7 @@ void mathSecToolMenu() {
                 } else if (n > 20) {
                     printWarning("Number too large! May cause overflow.");
                 } else {
-                    printf(GREEN "\n%d! = " RESET BOLD "%d\n" RESET, n, factorial(n));
+                    printf(GREEN "\n%d! = " RESET BOLD "%lld\n" RESET, n, factorial(n));
                 }
                 break;
                 
