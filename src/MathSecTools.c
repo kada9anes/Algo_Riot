@@ -8,11 +8,11 @@
 #include <string.h>
 #include <stdbool.h>
 
-int isEven(int n){
+bool isEven(int n){
     if ( n % 2  == 0 ){// detction of eveness
-        return 1;
+        return true;
     }else {
-        return -1 ; // note that this return int not bool
+        return false ; // note that this return int not bool
     }
 }
 int countDigits(int n){
@@ -30,25 +30,26 @@ int countDigits(int n){
     return count ;
 }
 
-int isPrime(int n){
+bool isPrime(int n){
     int i; 
     if (n <= 1 ){
-        return -1 ; // not prime 
+        return false ; // not prime 
     }
     if (n == 2 ){
-        return 1 ; // prime 
+        return true ; // prime 
     }
     if(n % 2 ==0 ){
-        return -1 ; // not prime 
+        return false ; // not prime 
     }
     for (i = 3 ; i*i <= n ; i += 2 ){ // check from 3 to sqrt(n) 
         if ( n % i == 0 ){
-            return -1 ; // not prime 
+            return false ; // not prime 
         }
     }
-    return 1 ; // prime
+    return true ; // prime
     
 }
+
 int gcd(int a, int b){
     int r ;  // get gcd using euclide algorithm
     while ( b != 0){ 
@@ -58,9 +59,11 @@ int gcd(int a, int b){
     }
     return a ;
 }
-int lcm(int a, int b){ 
-    return a*b / gcd(a,b);
+
+long long lcm(int a, int b){ 
+    return (long long)a*b / gcd(a,b);
 }
+
 long long  globalmodExp(long long  base , long long exponent, long long  mod){ //handles big numbers but in project sheet say int 
     long long  result = 1 ; 
     base = base % mod;
@@ -87,8 +90,8 @@ int modExp(int base , int exponent, int mod){ //handles small numbers
     }
     return result;
 }
-int factorial(int n){
-    int fact = 1 ;
+long long factorial(int n){
+    long long fact = 1 ;
     if (n < 0){
         return -1; //not defined for negative 
     }
@@ -121,15 +124,15 @@ int reverseNumber(int n){
     }
     return sign * reverse ;
 }
-int isPalindromeNumber(int n){
+bool isPalindromeNumber(int n){
     if( n < 0 ){
-        return -1 ; // negative numbers are not palindrome
+        return false ; // negative numbers are not palindrome
     }
     int reverse = reverseNumber(n);
     if (reverse == n){
-        return 1 ; // is palindrome
+        return true ; // is palindrome
     }else {
-        return -1 ; // not palindrome
+        return false ; // not palindrome
 }
 }
 int sumDivisors(int n){
@@ -145,20 +148,22 @@ int sumDivisors(int n){
     }
     return sum ;
 }
-int isPerfectNumber(int n ){
+
+bool isPerfectNumber(int n ){
     if ( n <= 0 ){
-        return -1 ; // not defined for non positive numbers
+        return false ; // not defined for non positive numbers
     }
     int sum = sumDivisors(n) - n ; // sumDivisors includes the number itself
     if ( sum == n ){
-        return 1 ; // is perfect number
+        return true ; // is perfect number
     }else {
-        return -1 ; // not perfect number
+        return false ; // not perfect number
     }
 }
-int isArmstrong(int n){
+
+bool isArmstrong(int n){
     if ( n < 0 ){
-        return -1 ; // not defined 
+        return false ; // not defined 
     }
     int numDigits = countDigits(n);
     int sum = 0 ;
@@ -170,14 +175,13 @@ int isArmstrong(int n){
         n = n / 10 ;
     }
     if ( sum == save ){
-        return 1 ; // is armstrong
+        return true ; // is armstrong
     }else {
-        return -1 ; // not armstrong
+        return false ; // not armstrong
     }    
 
 }
 int randomNumber(int min, int max){ //note : include <stdlib.h> and <time.h> in header
-    srand(time(0)); // this is the seed for rand function
     return (rand() % (max - min + 1)) + min ;
 
 }
@@ -246,24 +250,25 @@ void addMatrices(struct Matrix A, struct Matrix B, struct Matrix *C){
         }
     }
 }
-void multiplyMatrices(struct Matrix A, struct Matrix B,struct Matrix *C){
-    if (A.p == B.n){
-        C->n = A.n ;
-        C->p = B.p ; 
-        for (int i = 0 ; i < C->n ; i++){
-            for(int j = 0 ; j < B.p; j ++){
-                C->data [i][j] = 0 ;
-                for(int k = 0 ;k < A.n ; k ++){
-                    C->data[i][j] = A.data[i][k]*B.data[k][j] + C->data[i][j];
-                 }
-            } 
+void multiplyMatrices(struct Matrix A, struct Matrix B, struct Matrix *C) {
+    if (A.p != B.n) {
+        printf("Error: Matrix multiplication impossible (A columns ≠ B rows)\n");
+        return;
+    }
+    
+    C->n = A.n;  
+    C->p = B.p;  
+    
+    for (int i = 0; i < C->n; i++) {
+        for (int j = 0; j < C->p; j++) {
+            C->data[i][j] = 0;
+            for (int k = 0; k < A.p; k++) {
+                C->data[i][j] += A.data[i][k] * B.data[k][j];
+            }
         }
     }
-    else
-    {
-        printf("multiplication is impossible :( ");
-    }
 }
+
     
 
 void transposeMatrix(struct Matrix A, struct Matrix *T){
@@ -278,10 +283,10 @@ void transposeMatrix(struct Matrix A, struct Matrix *T){
 int determinant2x2(int A[2][2]){
     return A[0][0]*A[1][1]-A[0][1]*A[1][0];
 }
-int isSymmetric(struct Matrix M){
+bool isSymmetric(struct Matrix M){
     int cont = 0 ;
     if (M.n != M.p){
-        return -1 ;
+        return false;
     }
     else{
         for(int i = 0 ; i < M.n ; i ++){
@@ -294,16 +299,16 @@ int isSymmetric(struct Matrix M){
         }
     }
     if (cont == M.p*M.n){
-        return 1 ; 
+        return true ; 
     }
     else {
-        return -1 ;
+        return false ;
     }
 }
-int isIdentity(struct Matrix M){
+bool isIdentity(struct Matrix M){
     int cont = 0 ,cont0 = 0 ; 
     if (M.n != M.p){
-        return -1 ; 
+        return false ; 
     }
     else{
         for (int i = 0 ; i < M.n; i ++ ){
@@ -320,10 +325,10 @@ int isIdentity(struct Matrix M){
         }
     }
     if (cont == M.n && cont0 == M.n*(M.n-1)){
-        return 1 ;
+        return true ;
     }
     else{
-        return -1 ;
+        return false ;
     }
 }
 // chof ida jatek fikra jdida fkach algo ectbha w5ali l9dima ok ?

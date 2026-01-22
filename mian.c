@@ -935,8 +935,8 @@ void mathSecToolMenu() {
                 scanf("%d", &b);
                 getchar();
                 
-                int l = lcm(a, b);
-                printf(GREEN "\nLCM(%d, %d) = " RESET BOLD "%d\n" RESET, a, b, l);
+                long long l = lcm(a, b);
+                printf(GREEN "\nLCM(%d, %d) = " RESET BOLD "%lld\n" RESET, a, b, l);
                 break;
                 
             case 4:
