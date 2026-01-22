@@ -186,7 +186,7 @@ void sortLogsByUser(struct Log logs[], int n){ //Selection Sort
 int detectSuspiciousActivity(struct Log logs[], int n, char user[]){
     int count = 0 ;
     for(int i =0 ; i < n ; i++){
-        if(strcmp(logs[i].user, user) == 0 && logs[i].code == 1){ // i dont know if we should consider error as suspicious
+        if(strcmp(logs[i].user, user) == 0 && logs[i].code == 1){ // i dont know if we should consider error as suspicious \\ no 
             count++;
         }
     }

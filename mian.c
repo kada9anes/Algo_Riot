@@ -284,15 +284,15 @@ void auditAnalysisMenu() {
                 
                 int score = passwordScore(pass);
                 printf("\n" BOLD "Security Score: ");
-                if (score >= 80) printf(GREEN "%d/100 - EXCELLENT\n" RESET, score);
-                else if (score >= 60) printf(YELLOW "%d/100 - GOOD\n" RESET, score);
-                else if (score >= 40) printf(YELLOW "%d/100 - FAIR\n" RESET, score);
-                else printf(RED "%d/100 - POOR\n" RESET, score);
+                if (score == 7) printf(GREEN "%d/7 - EXCELLENT\n" RESET, score);
+                else if (score >= 5 && score < 7) printf(YELLOW "%d/7 - GOOD\n" RESET, score);
+                else if (score >= 3 && score < 5) printf(YELLOW "%d/7 - FAIR\n" RESET, score);
+                else printf(RED "%d/7 - POOR\n" RESET, score);
                 
                 printf("\n[");
-                for (int i = 0; i < 50; i++) {
-                    if (i < score/2) printf(GREEN "█" RESET);
-                    else printf("░");
+                for (int i = 0; i < 7; i++) {
+                    if (i < score) printf(GREEN "██████" RESET);
+                    else printf("░░░░░░");
                 }
                 printf("]\n");
                 break;
@@ -306,7 +306,7 @@ void auditAnalysisMenu() {
                 generateRandomPassword(length, pass);
                 printSuccess("Password generated!");
                 printf("\n" BOLD CYAN "Generated Password: " RESET BOLD "%s\n" RESET, pass);
-                printf(GREEN "Score: %d/100\n" RESET, passwordScore(pass));
+                printf(GREEN "Score: %d/7\n" RESET, passwordScore(pass));
                 break;
                 
             case 5:
@@ -337,9 +337,9 @@ void auditAnalysisMenu() {
                 printHeader("AVERAGE PASSWORD SCORE");
                 float avg = averageScore(users, userCount);
                 printf("\n" BOLD "Average Security Score: ");
-                if (avg >= 70) printf(GREEN "%.1f/100 - GOOD\n" RESET, avg);
+                if (avg >= 70) printf(GREEN "%.1f/7 - GOOD\n" RESET, avg);
                 else if (avg >= 50) printf(YELLOW "%.1f/100 - NEEDS IMPROVEMENT\n" RESET, avg);
-                else printf(RED "%.1f/100 - CRITICAL\n" RESET, avg);
+                else printf(RED "%.1f/7 - CRITICAL\n" RESET, avg);
                 break;
                 
             case 8:
@@ -351,9 +351,9 @@ void auditAnalysisMenu() {
                 printHeader("GLOBAL SECURITY LEVEL");
                 int level = globalSecurityLevel(users, userCount);
                 printf("\n" BOLD "Security Level: ");
-                if (level >= 80) printf(GREEN "%d/100 - EXCELLENT 🔒\n" RESET, level);
-                else if (level >= 60) printf(YELLOW "%d/100 - MODERATE ⚠\n" RESET, level);
-                else printf(RED "%d/100 - CRITICAL RISK ⚠⚠⚠\n" RESET, level);
+                if (level == 3) printf(GREEN "%d/3 - EXCELLENT 🔒\n" RESET, level);
+                else if (level == 2) printf(YELLOW "%d/3 - MODERATE ⚠\n" RESET, level);
+                else printf(RED "%d/3 - CRITICAL RISK ⚠⚠⚠\n" RESET, level);
                 break;
                 
             case 10:
@@ -379,11 +379,18 @@ void auditAnalysisMenu() {
                 printf(YELLOW "Enter email: " RESET);
                 fgets(text, 100, stdin);
                 text[strcspn(text, "\n")] = 0;
+                int emailcheck = checkEmailFormat(text);
                 
-                if (checkEmailFormat(text)) {
-                    printSuccess("Valid email format!");
-                } else {
-                    printError("Invalid email format!");
+                if (emailcheck== -1) {
+                    printError("ERORR : include more than 1 '@' !?");
+                } if (emailcheck== -2) {
+                    printError("Local part ERORR : bad format !?");
+                }
+                if (emailcheck== -3){
+                    printError("Domain part ERORR : bad format !?");
+                }
+                if (emailcheck== -1){
+                    printSuccess("Valid email Format !!");
                 }
                 break;
                 
@@ -1659,18 +1666,22 @@ int main() {
     }
     
     char username[20], passwd[20];
-    int logincheck;
-    do {
+    int logincheck , formatcheck;
+    do{
         printf(GREEN"USERNAME : "RESET);scanf("%19s",username);
+        formatcheck = checkLoginFormat(username);
+        if(formatcheck== -1) printError("empty user name ERROR");
+        if  (formatcheck == -2 || formatcheck == -3 ) printError("bad format ERROR ");
         printf(GREEN"\nPASSWORD : "RESET);scanf("%19s",passwd);
         logincheck = checkLogin(users,userCount,username,passwd) ;
-        if(logincheck==-1){
+        if (logincheck==-1){
             printError("not found 404 ");
         }
-        if(logincheck==-2){
+        if (logincheck==-2){
             printError("blocked user ");
         }
-    }while (logincheck!=1);
+        if(formatcheck == -2 || formatcheck == -3 ) printError("bad format");
+    }while (logincheck!=1 && formatcheck == 1);
     addLog(logs, &logCount,username,"Login",0);
     
     

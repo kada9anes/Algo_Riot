@@ -212,55 +212,57 @@ void showSecurityTips(){
 }
 
 
-bool checkLoginFormat(char name[]){
-      if (name[0] == '\0') return false;
-      if(!(isAlphabetic(name[0]))) return false;
+int checkLoginFormat(char name[]){
+      if (name[0] == '\0') return -1;// empty
+      if(!(isAlphabetic(name[0]))) return -2; // start with number
       for (int i = 0 ; name[i] != '\0' ; i++){
             char c = name[i];
             if(!(isAlphabetic(c) || isdigit(c) || c =='_')){
-                  return false;
+                  return -3;// include s_char
             }
       }
-      return true ;
+      return 1 ;
 }
 // this function needed for eamil checking :
-      bool oneAt(char name[]){
+      int oneAt(char name[]){
             int conter = 0;
             for (int i = 0; name[i] != '\0'; i++){
                   if (name[i] == '@')
                         conter++;
             }
-            return conter == 1 ;
+            if (conter = 1) return 1;
+            else return -1 ;
+            
       }
-      bool LocalPart(char name[]){
+      int LocalPart(char name[]){
             if (name[0] == '.' || name[0] == '@')
-                  return false;
+                  return -2;
 
             for (int i = 0; name[i] != '@'; i++){
                   if (name[i] == '\0')
-                        return false;
+                        return -2;
 
-                  if (!((name[i] >= 'a' && name[i] <= 'z') ||(name[i] >= 'A' && name[i] <= 'Z') ||name[i] == '.' || name[i] == '_')) return false;
+                  if (!((name[i] >= 'a' && name[i] <= 'z') ||(name[i] >= 'A' && name[i] <= 'Z') ||name[i] == '.' || name[i] == '_')) return -2;
 
                   if (name[i] == '.' && name[i+1] == '.')
-                        return false;
+                        return -2;
             }
-      return true;
+      return 1;
       }    
-      bool DomainPart (char name[]){
+      int DomainPart (char name[]){
             int idxAt = -1 ;
             int conterDots = 0;
             for (int i = 0; name[i] != '\0'; i++)
             {
                   if (name[i]== '@') idxAt = i ;
             }
-            if (idxAt == -1) return false;
-            if (name[idxAt+1]=='\0'||name[idxAt+1]=='.') return false ;
+            if (idxAt == -1) return -3;
+            if (name[idxAt+1]=='\0'||name[idxAt+1]=='.') return -3 ;
             for (int  j=idxAt+1 ; name[j] !='\0'; j++)
             {
                   if (!((name[j]>='a'&& name[j]<='z')||(name[j]>='A'&& name[j]<='Z')||name[j]== '.')||((name[j]=='.')&&(name[j+1]=='.')))
                   {
-                        return false ;
+                        return -3 ;
                   }
                   if (name[j]=='.')
                   {
@@ -271,17 +273,31 @@ bool checkLoginFormat(char name[]){
             }
             if (conterDots == 0 )
             {
-                  return false ;
+                  return -3 ;
             }
-            if (name[strlen(name)-1]== '.')return false ;
+            if (name[strlen(name)-1]== '.')return -3 ;
 
-            return true ;
+            return 1 ;
             
             
       }
-bool checkEmailFormat(char name[]){
-      if(name[0] == '\0' || name[0] == '@') return false;
-      return (oneAt(name)&& LocalPart(name)&& DomainPart(name));
+int checkEmailFormat(char name[]){
+      if (oneAt(name)== -1)
+      {
+            return -1 ;
+      }
+      if (LocalPart(name) == -2)
+      {
+            return -2;
+      }
+      if (DomainPart(name)== -3)
+      {
+            return -3 ;
+      }
+      
+      
+      
+      
 }
 
       
