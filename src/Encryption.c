@@ -9,9 +9,14 @@
 #include <stdbool.h>
 void inputMessage(struct Message *m){
       printf("Enter the message : ");
-      fgets(m->text , sizeof(m->text) , stdin);
+      if( !fgets( m->text , sizeof(m->text) , stdin) ){
+            printf("Error reading message.\n");
+            m->text[0] = '\0' ;
+            m->length =0 ;
+            return ;
+      }
       m->length = strlen(m->text);
-      if(m->text[m->length -1 ] == '\n'){
+      if(m->length > 0 && m->text[m->length -1 ] == '\n'){
             m->text[m->length -1 ] = '\0' ;
             m->length -- ;
       }
@@ -109,22 +114,33 @@ void decryptXOR(struct Message *m, int key){ // same as encrypt
       encryptXOR(m, key);
 }
 void encryptSubstitution(struct Message *m, char key[26]){
+      if( !isValidKey(key)){
+            printf("Invalid Key ! \n");
+            return ;
+      }
+      char copykey[26];
+      for(int i = 0 ; i < 26 ; i++){
+            copykey[i] = key[i];
+      }
       for(int j = 0 ; j < 26 ; j++){
-      if(key[j] >= 97 && key[j] <= 122){
-            key[j] = key[j] - 32 ;
+      if(key[j] >= 'a' && key[j] <= 'z'){
+            copykey[j] = key[j] - 32 ;
       }
       }
       for (int i = 0 ; i < m->length ; i++){
             if (isUppercase(m->text[i])){
-                  m->text[i]= key[ m->text[i]-'A'];
-            }
-            if (isLowercase(m->text[i])){
-                  m->text[i]= key[ m->text[i]-'a']+32;
+                  m->text[i]= copykey[ m->text[i]-'A'];
+            }else if (isLowercase(m->text[i])){
+                  m->text[i]= copykey[ m->text[i]-'a']+32;
             }
       }
 
 }
 void getreversekey(char key[26] , char reverse[26]){
+      if(isValidKey(key) == false){
+            printf("Invalid Key ! \n");
+            return ;
+      }
       for ( int i =0 ; i < 26 ; i++){
             reverse[key[i] - 'A'] = 'A' + i ;
       }
@@ -162,8 +178,7 @@ bool isValidKey(char key[27]) {
     return true;
 }
 bool compareMessages(struct Message *m1 , struct Message *m2){
-      if (!m1 || !m2 ) // check if its null
-    return false;
+      if (!m1 || !m2 ) return false;
 
      int i=0;
      while ( m1->text[i] !='\0' && m2->text[i] !='\0'){
@@ -199,8 +214,10 @@ void frequencyAnalysis(struct Message *m){
      }
 }
 float coincidenceIndex(struct Message m){
+      
       float r = 0.000000 ;
       int f ;
+      
       toUppercase(&m);
       for (int i = 0; i <=25; i++)
       {
@@ -208,7 +225,6 @@ float coincidenceIndex(struct Message m){
             r += f * (f - 1 ); 
       }
       if (m.length <= 1)return 0.0 ;
-      return r/((m.length)*(m.length-1)); // i think this is false note that you count the length with strlen so it wont include \0 so it was better to write m.length * m.length -1
-      // try to avoid use function of string.h if u able to write it and if u find any error in my work tell me the error and i will correct it 
+      return r/((m.length)*(m.length-1)); 
 }
 
