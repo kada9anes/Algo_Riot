@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#define MAX_LOGS 100
 // logmanagement : 
 struct Log{
     char user[20];

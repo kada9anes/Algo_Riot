@@ -829,7 +829,7 @@ void logManagementMenu() {
                 
             case 18:
                 printHeader("IMPORT FROM CSV");
-                importLogsCSV(logs, logCount);
+                importLogsCSV(logs, &logCount);
                 printSuccess("Logs imported from CSV!");
                 break;
                 
