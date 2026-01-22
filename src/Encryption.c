@@ -34,7 +34,7 @@ bool isUppercase(char c){
       }
 }
 // for you
-bool isLowercase(char c ){ // not tested
+bool isLowercase(char c ){ 
       if(c >= 'a' && c <= 'z'){
             return true ;
       }else{

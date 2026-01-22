@@ -7,7 +7,6 @@
 #include "library/Encryption.h"
 #include "library/LogManagement.h"
 #include "library/MathSecTool.h"
-// ANSI Color Codes
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
 #define YELLOW  "\033[33m"
@@ -20,7 +19,6 @@
 #define BG_RED  "\033[41m"
 #define BG_GREEN "\033[42m"
 
-// Global Data
 struct User users[100];
 int userCount = 0;
 struct Log logs[500];
@@ -30,36 +28,29 @@ char currentUser[20] = "admin";
 void clearScreen() {
     system("clear");
 }
-
 void pressEnter() {
     printf(YELLOW "\n[Press ENTER to continue...]" RESET);
     getchar();
     getchar();
 }
-
 void printHeader(const char *title) {
     printf(BOLD CYAN "\n╔══════════════════════════════════════════════════════════════╗\n" RESET);
     printf(BOLD CYAN "║  %-58s  ║\n" RESET, title);
     printf(BOLD CYAN "╚══════════════════════════════════════════════════════════════╝\n" RESET);
 }
-
 void printSuccess(const char *msg) {
     printf(GREEN "✓ %s\n" RESET, msg);
 }
-
 void printError(const char *msg) {
     printf(RED "✗ %s\n" RESET, msg);
 }
-
 void printWarning(const char *msg) {
     printf(YELLOW "⚠ %s\n" RESET, msg);
 }
-
 void printInfo(const char *msg) {
     printf(CYAN "ℹ %s\n" RESET, msg);
 }
 
-// ======================== USER MANAGEMENT MENU ========================
 void userManagementMenu() {
     int choice;
     char name[20], pass[20];
@@ -205,8 +196,6 @@ void userManagementMenu() {
         pressEnter();
     }
 }
-
-// ======================== AUDIT & ANALYSIS MENU ========================
 void auditAnalysisMenu() {
     int choice;
     char text[100], pass[100], key[100];
@@ -258,8 +247,7 @@ void auditAnalysisMenu() {
                 printHeader("PASSWORD STRENGTH TEST");
                 printf(YELLOW "Enter password: " RESET);
                 fgets(pass, 100, stdin);
-                pass[strcspn(pass, "\n")] = 0;
-                
+                pass[strcspn(pass, "\n")] = 0;               
                 if (veryStrongPassword(pass)) {
                     printSuccess("VERY STRONG PASSWORD! 🔒");
                 } else if (strongPassword(pass)) {
@@ -409,8 +397,6 @@ void auditAnalysisMenu() {
         pressEnter();
     }
 }
-
-// ======================== ENCRYPTION MENU ========================
 void encryptionMenu() {
     int choice, key;
     char keyStr[27], reverse[27];
@@ -527,7 +513,6 @@ void encryptionMenu() {
                 printf(YELLOW "Enter substitution key: " RESET);
                 fgets(keyStr, 27, stdin);
                 keyStr[strcspn(keyStr, "\n")] = 0;
-                
                 getreversekey(keyStr, reverse);
                 printf(GREEN "\nReverse Key: " RESET BOLD "%s\n" RESET, reverse);
                 break;
@@ -642,7 +627,6 @@ void encryptionMenu() {
     }
 }
 
-// ======================== LOG MANAGEMENT MENU ========================
 void logManagementMenu() {
     int choice, nb;
     char user[20], date[40];
@@ -856,8 +840,6 @@ void logManagementMenu() {
         pressEnter();
     }
 }
-
-// ======================== MATH SECURITY TOOLS MENU ========================
 void mathSecToolMenu() {
     int choice, n, a, b;
     int arr[100];
@@ -1326,8 +1308,6 @@ void mathSecToolMenu() {
         pressEnter();
     }
 }
-
-// ======================== INTEGRATED WORKFLOW MENU ========================
 void integratedWorkflowMenu() {
     int choice;
 
@@ -1517,12 +1497,8 @@ void integratedWorkflowMenu() {
         pressEnter();
     }
 }
-
-// ======================== MAIN MENU ========================
 void mainMenu() {
     int choice;
-    
-    // Initialize logs with system start
     addLog(logs, &logCount, "system", "SecureC Toolkit started", 0);
     
     while (1) {
@@ -1623,9 +1599,7 @@ void mainMenu() {
     }
 }
 
-// ======================== MAIN FUNCTION ========================
 int main() {
-    // Initialize random seed
     srand(time(NULL));
     
     // Welcome screen
@@ -1646,12 +1620,7 @@ int main() {
         fflush(stdout);
     }
     printf("\n\n");
-    
-    // Initialize system
-    //initUsers(users, &userCount);
     printf("Welcome to Login's page\n\n"); // then we need to add way to chose if user need to login or emport users from file ;
-    
-    // Try to load existing data
     printf(CYAN "        Loading user database...\n" RESET);
     LoadUsers(users, &userCount);
     
@@ -1664,7 +1633,6 @@ int main() {
         userCount = 1;
         saveUsers(users, userCount);
     }
-    
     char username[20], passwd[20];
     int logincheck , formatcheck;
     do{
@@ -1685,13 +1653,8 @@ int main() {
     addLog(logs, &logCount,username,"Login",0);
     
     
-
-
-    
     printf(GREEN "        ✓ System ready!\n" RESET);
     usleep(1000000);
-    
-    // Run main menu
     mainMenu();
     
     return 0;

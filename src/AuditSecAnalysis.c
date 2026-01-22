@@ -103,7 +103,7 @@ void generatekey(int length , char pass[]){
 }
 bool isHexKey(char key[]){
       for (int i = 0 ; key[i] != 0 ; i++){
-            if (!isxdigit(key[i])){ // we can use if (key[i] >=0 && ...|| key[i]>='A'&& ... || ...)
+            if (!isxdigit(key[i])){ 
                   return false ;
             }
       }
@@ -213,17 +213,17 @@ void showSecurityTips(){
 
 
 int checkLoginFormat(char name[]){
-      if (name[0] == '\0') return -1;// empty
-      if(!(isAlphabetic(name[0]))) return -2; // start with number
+      if (name[0] == '\0') return -1;
+      if(!(isAlphabetic(name[0]))) return -2; 
       for (int i = 0 ; name[i] != '\0' ; i++){
             char c = name[i];
             if(!(isAlphabetic(c) || isdigit(c) || c =='_')){
-                  return -3;// include s_char
+                  return -3;
             }
       }
       return 1 ;
 }
-// this function needed for eamil checking :
+// this function needed for eamil checking 
       int oneAt(char name[]){
             int conter = 0;
             for (int i = 0; name[i] != '\0'; i++){
@@ -341,7 +341,7 @@ void top3Passwords(struct User users[], int n){ // work 100% if more than 3 user
         else
             printf("Top %d strong password: N/A\n", i+1);
     }
-}//better way is to sort but this is ok for now
+}//better way is to sort
 int globalSecurityLevel(struct User users[] , int n ){
       float avr = averageScore(users,n);
       if (avr>= 6){

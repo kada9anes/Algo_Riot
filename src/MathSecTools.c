@@ -9,15 +9,15 @@
 #include <stdbool.h>
 
 bool isEven(int n){
-    if ( n % 2  == 0 ){// detction of eveness
+    if ( n % 2  == 0 ){
         return true;
     }else {
-        return false ; // note that this return int not bool
+        return false ; 
     }
 }
 int countDigits(int n){
     if ( n == 0 ){
-        return 1 ; // zero has one digit
+        return 1 ; 
     }
     if ( n < 0 ){
         n = -n ; 
@@ -33,25 +33,25 @@ int countDigits(int n){
 bool isPrime(int n){
     int i; 
     if (n <= 1 ){
-        return false ; // not prime 
+        return false ;  
     }
     if (n == 2 ){
-        return true ; // prime 
+        return true ; 
     }
     if(n % 2 ==0 ){
-        return false ; // not prime 
+        return false ;  
     }
-    for (i = 3 ; i*i <= n ; i += 2 ){ // check from 3 to sqrt(n) 
+    for (i = 3 ; i*i <= n ; i += 2 ){  
         if ( n % i == 0 ){
-            return false ; // not prime 
+            return false ;  
         }
     }
-    return true ; // prime
+    return true ; 
     
 }
 
 int gcd(int a, int b){
-    int r ;  // get gcd using euclide algorithm
+    int r ;  
     while ( b != 0){ 
         r = a % b ;
         a = b ;
@@ -64,7 +64,7 @@ long long lcm(int a, int b){
     return (long long)a*b / gcd(a,b);
 }
 
-long long  globalmodExp(long long  base , long long exponent, long long  mod){ //handles big numbers but in project sheet say int 
+long long  globalmodExp(long long  base , long long exponent, long long  mod){
     long long  result = 1 ; 
     base = base % mod;
     while (exponent > 0){
@@ -93,7 +93,7 @@ int modExp(int base , int exponent, int mod){ //handles small numbers
 long long factorial(int n){
     long long fact = 1 ;
     if (n < 0){
-        return -1; //not defined for negative 
+        return -1; 
     }
     if (n == 0){
         return 1 ; 
@@ -116,7 +116,7 @@ int reverseNumber(int n){
     int sign = 1 ;
     if(n < 0){
         sign = -1;
-        n = -n ; // make it positive for reversal
+        n = -n ; 
     }
     while ( n != 0 ){
         reverse = reverse * 10 + n % 10 ;
@@ -126,19 +126,19 @@ int reverseNumber(int n){
 }
 bool isPalindromeNumber(int n){
     if( n < 0 ){
-        return false ; // negative numbers are not palindrome
+        return false ; 
     }
     int reverse = reverseNumber(n);
     if (reverse == n){
-        return true ; // is palindrome
+        return true ; 
     }else {
-        return false ; // not palindrome
+        return false ; 
 }
 }
 int sumDivisors(int n){
     int sum = 0 ;
     if( n <= 0 ){
-        return -1 ; // not defined for non positive numbers
+        return -1 ; 
     }
     for ( int i =1 ; i <= n/2 ; i++){
         if (n % i == 0 ){
@@ -151,19 +151,19 @@ int sumDivisors(int n){
 
 bool isPerfectNumber(int n ){
     if ( n <= 0 ){
-        return false ; // not defined for non positive numbers
+        return false ; 
     }
-    int sum = sumDivisors(n) - n ; // sumDivisors includes the number itself
+    int sum = sumDivisors(n) - n ; 
     if ( sum == n ){
-        return true ; // is perfect number
+        return true ; 
     }else {
-        return false ; // not perfect number
+        return false ;
     }
 }
 
 bool isArmstrong(int n){
     if ( n < 0 ){
-        return false ; // not defined 
+        return false ; 
     }
     int numDigits = countDigits(n);
     int sum = 0 ;
@@ -175,13 +175,13 @@ bool isArmstrong(int n){
         n = n / 10 ;
     }
     if ( sum == save ){
-        return true ; // is armstrong
+        return true ; 
     }else {
-        return false ; // not armstrong
+        return false ; 
     }    
 
 }
-int randomNumber(int min, int max){ //note : include <stdlib.h> and <time.h> in header
+int randomNumber(int min, int max){ 
     return (rand() % (max - min + 1)) + min ;
 
 }
@@ -214,7 +214,7 @@ int minArray(int T[], int n){
     }
     return min ;
 }
-void sortAscending(int T[], int n){ //sort using selection sort algorithm
+void sortAscending(int T[], int n){ 
     for(int i = 0; i < n-1; i++){
         int minIndex = i;
         for(int j = i+1; j < n; j++){

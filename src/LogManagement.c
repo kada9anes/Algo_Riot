@@ -301,7 +301,7 @@ void archiveLogs(struct Log logs[], int n){
     }
     fclose(f);
 }
-void showTopErrors(struct Log logs[], int n) // this is chatgpt code for testing
+void showTopErrors(struct Log logs[], int n) 
 {
     const int TOP_K = 5;
     if (logs == NULL || n <= 0) {
@@ -317,9 +317,9 @@ void showTopErrors(struct Log logs[], int n) // this is chatgpt code for testing
         used[i] = 0;
     }
 
-    /* Count identical ERROR actions */
+    
     for (int i = 0; i < n; i++) {
-        if (logs[i].code != 2)   // not an error
+        if (logs[i].code != 2)   
             continue;
 
         if (used[i])
@@ -329,9 +329,7 @@ void showTopErrors(struct Log logs[], int n) // this is chatgpt code for testing
         used[i] = 1;
 
         for (int j = i + 1; j < n; j++) {
-            if (!used[j] &&
-                logs[j].code == 2 &&
-                strcmp(logs[i].action, logs[j].action) == 0)
+            if (!used[j] && logs[j].code == 2 && strcmp(logs[i].action, logs[j].action) == 0)
             {
                 count[i]++;
                 used[j] = 1;
@@ -360,10 +358,6 @@ void showTopErrors(struct Log logs[], int n) // this is chatgpt code for testing
                maxCount,
                logs[maxIdx].action);
 
-        count[maxIdx] = 0;  // prevent re-selection
+        count[maxIdx] = 0; 
     }
 }
-/*void showTopErrors(struct Log logs[], int n){
-// I don't know what this function does
-}
-*/
