@@ -78,8 +78,9 @@ void addLog(struct Log logs[], int *n, char user[], char action[], int code){
     (*n)++;
 }
 void displayLogs(struct Log logs[], int n){
+    printf("============================== logs info ===========================\n");
     for (int i = 0 ; i < n ; i++ ){
-        printf("============================== logs info ===========================\n");
+        printf("log %d : \n", i+1);
         printf("Log %d user: %s\n", i+1, logs[i].user);
         printf("Log %d action: %s\n", i+1, logs[i].action);
         printf("Log %d date: %s\n", i+1, logs[i].date);

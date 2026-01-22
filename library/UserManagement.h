@@ -20,7 +20,7 @@ void addUser(struct User users[], int *n);
 void deleteUser(struct User users[], int *n,  char name[]);
 int searchUser(struct User users[], int n, char name[]);
 void ChangePassword(struct User users[] , int n , char name[]);
-bool checkLogin(struct User users[], int n, char name[], char pass[]);
+int checkLogin(struct User users[], int n, char name[], char pass[]);
 bool strongPassword(char str[]);
 void blockUser(struct User users[], int n, char name[]);
 void changeRole(struct User users[], int n, char name[],int role);

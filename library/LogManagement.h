@@ -31,7 +31,7 @@ int detectSuspiciousActivity(struct Log logs[], int n, char user[]);
 int dailyConnections(struct Log logs[], int n, char date[]);
 float errorRate(struct Log logs[], int n);
 void exportLogsCSV(struct Log logs[], int n);
-void importLogsCSV(struct Log logs[], int n);
+void importLogsCSV(struct Log logs[], int *n);
 void clearLogs(struct Log logs[], int n);
 void recentLogs(struct Log logs[], int n, int nb);
 void archiveLogs(struct Log logs[], int n);

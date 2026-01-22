@@ -1643,11 +1643,6 @@ int main() {
     // Initialize system
     //initUsers(users, &userCount);
     printf("Welcome to Login's page\n\n"); // then we need to add way to chose if user need to login or emport users from file ;
-    initUsers(users,&userCount);
-    //initLogs(logs, &logCount);here must rejester the 1st log of user 
-    for (int l = 0 ; l <userCount ; l++){
-        addLog(logs,&logCount,users[l].name,"login",0);
-    }
     
     // Try to load existing data
     printf(CYAN "        Loading user database...\n" RESET);
@@ -1661,6 +1656,23 @@ int main() {
         users[0].state = 0;
         userCount = 1;
     }
+    char username[20], passwd[20]; int stat ;
+    int logincheck;
+    do {
+        printf(GREEN"USERNAME : "RESET);scanf("%19s",username);
+        printf(GREEN"\nPASSWORD : "RESET);scanf("%19s",passwd);
+        logincheck = checkLogin(users,userCount,username,passwd) ;
+        if(logincheck==-1){
+            printError("not found 404 ");
+        }
+        if(logincheck==-2){
+            printError("blocked user ");
+        }
+    }while (logincheck!=1);
+    
+    
+
+
     
     printf(GREEN "        ✓ System ready!\n" RESET);
     usleep(1000000);

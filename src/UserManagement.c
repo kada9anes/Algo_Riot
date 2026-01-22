@@ -185,13 +185,15 @@ void ChangePassword(struct User users[], int n, char name[]) {
     strcpy(users[idx].password, newpass);
     printf("Password changed successfully\n");
 }
-bool checkLogin(struct User users[], int n, char name[], char pass[]){
+int checkLogin(struct User users[], int n, char name[], char pass[]){
       for (int i = 0 ; i<n ; i++){
-            if (strcmp(users[i].name,name) == 0 && strcmp(users[i].password,pass) == 0 && users[i].state == 0){
-                  return true ;
+            if (strcmp(users[i].name,name) == 0 && strcmp(users[i].password,pass) == 0){
+                  if (users[i].state == 0) return 1;
+                  else return -2;
             }
+            
       }
-      return false ;
+      return -1 ;
 }
 void blockUser(struct User users[], int n, char name[]){
       int idx = searchUser(users , n , name) ;
