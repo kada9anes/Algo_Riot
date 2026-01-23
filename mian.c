@@ -18,13 +18,20 @@
 #define RESET   "\033[0m"
 #define BG_RED  "\033[41m"
 #define BG_GREEN "\033[42m"
+#define MAX_USERS 100
+#define MAX_LOGS 500
+#define MAX_USERNAME_LENGTH 20
+#define MAX_PASSWORD_LENGTH 20
+#define MAX_ACTION_LENGTH 50
+#define MAX_LOGIN_ATTEMPTS 3
+#define MIN_PASSWORD_LENGTH 8
 
-struct User users[100];
+struct User users[MAX_USERS];
 int userCount = 0;
-struct Log logs[500];
+struct Log logs[MAX_LOGS];
 int logCount = 0;
-char currentUser[20] = "admin";
-
+char currentUser[MAX_ACTION_LENGTH] = "admin";
+int loginAttempts = 0;
 void clearScreen() {
     system("clear");
 }
@@ -50,10 +57,47 @@ void printWarning(const char *msg) {
 void printInfo(const char *msg) {
     printf(CYAN "ℹ %s\n" RESET, msg);
 }
-
+void clearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+int confirmAction(const char* action) {
+    char response;
+    printf(RED "\n⚠ WARNING: " RESET "This will %s\n", action);
+    printf(YELLOW "Are you absolutely sure? (y/n): " RESET);
+    scanf("%c", &response);
+    clearInputBuffer();
+    
+    return (response == 'y' || response == 'Y');
+}
+int safeIntInput(int min, int max) {
+    int value;
+    int result;
+    
+    while (1) {
+        result = scanf("%d", &value);
+        
+        if (result != 1) {
+            printError("Invalid input! Please enter a number.");
+            clearInputBuffer();
+            printf(YELLOW "▶ Try again: " RESET);
+            continue;
+        }
+        
+        clearInputBuffer();
+        
+        if (value < min || value > max) {
+            printError("Number out of range!");
+            printf(YELLOW "▶ Enter a value between %d and %d: " RESET, min, max);
+            continue;
+        }
+        
+        return value; 
+    }
+}
 void userManagementMenu() {
     int choice;
-    char name[20], pass[20];
+    char name[MAX_USERNAME_LENGTH], pass[MAX_PASSWORD_LENGTH];
     int role;
 
     while (1) {
@@ -76,8 +120,7 @@ void userManagementMenu() {
         printf(BOLD "└─────────────────────────────\n" RESET);
         
         printf(YELLOW "\n▶ Select option: " RESET);
-        scanf("%d", &choice);
-        getchar();
+        choice = safeIntInput(0, 11);
         
         clearScreen();
         
@@ -97,7 +140,7 @@ void userManagementMenu() {
             case 3:
                 printHeader("DELETE USER");
                 printf(YELLOW "Enter username to delete: " RESET);
-                fgets(name, 20, stdin);
+                fgets(name, MAX_USERNAME_LENGTH, stdin);
                 name[strcspn(name, "\n")] = 0;
                 deleteUser(users, &userCount, name);
                 addLog(logs, &logCount, currentUser, "Deleted user", 1);
@@ -106,7 +149,7 @@ void userManagementMenu() {
             case 4:
                 printHeader("SEARCH USER");
                 printf(YELLOW "Enter username to search: " RESET);
-                fgets(name, 20, stdin);
+                fgets(name, MAX_USERNAME_LENGTH, stdin);
                 name[strcspn(name, "\n")] = 0;
                 int idx = searchUser(users, userCount, name);
                 if (idx != -1) {
@@ -122,7 +165,7 @@ void userManagementMenu() {
             case 5:
                 printHeader("CHANGE PASSWORD");
                 printf(YELLOW "Enter username: " RESET);
-                fgets(name, 20, stdin);
+                fgets(name, MAX_USERNAME_LENGTH, stdin);
                 name[strcspn(name, "\n")] = 0;
                 ChangePassword(users, userCount, name);
                 addLog(logs, &logCount, name, "Changed password", 0);
@@ -131,10 +174,10 @@ void userManagementMenu() {
             case 6:
                 printHeader("LOGIN VERIFICATION TEST");
                 printf(YELLOW "Username: " RESET);
-                fgets(name, 20, stdin);
+                fgets(name, MAX_USERNAME_LENGTH, stdin);
                 name[strcspn(name, "\n")] = 0;
                 printf(YELLOW "Password: " RESET);
-                fgets(pass, 20, stdin);
+                fgets(pass, MAX_PASSWORD_LENGTH, stdin);
                 pass[strcspn(pass, "\n")] = 0;
                 
                 if (checkLogin(users, userCount, name, pass)) {
@@ -149,7 +192,7 @@ void userManagementMenu() {
             case 7:
                 printHeader("BLOCK/UNBLOCK USER");
                 printf(YELLOW "Enter username: " RESET);
-                fgets(name, 20, stdin);
+                fgets(name, MAX_USERNAME_LENGTH, stdin);
                 name[strcspn(name, "\n")] = 0;
                 blockUser(users, userCount, name);
                 addLog(logs, &logCount, currentUser, "Modified user status", 1);
@@ -158,7 +201,7 @@ void userManagementMenu() {
             case 8:
                 printHeader("CHANGE USER ROLE");
                 printf(YELLOW "Enter username: " RESET);
-                fgets(name, 20, stdin);
+                fgets(name, MAX_USERNAME_LENGTH, stdin);
                 name[strcspn(name, "\n")] = 0;
                 printf(YELLOW "New role (0=User, 1=Admin): " RESET);
                 scanf("%d", &role);
@@ -225,8 +268,7 @@ void auditAnalysisMenu() {
         printf(BOLD "└─────────────────────────────\n" RESET);
         
         printf(YELLOW "\n▶ Select option: " RESET);
-        scanf("%d", &choice);
-        getchar();
+        choice = safeIntInput(0, 13);
         
         clearScreen();
         
@@ -434,8 +476,7 @@ void encryptionMenu() {
         printf(BOLD "└─────────────────────────────\n" RESET);
         
         printf(YELLOW "\n▶ Select option: " RESET);
-        scanf("%d", &choice);
-        getchar();
+        choice = safeIntInput(0, 18);
         
         clearScreen();
         
@@ -629,7 +670,7 @@ void encryptionMenu() {
 
 void logManagementMenu() {
     int choice, nb;
-    char user[20], date[40];
+    char user[MAX_USERNAME_LENGTH], date[40];
 
     while (1) {
         clearScreen();
@@ -664,8 +705,7 @@ void logManagementMenu() {
         printf(BOLD "└─────────────────────────────\n" RESET);
         
         printf(YELLOW "\n▶ Select option: " RESET);
-        scanf("%d", &choice);
-        getchar();
+        choice = safeIntInput(0, 19);
         
         clearScreen();
         
@@ -677,13 +717,13 @@ void logManagementMenu() {
                 
             case 2:
                 printHeader("ADD LOG ENTRY");
-                char action[50];
+                char action[MAX_ACTION_LENGTH];
                 int code;
                 printf(YELLOW "Username: " RESET);
-                fgets(user, 20, stdin);
+                fgets(user, MAX_USERNAME_LENGTH, stdin);
                 user[strcspn(user, "\n")] = 0;
                 printf(YELLOW "Action: " RESET);
-                fgets(action, 50, stdin);
+                fgets(action, MAX_ACTION_LENGTH, stdin);
                 action[strcspn(action, "\n")] = 0;
                 printf(YELLOW "Code (0=Info, 1=Warning, 2=Error): " RESET);
                 scanf("%d", &code);
@@ -720,7 +760,7 @@ void logManagementMenu() {
             case 5:
                 printHeader("SEARCH BY USER");
                 printf(YELLOW "Enter username: " RESET);
-                fgets(user, 20, stdin);
+                fgets(user, MAX_USERNAME_LENGTH, stdin);
                 user[strcspn(user, "\n")] = 0;
                 searchLogsByUser(logs, logCount, user);
                 break;
@@ -778,7 +818,7 @@ void logManagementMenu() {
             case 13:
                 printHeader("SUSPICIOUS ACTIVITY DETECTION");
                 printf(YELLOW "Enter username to analyze: " RESET);
-                fgets(user, 20, stdin);
+                fgets(user, MAX_USERNAME_LENGTH, stdin);
                 user[strcspn(user, "\n")] = 0;
                 int suspicious = detectSuspiciousActivity(logs, logCount, user);
                 
@@ -884,8 +924,8 @@ void mathSecToolMenu() {
         printf(BOLD "└─────────────────────────────\n" RESET);
         
         printf(YELLOW "\n▶ Select option: " RESET);
-        scanf("%d", &choice);
-        getchar();
+            choice = safeIntInput(0, 26);
+            
         
         clearScreen();
         
@@ -1334,8 +1374,7 @@ void integratedWorkflowMenu() {
         printf("\n" BOLD "0. " RED "← Back\n" RESET);
         
         printf(YELLOW "\n▶ Select workflow: " RESET);
-        scanf("%d", &choice);
-        getchar();
+        choice = safeIntInput(0, 5);
         
         clearScreen();
         
@@ -1349,7 +1388,7 @@ void integratedWorkflowMenu() {
                 
                 // Step 2: Validate password
                 printInfo("\nStep 2/4: Password Strength Analysis");
-                char pass[20];
+                char pass[MAX_PASSWORD_LENGTH];
                 strcpy(pass, users[userCount - 1].password);
                 int score = passwordScore(pass);
                 printf(CYAN "Password Score: " RESET "%d/100\n", score);
@@ -1456,11 +1495,11 @@ void integratedWorkflowMenu() {
             
             case 5: {
                 printHeader("SECURITY INCIDENT RESPONSE");
-                
-                char username[20];
+
+                char username[MAX_USERNAME_LENGTH];
                 printInfo("Step 1/5: Enter suspected username");
                 printf(YELLOW "Username: " RESET);
-                fgets(username, 20, stdin);
+                fgets(username, MAX_USERNAME_LENGTH, stdin);
                 username[strcspn(username, "\n")] = 0;
                 
                 printInfo("\nStep 2/5: Detecting suspicious activity...");
@@ -1496,6 +1535,325 @@ void integratedWorkflowMenu() {
         
         pressEnter();
     }
+}
+void helpMenu() {
+    int choice;
+    
+    while (1) {
+        clearScreen();
+        printHeader("HELP & DOCUMENTATION");
+        
+        printf("\n" BOLD "┌─ Help Topics\n" RESET);
+        printf("│  1. " CYAN "Getting Started Guide\n" RESET);
+        printf("│  2. " GREEN "User Management Help\n" RESET);
+        printf("│  3. " YELLOW "Encryption Guide\n" RESET);
+        printf("│  4. " MAGENTA "Security Audit Help\n" RESET);
+        printf("│  5. " BLUE "Log Management Help\n" RESET);
+        printf("│  6. " CYAN "Mathematical Tools Guide\n" RESET);
+        printf("│  7. " RED "Troubleshooting\n" RESET);
+        printf("│  8. " GREEN "Security Best Practices\n" RESET);
+        printf("│  0. " RED "← Back\n" RESET);
+        printf(BOLD "└─────────────────────────────\n" RESET);
+        
+        printf(YELLOW "\n▶ Select topic: " RESET);
+        choice = safeIntInput(0, 8);
+        
+        clearScreen();
+        
+        switch (choice) {
+            case 1:
+                printHeader("GETTING STARTED GUIDE");
+                printf("\n" BOLD CYAN "Welcome to SecureC Toolkit!\n\n" RESET);
+                printf("This toolkit provides comprehensive security utilities for:\n");
+                printf("  • User authentication and management\n");
+                printf("  • Message encryption and cryptanalysis\n");
+                printf("  • Security auditing and password analysis\n");
+                printf("  • System logging and monitoring\n");
+                printf("  • Mathematical security operations\n\n");
+                
+                printf(BOLD "Quick Start:\n" RESET);
+                printf("1. Use " GREEN "User Management" RESET " to create and manage accounts\n");
+                printf("2. Test encryption with " MAGENTA "Encryption Module" RESET "\n");
+                printf("3. Monitor activities in " CYAN "Log Management" RESET "\n");
+                printf("4. Run security audits with " YELLOW "Audit & Analysis" RESET "\n\n");
+                
+                printf(YELLOW "TIP: " RESET "Start by exploring each module individually!\n");
+                break;
+                
+            case 2:
+                printHeader("USER MANAGEMENT HELP");
+                printf("\n" BOLD "User Management Functions:\n\n" RESET);
+                
+                printf(GREEN "Adding Users:\n" RESET);
+                printf("  • Enter unique username (3-20 characters)\n");
+                printf("  • Password must be strong (8+ chars, mixed case, numbers, symbols)\n");
+                printf("  • Choose role: 0=User, 1=Admin\n\n");
+                
+                printf(YELLOW "Password Requirements:\n" RESET);
+                printf("  ✓ Minimum 8 characters\n");
+                printf("  ✓ At least one uppercase letter\n");
+                printf("  ✓ At least one lowercase letter\n");
+                printf("  ✓ At least one digit\n");
+                printf("  ✓ At least one special character (!@#$%%^&*)\n\n");
+                
+                printf(RED "Blocking Users:\n" RESET);
+                printf("  • Blocks prevent login attempts\n");
+                printf("  • Use for suspicious accounts\n");
+                printf("  • Can be reversed with unblock\n\n");
+                
+                printf(CYAN "File Operations:\n" RESET);
+                printf("  • Save: Writes all users to 'users.txt'\n");
+                printf("  • Load: Imports users from file\n");
+                printf("  • Always save before exiting!\n");
+                break;
+                
+            case 3:
+                printHeader("ENCRYPTION GUIDE");
+                printf("\n" BOLD "Encryption Methods:\n\n" RESET);
+                
+                printf(YELLOW "Caesar Cipher:\n" RESET);
+                printf("  • Simple shift cipher (ROT-n)\n");
+                printf("  • Key: 1-25 (shift amount)\n");
+                printf("  • Example: A→D with key=3\n");
+                printf("  • Weak, for educational purposes\n\n");
+                
+                printf(MAGENTA "Substitution Cipher:\n" RESET);
+                printf("  • Each letter maps to another\n");
+                printf("  • Key: 26 unique letters (QWERTYUIOPASDFGHJKLZXCVBNM)\n");
+                printf("  • Stronger than Caesar\n");
+                printf("  • Vulnerable to frequency analysis\n\n");
+                
+                printf(GREEN "XOR Cipher:\n" RESET);
+                printf("  • Bitwise XOR operation\n");
+                printf("  • Key: Any integer\n");
+                printf("  • Same key encrypts and decrypts\n");
+                printf("  • Fast but simple\n\n");
+                
+                printf(RED "Cryptanalysis Tools:\n" RESET);
+                printf("  • Frequency Analysis: Shows letter distribution\n");
+                printf("  • Coincidence Index: Identifies cipher type\n");
+                printf("  • Use to break weak encryptions\n");
+                break;
+                
+            case 4:
+                printHeader("SECURITY AUDIT HELP");
+                printf("\n" BOLD "Password Analysis:\n\n" RESET);
+                
+                printf(CYAN "Password Scoring:\n" RESET);
+                printf("  • 0-2: CRITICAL - Change immediately\n");
+                printf("  • 3-4: WEAK - Needs improvement\n");
+                printf("  • 5-6: GOOD - Acceptable\n");
+                printf("  • 7: EXCELLENT - Strong security\n\n");
+                
+                printf(GREEN "Security Report:\n" RESET);
+                printf("  • Shows average user security score\n");
+                printf("  • Identifies weak passwords\n");
+                printf("  • Recommends improvements\n\n");
+                
+                printf(YELLOW "Key Generation:\n" RESET);
+                printf("  • Random Password: Creates strong passwords\n");
+                printf("  • Hex Key: Cryptographic key generation\n");
+                printf("  • Use for secure communications\n\n");
+                
+                printf(MAGENTA "Validation:\n" RESET);
+                printf("  • Email Format: Checks valid email syntax\n");
+                printf("  • Login Format: Validates usernames\n");
+                printf("  • Prevents injection attacks\n");
+                break;
+                
+            case 5:
+                printHeader("LOG MANAGEMENT HELP");
+                printf("\n" BOLD "Log System:\n\n" RESET);
+                
+                printf(CYAN "Log Types:\n" RESET);
+                printf("  • Code 0 (INFO): Normal operations\n");
+                printf("  • Code 1 (WARNING): Suspicious activity\n");
+                printf("  • Code 2 (ERROR): Critical events\n\n");
+                
+                printf(GREEN "Search Functions:\n" RESET);
+                printf("  • By User: Find all actions by username\n");
+                printf("  • By Date: Filter logs by specific date\n");
+                printf("  • Use for incident investigation\n\n");
+                
+                printf(RED "Security Monitoring:\n" RESET);
+                printf("  • Suspicious Activity: Detects failed login patterns\n");
+                printf("  • Error Rate: Shows system health\n");
+                printf("  • Daily Connections: Tracks usage patterns\n\n");
+                
+                printf(YELLOW "Data Management:\n" RESET);
+                printf("  • Export CSV: Backup logs to file\n");
+                printf("  • Import CSV: Restore from backup\n");
+                printf("  • Archive: Long-term storage\n");
+                break;
+                
+            case 6:
+                printHeader("MATHEMATICAL TOOLS GUIDE");
+                printf("\n" BOLD "Number Theory Functions:\n\n" RESET);
+                
+                printf(GREEN "Prime Operations:\n" RESET);
+                printf("  • Essential for RSA encryption\n");
+                printf("  • Use for key generation\n");
+                printf("  • Check primality before use\n\n");
+                
+                printf(CYAN "Modular Arithmetic:\n" RESET);
+                printf("  • GCD: Used in RSA algorithm\n");
+                printf("  • Modular Exp: Fast exponentiation\n");
+                printf("  • Critical for cryptography\n\n");
+                
+                printf(YELLOW "Matrix Operations:\n" RESET);
+                printf("  • Used in advanced ciphers\n");
+                printf("  • Hill cipher implementation\n");
+                printf("  • Linear algebra for crypto\n\n");
+                
+                printf(MAGENTA "Array Tools:\n" RESET);
+                printf("  • Statistical analysis\n");
+                printf("  • Data processing\n");
+                printf("  • Support functions\n");
+                break;
+                
+            case 7:
+                printHeader("TROUBLESHOOTING");
+                printf("\n" BOLD RED "Common Issues & Solutions:\n\n" RESET);
+                
+                printf(YELLOW "Problem: " RESET "\"User not found\"\n");
+                printf(GREEN "Solution: " RESET "Check spelling, load users from file first\n\n");
+                
+                printf(YELLOW "Problem: " RESET "\"Invalid password\"\n");
+                printf(GREEN "Solution: " RESET "Must meet all strength requirements\n\n");
+                
+                printf(YELLOW "Problem: " RESET "\"File not found\"\n");
+                printf(GREEN "Solution: " RESET "Run 'Save Users' at least once to create file\n\n");
+                
+                printf(YELLOW "Problem: " RESET "\"Login blocked\"\n");
+                printf(GREEN "Solution: " RESET "User account is blocked, contact admin\n\n");
+                
+                printf(YELLOW "Problem: " RESET "\"Invalid key\"\n");
+                printf(GREEN "Solution: " RESET "Substitution key must be 26 unique letters\n\n");
+                
+                printf(YELLOW "Problem: " RESET "\"Data not saving\"\n");
+                printf(GREEN "Solution: " RESET "Check file permissions, use Save option before exit\n\n");
+                
+                printf(CYAN "Still having issues?\n" RESET);
+                printf("Check that all library files (.h) are in the correct directory\n");
+                break;
+                
+            case 8:
+                printHeader("SECURITY BEST PRACTICES");
+                printf("\n" BOLD GREEN "Security Recommendations:\n\n" RESET);
+                
+                printf(YELLOW "Password Security:\n" RESET);
+                printf("  ✓ Use passwords 12+ characters\n");
+                printf("  ✓ Mix uppercase, lowercase, numbers, symbols\n");
+                printf("  ✓ Avoid dictionary words\n");
+                printf("  ✓ Never reuse passwords\n");
+                printf("  ✓ Change regularly (every 90 days)\n\n");
+                
+                printf(CYAN "User Management:\n" RESET);
+                printf("  ✓ Review user list regularly\n");
+                printf("  ✓ Remove inactive accounts\n");
+                printf("  ✓ Limit admin privileges\n");
+                printf("  ✓ Monitor login attempts\n\n");
+                
+                printf(MAGENTA "System Security:\n" RESET);
+                printf("  ✓ Review logs daily\n");
+                printf("  ✓ Export logs for backup\n");
+                printf("  ✓ Investigate suspicious activity\n");
+                printf("  ✓ Keep software updated\n\n");
+                
+                printf(RED "Encryption:\n" RESET);
+                printf("  ✓ Never use Caesar for real security\n");
+                printf("  ✓ Substitution is for learning only\n");
+                printf("  ✓ Use modern algorithms in production\n");
+                printf("  ✓ Protect encryption keys\n\n");
+                
+                printf(BOLD "Remember: Security is a process, not a product!\n" RESET);
+                break;
+                
+            case 0:
+                return;
+                
+            default:
+                printError("Invalid option!");
+        }
+        
+        pressEnter();
+    }
+}
+
+void aboutMenu() {
+    clearScreen();
+    printHeader("ABOUT SECUREC TOOLKIT");
+    
+    printf("\n" BOLD CYAN);
+    printf("███████╗███████╗ ██████╗██╗   ██╗██████╗ ███████╗ ██████╗\n");
+    printf("██╔════╝██╔════╝██╔════╝██║   ██║██╔══██╗██╔════╝██╔════╝\n");
+    printf("███████╗█████╗  ██║     ██║   ██║██████╔╝█████╗  ██║     \n");
+    printf("╚════██║██╔══╝  ██║     ██║   ██║██╔══██╗██╔══╝  ██║     \n");
+    printf("███████║███████╗╚██████╗╚██████╔╝██║  ██║███████╗╚██████╗\n");
+    printf("╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝\n");
+    printf(RESET "\n");
+    
+    printf(BOLD GREEN "                    Security Toolkit v2.0\n" RESET);
+    printf(CYAN "           ════════════════════════════════════════\n\n" RESET);
+    
+    printf(BOLD "Project Information:\n" RESET);
+    printf("  " CYAN "Name: " RESET "Security Utility Library Suite\n");
+    printf("  " CYAN "Course: " RESET "Algorithms and Static Data Structures\n");
+    printf("  " CYAN "Level: " RESET "1st Year Foundation Training\n");
+    printf("  " CYAN "Institution: " RESET "National School of Cybersecurity (NSCS)\n");
+    printf("  " CYAN "Academic Year: " RESET "2025/2026\n\n");
+    
+    printf(BOLD "Developed By:\n" RESET);
+    printf("  " GREEN "👨‍💻 [Student Name 1]\n" RESET);
+    printf("  " GREEN "👨‍💻 [Student Name 2]\n" RESET);
+    printf("  " YELLOW "Group: " RESET "[Your Group Number]\n\n");
+    
+    printf(BOLD "Module Overview:\n" RESET);
+    printf("  " MAGENTA "📦 5 Core Libraries\n" RESET);
+    printf("  " CYAN "⚡ 105+ Functions\n" RESET);
+    printf("  " GREEN "🔐 Multiple Encryption Algorithms\n" RESET);
+    printf("  " YELLOW "📊 Complete Security Analysis\n" RESET);
+    printf("  " RED "📝 Comprehensive Logging System\n" RESET);
+    printf("  " BLUE "🔢 Advanced Mathematical Tools\n" RESET "\n");
+    
+    printf(BOLD "Features:\n" RESET);
+    printf("  ✓ User authentication & management\n");
+    printf("  ✓ Classical cryptography (Caesar, Substitution, XOR)\n");
+    printf("  ✓ Password strength analysis & validation\n");
+    printf("  ✓ Security auditing & reporting\n");
+    printf("  ✓ Event logging & monitoring\n");
+    printf("  ✓ Number theory & cryptographic mathematics\n");
+    printf("  ✓ Matrix operations for advanced ciphers\n");
+    printf("  ✓ Integrated security workflows\n");
+    printf("  ✓ CSV import/export functionality\n");
+    printf("  ✓ Colored terminal interface\n\n");
+    
+    printf(BOLD "Technical Stack:\n" RESET);
+    printf("  " CYAN "Language: " RESET "C (ANSI C99)\n");
+    printf("  " CYAN "Libraries: " RESET "stdio.h, stdlib.h, string.h, time.h, unistd.h\n");
+    printf("  " CYAN "Architecture: " RESET "Modular library design\n");
+    printf("  " CYAN "Interface: " RESET "Terminal-based CLI with ANSI colors\n\n");
+    
+    printf(BOLD "Educational Purpose:\n" RESET);
+    printf("  This project demonstrates fundamental cybersecurity concepts\n");
+    printf("  including encryption algorithms, password security, and audit\n");
+    printf("  logging. It is designed for educational purposes to teach\n");
+    printf("  secure coding practices and cryptographic foundations.\n\n");
+    
+    printf(BOLD YELLOW "⚠ DISCLAIMER:\n" RESET);
+    printf("  The encryption methods implemented (Caesar, Substitution, XOR)\n");
+    printf("  are classical ciphers for EDUCATIONAL purposes only. They are\n");
+    printf("  NOT secure for real-world applications. For production systems,\n");
+    printf("  use modern cryptographic libraries (AES, RSA, etc.).\n\n");
+    
+    printf(BOLD "License:\n" RESET);
+    printf("  " CYAN "© 2025-2026 NSCS - Academic Project\n" RESET);
+    printf("  For educational use only. Not for commercial distribution.\n\n");
+    
+    printf(BOLD GREEN "Thank you for using SecureC Toolkit!\n" RESET);
+    printf(CYAN "For help, select option 6 from the main menu.\n\n" RESET);
+    
+    pressEnter();
 }
 void mainMenu() {
     int choice;
@@ -1539,13 +1897,16 @@ void mainMenu() {
         printf("│\n");
         printf("├─ System Info\n");
         printf("│  " CYAN "Users: " RESET "%d  " CYAN "Logs: " RESET "%d  " CYAN "Current User: " RESET BOLD "%s\n" RESET, 
-               userCount, logCount, currentUser);
+                                 userCount, logCount, currentUser);
+        printf("│\n");
+        printf("├─ Information\n");
+        printf("│  " BOLD "7. " GREEN "📖 Help & Documentation\n" RESET);
+        printf("│  " BOLD "8. " BLUE "ℹ️  About SecureC Toolkit\n" RESET);
         printf("│\n");
         printf("└─ " BOLD "0. " RED "Exit\n" RESET);
         
         printf(BOLD YELLOW "\n▶ Select module: " RESET);
-        scanf("%d", &choice);
-        getchar();
+        choice = safeIntInput(0, 8);
         
         switch (choice) {
             case 1:
@@ -1577,13 +1938,33 @@ void mainMenu() {
                 addLog(logs, &logCount, currentUser, "Accessed Integrated Workflows", 0);
                 integratedWorkflowMenu();
                 break;
-                
+            case 7:
+                helpMenu();
+                break;
+    
+            case 8:
+                aboutMenu();
+                break;    
             case 0:
                 clearScreen();
                 printHeader("SYSTEM SHUTDOWN");
+                
+                if (!confirmAction("exit and save all data")) {
+                    printInfo("Shutdown cancelled.");
+                    pressEnter();
+                    break;
+                }
+                
                 printf(CYAN "\nSaving system state...\n" RESET);
-                saveUsers(users, userCount);
+                
+                if (safeFileSave("users.txt", users, userCount)) {
+                    printSuccess("✓ Users saved");
+                } else {
+                    printError("✗ Failed to save users!");
+                }
+                
                 exportLogsCSV(logs, logCount);
+                printSuccess("✓ Logs exported");
                 
                 addLog(logs, &logCount, "system", "SecureC Toolkit shutdown", 0);
                 
@@ -1591,7 +1972,6 @@ void mainMenu() {
                 printf(YELLOW "\nThank you for using SecureC Toolkit!\n" RESET);
                 printf(CYAN "Stay secure! 🔒\n\n" RESET);
                 return;
-                
             default:
                 printError("Invalid option! Please select 0-6.");
                 pressEnter();
@@ -1622,8 +2002,8 @@ int main() {
     printf("\n\n");
     printf("Welcome to Login's page\n\n"); // then we need to add way to chose if user need to login or emport users from file ;
     printf(CYAN "        Loading user database...\n" RESET);
-    LoadUsers(users, &userCount);
-    
+     safeFileLoad("users.txt", users, &userCount);
+
     if (userCount == 0) {
         printf(YELLOW "        No existing data found. Creating default admin...\n" RESET);
         strcpy(users[0].name, "admin");
@@ -1631,26 +2011,76 @@ int main() {
         users[0].role = 1;
         users[0].state = 0;
         userCount = 1;
-        saveUsers(users, userCount);
+        
+        if (safeFileSave("users.txt", users, userCount)) {
+            printSuccess("✓ Default admin created");
+        } else {
+            printWarning("⚠ Could not save default admin to file");
+        }
     }
-    char username[20], passwd[20];
+    char username[MAX_USERNAME_LENGTH], passwd[MAX_PASSWORD_LENGTH];
     int logincheck , formatcheck;
-    do{
-        printf(GREEN"USERNAME : "RESET);scanf("%19s",username);
+    do {
+        printf(GREEN "USERNAME: " RESET);
+        scanf("%19s", username);
+        clearInputBuffer();
+        
         formatcheck = checkLoginFormat(username);
-        if(formatcheck== -1) printError("empty user name ERROR");
-        if  (formatcheck == -2 || formatcheck == -3 ) printError("bad format ERROR ");
-        printf(GREEN"\nPASSWORD : "RESET);scanf("%19s",passwd);
-        logincheck = checkLogin(users,userCount,username,passwd) ;
-        if (logincheck==-1){
-            printError("not found 404 ");
+        if (formatcheck == -1) {
+            printError("Empty username!");
+            continue;
         }
-        if (logincheck==-2){
-            printError("blocked user ");
+        if (formatcheck == -2 || formatcheck == -3) {
+            printError("Invalid username format!");
+            continue;
         }
-        if(formatcheck == -2 || formatcheck == -3 ) printError("bad format");
-    }while (logincheck!=1 && formatcheck == 1);
-    addLog(logs, &logCount,username,"Login",0);
+        
+        printf(GREEN "PASSWORD: " RESET);
+        scanf("%19s", passwd);
+        clearInputBuffer();
+        
+        logincheck = checkLogin(users, userCount, username, passwd);
+        
+        if (logincheck == -1) {
+            printError("User not found!");
+            loginAttempts++;
+        } else if (logincheck == -2) {
+            printError("Account is blocked!");
+            loginAttempts++;
+        } else if (logincheck != 1) {
+            printError("Invalid password!");
+            loginAttempts++;
+        }
+
+        if (loginAttempts >= MAX_LOGIN_ATTEMPTS && logincheck != 1) {
+            clearScreen();
+            printHeader("SECURITY LOCKOUT");
+            printf(RED "\n⚠️  TOO MANY FAILED LOGIN ATTEMPTS!\n" RESET);
+            printf(YELLOW "\nYou have exceeded the maximum number of login attempts.\n" RESET);
+            printf(YELLOW "The system has been locked for security reasons.\n" RESET);
+            printf(RED "\nAttempts made: %d/%d\n" RESET, loginAttempts, MAX_LOGIN_ATTEMPTS);
+            printf(CYAN "\nPlease contact your system administrator.\n" RESET);
+            printf(YELLOW "\nExiting in 5 seconds...\n" RESET);
+            
+            for (int i = 5; i > 0; i--) {
+                printf(RED "  %d...\n" RESET, i);
+                sleep(1);
+            }
+            
+            addLog(logs, &logCount, username, "ACCOUNT LOCKOUT - Too many failed attempts", 2);
+            exportLogsCSV(logs, logCount);
+            
+            exit(1);
+        }
+        
+        if (logincheck != 1) {
+            printf(YELLOW "\nAttempts remaining: %d/%d\n" RESET, 
+                   MAX_LOGIN_ATTEMPTS - loginAttempts, MAX_LOGIN_ATTEMPTS);
+        }
+    
+    } while (logincheck != 1);
+    loginAttempts = 0;
+    addLog(logs, &logCount, username, "Login", 0);
     
     
     printf(GREEN "        ✓ System ready!\n" RESET);
