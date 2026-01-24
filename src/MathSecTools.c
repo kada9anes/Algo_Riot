@@ -284,7 +284,6 @@ int determinant2x2(int A[2][2]){
     return A[0][0]*A[1][1]-A[0][1]*A[1][0];
 }
 bool isSymmetric(struct Matrix M){
-    int cont = 0 ;
     if (M.n != M.p){
         return false;
     }
@@ -292,43 +291,32 @@ bool isSymmetric(struct Matrix M){
         for(int i = 0 ; i < M.n ; i ++){
             for (int j = 0; j < M.p; j++)
             {
-                if(M.data[i][j] == M.data[j][i]){
-                    cont++ ;
+                if(M.data[i][j] != M.data[j][i]){
+                    return false ;
                 }
             }   
         }
     }
-    if (cont == M.p*M.n){
-        return true ; 
-    }
-    else {
-        return false ;
-    }
+    return true ;
 }
-bool isIdentity(struct Matrix M){
-    int cont = 0 ,cont0 = 0 ; 
+bool isIdentity(struct Matrix M){ 
     if (M.n != M.p){
         return false ; 
     }
     else{
         for (int i = 0 ; i < M.n; i ++ ){
-            if (M.data[i][i]==1){
-                cont ++;
+            if (M.data[i][i]!=1){
+                return false ;
             }
             for (int j = 0; j < M.n; j++)
             {
-                if (M.data [i][j] == 0){
-                    cont0 ++;
+                if (i != j && M.data [i][j] != 0){
+                    return false ;
                 }
             }
             
         }
     }
-    if (cont == M.n && cont0 == M.n*(M.n-1)){
-        return true ;
-    }
-    else{
-        return false ;
-    }
+    return true ;
 }
 // chof ida jatek fikra jdida fkach algo ectbha w5ali l9dima ok ?

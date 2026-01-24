@@ -77,10 +77,10 @@ void addUser(struct User users[], int *n) {
       scanf("%19s", users[i].name);
       if (checkLoginFormat(users[i].name) != 1)
       {
-            printf("\nbad format ERROR");
+            printf("\nbad format ERROR\n");
       }
       
-    }while(checkLoginFormat(users[i].name) != 1 && searchUser(users,*n, users[i].name)!= -1);
+    }while(checkLoginFormat(users[i].name) != 1 && searchUser(users,*n, users[i].name) != -1);
     printf("Enter user %d password: ", i+1);
     scanf("%19s", users[i].password);
     do {
