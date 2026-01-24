@@ -150,7 +150,7 @@ void displayLogStats(struct Log logs[], int n){
     printf("number of logs is : %i \n",n);
     printf("number of login events is : %i \n",countLoginLogs(logs , n));
     printf("number of blocked attempts is : %i\n",countBlockedLogs(logs,n));
-    printf("number of error entries : %i \n",countBlockedLogs(logs,n));
+    printf("number of error entries : %i \n",countErrorLogs(logs,n));
 
 }
 void sortLogsByDate(struct Log logs[], int n){ //Selection Sort
