@@ -99,32 +99,42 @@ void userManagementMenu() {
     int choice;
     char name[MAX_USERNAME_LENGTH], pass[MAX_PASSWORD_LENGTH];
     int role;
+    int idxcurentu = searchUser(users,userCount,currentUser);
 
-    while (1) {
-        clearScreen();
-        printHeader("USER MANAGEMENT MODULE");
+
+    if (users[idxcurentu].role == 0){
+        while(1){
+            printError("Permission denied \n");
+            pressEnter();
+            return;
+        }
+
+    }else{
+        while (1) {
+            clearScreen();
+            printHeader("USER MANAGEMENT MODULE");
         
-        printf("\n" BOLD "┌─ User Operations\n" RESET);
-        printf("│  1. " GREEN "Display All Users\n" RESET);
-        printf("│  2. " GREEN "Add New User\n" RESET);
-        printf("│  3. " YELLOW "Delete User\n" RESET);
-        printf("│  4. " CYAN "Search User\n" RESET);
-        printf("│  5. " YELLOW "Change Password\n" RESET);
-        printf("│  6. " CYAN "Login Test\n" RESET);
-        printf("│  7. " RED "Block User\n" RESET);
-        printf("│  8. " RED "Unblock User\n" RESET);
-        printf("│  9. " MAGENTA "Change User Role\n" RESET);
-        printf("│  10. " CYAN "List All Admins\n" RESET);
-        printf("│  11. " RED "Users Statistics\n" RESET);
-        printf("│  12. " BLUE "Save Users to File\n" RESET);
-        printf("│  13. " BLUE "Load Users from File\n" RESET);
-        printf("│  0. " RED "← Back to Main Menu\n" RESET);
-        printf(BOLD "└─────────────────────────────\n" RESET);
+            printf("\n" BOLD "┌─ User Operations\n" RESET);
+            printf("│  1. " GREEN "Display All Users\n" RESET);
+            printf("│  2. " GREEN "Add New User\n" RESET);
+            printf("│  3. " YELLOW "Delete User\n" RESET);
+            printf("│  4. " CYAN "Search User\n" RESET);
+            printf("│  5. " YELLOW "Change Password\n" RESET);
+            printf("│  6. " CYAN "Login Test\n" RESET);
+            printf("│  7. " RED "Block User\n" RESET);
+            printf("│  8. " RED "Unblock User\n" RESET);
+            printf("│  9. " MAGENTA "Change User Role\n" RESET);
+            printf("│  10. " CYAN "List All Admins\n" RESET);
+            printf("│  11. " RED "Users Statistics\n" RESET);
+            printf("│  12. " BLUE "Save Users to File\n" RESET);
+            printf("│  13. " BLUE "Load Users from File\n" RESET);
+            printf("│  0. " RED "← Back to Main Menu\n" RESET);
+            printf(BOLD "└─────────────────────────────\n" RESET);
         
-        printf(YELLOW "\n▶ Select option: " RESET);
-        choice = safeIntInput(0, 13);
+            printf(YELLOW "\n▶ Select option: " RESET);
+            choice = safeIntInput(0, 13);
         
-        clearScreen();
+            clearScreen();
         
         switch (choice) {
             case 1:
@@ -268,6 +278,10 @@ void userManagementMenu() {
         
         pressEnter();
     }
+
+}
+
+    
 }
 void auditAnalysisMenu() {
     int choice;
@@ -705,38 +719,48 @@ void encryptionMenu() {
 void logManagementMenu() {
     int choice, nb;
     char user[MAX_USERNAME_LENGTH], date[40];
+    int idxcurentu = searchUser(users,userCount,currentUser);
 
-    while (1) {
-        clearScreen();
-        printHeader("LOG MANAGEMENT & MONITORING MODULE");
+
+    if (users[idxcurentu].role == 0){
+        while(1){
+            printError("\n Permission denied \n");
+            pressEnter();
+            return;
+        }
+    }else
+    {
+        while (1) {
+            clearScreen();
+            printHeader("LOG MANAGEMENT & MONITORING MODULE");
         
-        printf("\n" BOLD "┌─ Log Operations\n" RESET);
-        printf("│  1. " GREEN "Display All Logs\n" RESET);
-        printf("│  2. " CYAN "Add Manual Log Entry\n" RESET);
-        printf("│  3. " YELLOW "Display Recent Logs\n" RESET);
-        printf("│  4. " RED "Clear All Logs\n" RESET);
-        printf("│\n" BOLD "├─ Search & Filter\n" RESET);
-        printf("│  5. " CYAN "Search Logs by User\n" RESET);
-        printf("│  6. " CYAN "Search Logs by Date\n" RESET);
-        printf("│\n" BOLD "├─ Statistics & Analysis\n" RESET);
-        printf("│  7. " MAGENTA "Display Log Statistics\n" RESET);
-        printf("│  8. " YELLOW "Count Login Attempts\n" RESET);
-        printf("│  9. " RED "Count Error Logs\n" RESET);
-        printf("│  10. " RED "Count Blocked Attempts\n" RESET);
-        printf("│  11. " YELLOW "Calculate Error Rate\n" RESET);
-        printf("│  12. " CYAN "Daily Connections Count\n" RESET);
-        printf("│\n" BOLD "├─ Security\n" RESET);
-        printf("│  13. " RED "Detect Suspicious Activity\n" RESET);
-        printf("│  14. " RED "Show Top Errors\n" RESET);
-        printf("│\n" BOLD "├─ Sorting\n" RESET);
-        printf("│  15. " BLUE "Sort by Date\n" RESET);
-        printf("│  16. " BLUE "Sort by User\n" RESET);
-        printf("│\n" BOLD "├─ Import/Export\n" RESET);
-        printf("│  17. " GREEN "Export to CSV\n" RESET);
-        printf("│  18. " GREEN "Import from CSV\n" RESET);
-        printf("│  19. " YELLOW "Archive Logs\n" RESET);
-        printf("│  0. " RED "← Back\n" RESET);
-        printf(BOLD "└─────────────────────────────\n" RESET);
+            printf("\n" BOLD "┌─ Log Operations\n" RESET);
+            printf("│  1. " GREEN "Display All Logs\n" RESET);
+            printf("│  2. " CYAN "Add Manual Log Entry\n" RESET);
+            printf("│  3. " YELLOW "Display Recent Logs\n" RESET);
+            printf("│  4. " RED "Clear All Logs\n" RESET);
+            printf("│\n" BOLD "├─ Search & Filter\n" RESET);
+            printf("│  5. " CYAN "Search Logs by User\n" RESET);
+            printf("│  6. " CYAN "Search Logs by Date\n" RESET);
+            printf("│\n" BOLD "├─ Statistics & Analysis\n" RESET);
+            printf("│  7. " MAGENTA "Display Log Statistics\n" RESET);
+            printf("│  8. " YELLOW "Count Login Attempts\n" RESET);
+            printf("│  9. " RED "Count Error Logs\n" RESET);
+            printf("│  10. " RED "Count Blocked Attempts\n" RESET);
+            printf("│  11. " YELLOW "Calculate Error Rate\n" RESET);
+            printf("│  12. " CYAN "Daily Connections Count\n" RESET);
+            printf("│\n" BOLD "├─ Security\n" RESET);
+            printf("│  13. " RED "Detect Suspicious Activity\n" RESET);
+            printf("│  14. " RED "Show Top Errors\n" RESET);
+            printf("│\n" BOLD "├─ Sorting\n" RESET);
+            printf("│  15. " BLUE "Sort by Date\n" RESET);
+            printf("│  16. " BLUE "Sort by User\n" RESET);
+            printf("│\n" BOLD "├─ Import/Export\n" RESET);
+            printf("│  17. " GREEN "Export to CSV\n" RESET);
+            printf("│  18. " GREEN "Import from CSV\n" RESET);
+            printf("│  19. " YELLOW "Archive Logs\n" RESET);
+            printf("│  0. " RED "← Back\n" RESET);
+            printf(BOLD "└─────────────────────────────\n" RESET);
         
         printf(YELLOW "\n▶ Select option: " RESET);
         choice = safeIntInput(0, 19);
@@ -805,7 +829,7 @@ void logManagementMenu() {
                 
             case 6:
                 printHeader("SEARCH BY DATE");
-                printf(YELLOW "Enter date (DD/MM/YYYY): " RESET);
+                printf(YELLOW "Enter date (YYYY-MM-DD): " RESET);
                 fgets(date, 40, stdin);
                 date[strcspn(date, "\n")] = 0;
                 searchLogsByDate(logs, logCount, date);
@@ -917,6 +941,11 @@ void logManagementMenu() {
         
         pressEnter();
     }
+    }
+    
+
+
+
 }
 void mathSecToolMenu() {
     int choice, n, a, b;
