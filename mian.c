@@ -412,7 +412,7 @@ void auditAnalysisMenu() {
                 printHeader("GLOBAL SECURITY LEVEL");
                 int level = globalSecurityLevel(users, userCount);
                 printf("\n" BOLD "Security Level: ");
-                if (level == 3) printf(GREEN "%d/3 - EXCELLENT \n" RESET, level);
+                if (level == 3) printf(GREEN "%d/3 - EXCELLENT 🔒\n" RESET, level);
                 else if (level == 2) printf(YELLOW "%d/3 - MODERATE ⚠\n" RESET, level);
                 else printf(RED "%d/3 - CRITICAL RISK ⚠⚠⚠\n" RESET, level);
                 break;
