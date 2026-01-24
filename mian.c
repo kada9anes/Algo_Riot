@@ -2082,7 +2082,7 @@ int main() {
             printError("Invalid username format!");
             continue;
         }
-        currentUser = username ;
+        strcpy(currentUser , username);
         
         printf(GREEN "PASSWORD: " RESET);
         scanf("%19s", passwd);
