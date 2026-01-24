@@ -2035,6 +2035,7 @@ void mainMenu() {
                 printf(CYAN "\nSaving system state...\n" RESET);
                 
                 if (userCount > 0) {
+                    saveUsers(users,&userCount)
                     printSuccess("✓ Users saved");
                 } else {
                     printError("✗ Failed to save users!");
@@ -2044,7 +2045,7 @@ void mainMenu() {
                 printSuccess("✓ Logs exported");
                 
                 addLog(logs, &logCount, "system", "SecureC Toolkit shutdown", 0);
-                
+
                 printf(GREEN "\n✓ All data saved successfully!\n" RESET);
                 printf(YELLOW "\nThank you for using SecureC Toolkit!\n" RESET);
                 printf(CYAN "Stay secure!  \n\n" RESET);
