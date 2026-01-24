@@ -861,16 +861,16 @@ void logManagementMenu() {
             case 11:
                 printHeader("ERROR RATE ANALYSIS");
                 float rate = errorRate(logs, logCount);
-                printf("\n" BOLD "Error Rate: ");
-                if (rate > 30) printf(RED "%.2f%% - CRITICAL\n" RESET, rate);
-                else if (rate > 15) printf(YELLOW "%.2f%% - HIGH\n" RESET, rate);
-                else if (rate > 5) printf(YELLOW "%.2f%% - MODERATE\n" RESET, rate);
+                printf("\n" BOLD "Error Rate: " RESET );
+                if (rate > 30.0f) printf(RED "%.2f%% - CRITICAL\n" RESET, rate);
+                else if (rate > 15.0f) printf(YELLOW "%.2f%% - HIGH\n" RESET, rate);
+                else if (rate > 5.0f) printf(YELLOW "%.2f%% - MODERATE\n" RESET, rate);
                 else printf(GREEN "%.2f%% - NORMAL\n" RESET, rate);
                 break;
                 
             case 12:
                 printHeader("DAILY CONNECTIONS");
-                printf(YELLOW "Enter date (DD/MM/YYYY): " RESET);
+                printf(YELLOW "Enter date (YYYY-MM-DD): " RESET);
                 fgets(date, 40, stdin);
                 date[strcspn(date, "\n")] = 0;
                 int connections = dailyConnections(logs, logCount, date);
@@ -1546,34 +1546,36 @@ void integratedWorkflowMenu() {
             
             case 4: {
                 printHeader("CRYPTOGRAPHIC KEY GENERATION");
-                
-                printInfo("Step 1/4: Finding prime numbers...");
-                int p = 0, q = 0;
-                for (int i = 100; i < 200; i++) {
-                    if (isPrime(i) && p == 0) p = i;
-                    else if (isPrime(i) && p != 0 && q == 0) {
-                        q = i;
-                        break;
-                    }
-                }
+
+                printInfo("Step 1/4: Generating random prime numbers...");
+                int p = randomPrime(10, 10000);
+                int q;
+                do {
+                    q = randomPrime(10, 10000);
+                } while (q == p);
                 printf(GREEN "Prime p = %d\n" RESET, p);
                 printf(GREEN "Prime q = %d\n" RESET, q);
                 
                 printInfo("\nStep 2/4: Calculating RSA modulus...");
                 int n = p * q;
-                printf(CYAN "n = p × q = %d\n" RESET, n);
+                printf(GREEN "n = p × q = %d\n" RESET, n);
                 
                 printInfo("\nStep 3/4: Calculating φ(n)...");
                 int phi = (p - 1) * (q - 1);
-                printf(CYAN "φ(n) = %d\n" RESET, phi);
+                printf(GREEN "φ(n) = %d\n" RESET, phi);
                 
                 printInfo("\nStep 4/4: Testing modular exponentiation...");
-                long long test = globalmodExp(5, 7, n);
-                printf(GREEN "5^7 mod %d = %lld\n" RESET, n, test);
+                int a = rand() % (n - 2) + 2;
+                int b = rand() % (n - 2) + 2;
+                printf(CYAN "Testing with base %d and exponent %d:\n" RESET, a, b);
+                long long test = globalmodExp(a, b, n);
+                printf(GREEN "%d^%d mod %d = %lld\n" RESET, a, b, n, test);
                 
                 addLog(logs, &logCount, currentUser, "Generated RSA parameters", 0);
                 printSuccess("\n✓ Cryptographic key generation complete!");
+                
                 break;
+
             }
             
             case 5: {

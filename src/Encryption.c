@@ -227,4 +227,11 @@ float coincidenceIndex(struct Message m){
       if (m.length <= 1)return 0.0 ;
       return r/((m.length)*(m.length-1)); 
 }
+int randomPrime(int min, int max) {
+    int number;
+    do {
+        number = min + rand() % (max - min + 1);
+    } while (!isPrime(number));
+    return number;
+}
 

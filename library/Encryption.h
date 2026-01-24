@@ -34,4 +34,5 @@ bool compareMessages(struct Message *m1 , struct Message *m2);
 int countCharacter(struct Message m, char c);
 void frequencyAnalysis(struct Message *m);
 float coincidenceIndex(struct Message m);
+int randomPrime(int min, int max);
 #endif 

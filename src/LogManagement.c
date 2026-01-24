@@ -186,7 +186,7 @@ void sortLogsByUser(struct Log logs[], int n){ //Selection Sort
 int detectSuspiciousActivity(struct Log logs[], int n, char user[]){
     int count = 0 ;
     for(int i =0 ; i < n ; i++){
-        if(strcmp(logs[i].user, user) == 0 && logs[i].code == 1){ // i dont know if we should consider error as suspicious \\ no 
+        if(strcmp(logs[i].user, user) == 0 && (logs[i].code == 1 || logs[i].code == 2)){ // i dont know if we should consider error as suspicious \\ no 
             count++;
         }
     }
@@ -195,7 +195,7 @@ int detectSuspiciousActivity(struct Log logs[], int n, char user[]){
 }
 int dailyConnections(struct Log logs[], int n, char date[]){
     int count = 0 ; 
-    for (int i = 0 ; i<n ;i++){
+    for (int i = 0 ; i < n ;i++){
         if (strcmp(logs[i].date ,date)==0){
             count++;
         }
@@ -205,12 +205,13 @@ int dailyConnections(struct Log logs[], int n, char date[]){
 }
 float errorRate(struct Log logs[], int n){
     int errorCount = 0 ;
+    if( logs == NULL || n <= 0) return 0.0f;
     for (int i = 0 ; i < n ; i++ ){
         if (logs[i].code == 2){
             errorCount++;
         }
     }
-    return (float)errorCount / n ;
+    return ((float)errorCount / n ) * 100.0f;
 }
 void exportLogsCSV(struct Log logs[], int n) {
     FILE *f = fopen("logs.csv", "w");
