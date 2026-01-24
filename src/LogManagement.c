@@ -353,10 +353,7 @@ void showTopErrors(struct Log logs[], int n)
         if (maxIdx == -1 || maxCount == 0)
             break;
 
-        printf("[%d] (%d times) Action: %s\n",
-               k + 1,
-               maxCount,
-               logs[maxIdx].action);
+        printf("[%d] (%d times) Action: %s\n",k + 1,maxCount,logs[maxIdx].action);
 
         count[maxIdx] = 0; 
     }
