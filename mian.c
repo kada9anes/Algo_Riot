@@ -2082,6 +2082,7 @@ int main() {
             printError("Invalid username format!");
             continue;
         }
+        currentUser = username ;
         
         printf(GREEN "PASSWORD: " RESET);
         scanf("%19s", passwd);
@@ -2115,7 +2116,7 @@ int main() {
                 sleep(1);
             }
             
-            addLog(logs, &logCount, username, "ACCOUNT LOCKOUT - Too many failed attempts", 2);
+            addLog(logs, &logCount, currentUser, "ACCOUNT LOCKOUT - Too many failed attempts", 2);
             exportLogsCSV(logs, logCount);
             
             exit(1);
@@ -2128,7 +2129,7 @@ int main() {
     
     } while (logincheck != 1);
     loginAttempts = 0;
-    addLog(logs, &logCount, username, "Login", 0);
+    addLog(logs, &logCount, currentUser, "Login", 0);
     
     
     printf(GREEN "        ✓ System ready!\n" RESET);
