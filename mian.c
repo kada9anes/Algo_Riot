@@ -1178,23 +1178,39 @@ void mathSecToolMenu() {
                 
             case 20:
                 printHeader("DISPLAY MATRIX");
+
                 printf(YELLOW "Enter rows: " RESET);
-                scanf("%d", &M1.n);
+                if (scanf("%d", &M1.n) != 1 || M1.n <= 0 || M1.n > 10) {
+                    printError("Invalid number of rows.");
+                    while (getchar() != '\n');
+                    break;
+                }
+                
                 printf(YELLOW "Enter columns: " RESET);
-                scanf("%d", &M1.p);
+                if (scanf("%d", &M1.p) != 1 || M1.p <= 0 || M1.p > 10) {
+                    printError("Invalid number of columns.");
+                    while (getchar() != '\n');
+                    break;
+                }
+                
                 printf(YELLOW "Enter matrix elements:\n" RESET);
                 for (int i = 0; i < M1.n; i++) {
                     for (int j = 0; j < M1.p; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &M1.data[i][j]);
+
+                        if (scanf("%d", &M1.data[i][j]) != 1) {
+                          printError("Invalid input! Please enter integers only.");
+                          while (getchar() != '\n');
+                          j--;
+                        }
                     }
-                }
-                getchar();
-                
+                }              
+
+                while (getchar() != '\n'); 
+
                 printf("\n");
                 displayMatrix(M1);
                 break;
-                
             case 21:
                 printHeader("MATRIX ADDITION");
                 printf(YELLOW "Enter rows: " RESET);
