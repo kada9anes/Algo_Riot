@@ -133,9 +133,14 @@ void userManagementMenu() {
                 
             case 2:
                 printHeader("ADD NEW USER");
+                if(userCount >= MAX_USERS){
+                    printError("Cannot add more users. Maximum limit reached!");
+                }else{
+                
                 addUser(users, &userCount);
                 addLog(logs, &logCount, currentUser, "Added new user", 0);
                 break;
+                }
                 
             case 3:
                 printHeader("DELETE USER");
@@ -217,6 +222,10 @@ void userManagementMenu() {
                 
             case 10:
                 printHeader("SAVE DATA");
+                if (userCount == 0) {
+                    printError("No users to save!");
+                    break;
+                }
                 saveUsers(users, userCount);
                 printSuccess("Users saved successfully!");
                 addLog(logs, &logCount, currentUser, "Saved user database", 0);
@@ -224,7 +233,12 @@ void userManagementMenu() {
                 
             case 11:
                 printHeader("LOAD DATA");
+                int oldCount = userCount;
                 LoadUsers(users, &userCount);
+                if(userCount == oldCount){
+                    printInfo("No new users loaded.");
+                    break;
+                }
                 printSuccess("Users loaded successfully!");
                 addLog(logs, &logCount, currentUser, "Loaded user database", 0);
                 break;
@@ -367,8 +381,8 @@ void auditAnalysisMenu() {
                 printHeader("AVERAGE PASSWORD SCORE");
                 float avg = averageScore(users, userCount);
                 printf("\n" BOLD "Average Security Score: ");
-                if (avg >= 70) printf(GREEN "%.1f/7 - GOOD\n" RESET, avg);
-                else if (avg >= 50) printf(YELLOW "%.1f/100 - NEEDS IMPROVEMENT\n" RESET, avg);
+                if (avg >= 6.0) printf(GREEN "%.1f/7 - GOOD\n" RESET, avg);
+                else if (avg >= 4.0) printf(YELLOW "%.1f/7 - NEEDS IMPROVEMENT\n" RESET, avg);
                 else printf(RED "%.1f/7 - CRITICAL\n" RESET, avg);
                 break;
                 
@@ -413,13 +427,13 @@ void auditAnalysisMenu() {
                 
                 if (emailcheck== -1) {
                     printError("ERORR : include more than 1 '@' !?");
-                } if (emailcheck== -2) {
+                } else if (emailcheck== -2) {
                     printError("Local part ERORR : bad format !?");
                 }
-                if (emailcheck== -3){
+                else if (emailcheck== -3){
                     printError("Domain part ERORR : bad format !?");
                 }
-                if (emailcheck== -1){
+                else if (emailcheck== 1){
                     printSuccess("Valid email Format !!");
                 }
                 break;
@@ -442,7 +456,7 @@ void auditAnalysisMenu() {
 void encryptionMenu() {
     int choice, key;
     char keyStr[27], reverse[27];
-    struct Message msg, msg2;
+    struct Message msg = {0}, msg2 ={0};
 
     while (1) {
         clearScreen();
@@ -490,6 +504,9 @@ void encryptionMenu() {
                 
             case 2:
                 printHeader("CURRENT MESSAGE");
+                if(msg.length ==0){
+                    printf("No message loaded yet. Use option 1 to input a message.");
+                }
                 displaymessage(&msg);
                 printf(CYAN "\nLength: " RESET "%d characters\n", msg.length);
                 break;
@@ -717,6 +734,10 @@ void logManagementMenu() {
                 
             case 2:
                 printHeader("ADD LOG ENTRY");
+                if(logCount >= MAX_LOGS){
+                    printError("Cannot add more logs. Maximum limit reached!");
+                    break;
+                }
                 char action[MAX_ACTION_LENGTH];
                 int code;
                 printf(YELLOW "Username: " RESET);
@@ -1196,13 +1217,16 @@ void mathSecToolMenu() {
                 printf(YELLOW "Enter matrix elements:\n" RESET);
                 for (int i = 0; i < M1.n; i++) {
                     for (int j = 0; j < M1.p; j++) {
-                        printf("  [%d][%d]: ", i, j);
-
-                        if (scanf("%d", &M1.data[i][j]) != 1) {
-                          printError("Invalid input! Please enter integers only.");
-                          while (getchar() != '\n');
-                          j--;
-                        }
+                        while (1) {
+                            printf("  [%d][%d]: ", i, j);
+                            if (scanf("%d", &M1.data[i][j]) == 1) {
+                                break;
+                            } else {
+                              printError("Invalid input! Please enter integers only.");
+                              while (getchar() != '\n'); 
+                            printf(YELLOW "  ▶ Try again: " RESET);
+                            }
+                       }
                     }
                 }              
 
