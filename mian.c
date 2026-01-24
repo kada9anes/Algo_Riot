@@ -325,7 +325,7 @@ void auditAnalysisMenu() {
                 displayTextStats(text);
                 printf("\n" CYAN "Uppercase: " RESET "%d (%.1f%%)\n", countUppercase(text), percentUppercase(text));
                 printf(CYAN "Lowercase: " RESET "%d\n", countLowercase(text));
-                printf(CYAN "Percent Uppercase : " RESET "%.2f \n", percentUppercase(text));
+                printf(CYAN "Percent Uppercase : " RESET "%.2f % \n", percentUppercase(text));
                 printf(CYAN "Digits: " RESET "%d\n", countdigits(text));
                 printf(CYAN "Length: " RESET "%d\n", textLength(text));
                 break;
