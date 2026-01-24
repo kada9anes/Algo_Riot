@@ -153,7 +153,7 @@ bool isPerfectNumber(int n ){
     if ( n <= 0 ){
         return false ; 
     }
-    int sum = sumDivisors(n) - n ; 
+    int sum = sumDivisors(n); 
     if ( sum == n ){
         return true ; 
     }else {
