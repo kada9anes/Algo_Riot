@@ -2027,6 +2027,7 @@ void mainMenu() {
                 aboutMenu();
                 break; 
             case 9:
+                addLog(logs,&logCount,currentUser,"logout",0);
                 main();   
             case 0:
                 clearScreen();
