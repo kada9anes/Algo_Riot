@@ -1,8 +1,5 @@
 User,Action,Date,Time,Code
-"kada","Login","2026-01-23","21:34:19",0
-"system","SecureC Toolkit started","2026-01-23","21:34:20",0
-"admin","Accessed User Management","2026-01-23","21:34:50",0
-"admin","Accessed Audit & Analysis","2026-01-23","21:34:53",0
-"admin","Accessed Encryption Module","2026-01-23","21:34:56",0
-"admin","Accessed Log Management","2026-01-23","21:35:00",0
-"admin","Accessed Integrated Workflows","2026-01-23","21:35:04",0
+"koussai","Login","2026-01-24","00:13:03",0
+"system","SecureC Toolkit started","2026-01-24","00:13:04",0
+"admin","Accessed User Management","2026-01-24","00:13:06",0
+"kada","Changed password","2026-01-24","00:13:33",0

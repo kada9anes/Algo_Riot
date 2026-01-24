@@ -16,6 +16,7 @@ void inputMessage(struct Message *m);
 void displaymessage(struct Message *m); // 2 written by kada
 bool isLowercase(char c); //  4 written by kada
 bool isUppercase(char c); 
+bool isDigit(char c);
 void toUppercase(struct Message *m); //written by kada
 void toLowercase(struct Message *m);
 void encryptCesar(struct Message *m, int key);

@@ -168,6 +168,38 @@ bool strongPassword(char str[]){
       }
       return true ;
 }
+int checkPasswordStrength(char *pass) {
+    int len = strlen(pass);
+    int hasUpper = 0, hasLower = 0, hasDigit = 0, hasSpecial = 0;
+    if (len < 8) {
+        printf("Password too short (minimum 8 characters)\n");
+        return 0;
+    }
+    for (int i = 0; pass[i]; i++) {
+        if (isUppercase(pass[i])) hasUpper = 1;
+        else if (isLowercase(pass[i])) hasLower = 1;
+        else if (isDigit(pass[i])) hasDigit = 1;
+        else hasSpecial = 1;
+    }
+    if (!hasUpper) {
+        printf("Password must contain at least one uppercase letter\n");
+        return 0;
+    }
+    if (!hasLower) {
+        printf("Password must contain at least one lowercase letter\n");
+        return 0;
+    }
+    if (!hasDigit) {
+        printf("Password must contain at least one digit\n");
+        return 0;
+    }
+    if (!hasSpecial) {
+        printf("Password must contain at least one special character\n");
+        return 0;
+    }
+
+    return 1;
+}
 void ChangePassword(struct User users[], int n, char name[]) {
     int idx = searchUser(users, n, name);
     if (idx == -1) {
@@ -175,19 +207,22 @@ void ChangePassword(struct User users[], int n, char name[]) {
         return;
     }
     char newpass[128];
-    printf("What is the new password: ");
-    if (fgets(newpass, sizeof(newpass), stdin) == NULL) {
-        printf("Error reading password\n");
-        return;
-    }
-    newpass[strcspn(newpass, "\n")] = '\0';
-    if (strlen(newpass) == 0) {
-        printf("Password cannot be empty\n");
-        return;
-    }
-    if (!strongPassword(newpass)) {
-        printf("Weak password\n");
-        return;
+    while (1) {
+        printf("Enter new password: ");
+        if (fgets(newpass, sizeof(newpass), stdin) == NULL) {
+            printf("Input error\n");
+            continue;
+        }
+        newpass[strcspn(newpass, "\n")] = '\0';
+        if (strlen(newpass) == 0) {
+            printf("Password cannot be empty\n");
+            continue;
+        }
+        if (!checkPasswordStrength(newpass)) {
+            printf("Weak password. Try again.\n\n");
+            continue;
+        }
+        break;
     }
     strcpy(users[idx].password, newpass);
     printf("Password changed successfully\n");
