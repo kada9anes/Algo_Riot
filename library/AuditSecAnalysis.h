@@ -23,7 +23,7 @@ void generateRandomPassword(int length , char pass[]);
 int passwordScore(char pass[]);
 float averageScore(struct User users[] , int n );
 void displaySecurityReport(struct User users[], int n);
-nt countStrongUsers(struct User users[], int n);
+int countStrongUsers(struct User users[], int n);
 void showSecurityTips();
 int checkLoginFormat(char name[]);
 int checkEmailFormat(char name[]);
