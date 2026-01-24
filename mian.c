@@ -311,6 +311,7 @@ void auditAnalysisMenu() {
                 displayTextStats(text);
                 printf("\n" CYAN "Uppercase: " RESET "%d (%.1f%%)\n", countUppercase(text), percentUppercase(text));
                 printf(CYAN "Lowercase: " RESET "%d\n", countLowercase(text));
+                printf(CYAN "Percent Uppercase : " RESET "%.2f %\n", percentUppercase(text));
                 printf(CYAN "Digits: " RESET "%d\n", countdigits(text));
                 printf(CYAN "Length: " RESET "%d\n", textLength(text));
                 break;
@@ -320,16 +321,16 @@ void auditAnalysisMenu() {
                 printf(YELLOW "Enter password: " RESET);
                 fgets(pass, 100, stdin);
                 pass[strcspn(pass, "\n")] = 0;               
-                if (veryStrongPassword(pass)) {
+                if (veryStrongPassword(pass)== 1) {
                     printSuccess("VERY STRONG PASSWORD! 🔒");
-                } else if (strongPassword(pass)) {
+                } else if (strongPassword(pass)== 2) {
                     printWarning("Strong password, but could be better.");
                 } else {
                     printError("WEAK PASSWORD! Not secure enough.");
                 }
                 
                 printf("\n" CYAN "Analysis:\n" RESET);
-                printf("  Length: %s\n", stringLength(pass) >= 8 ? GREEN "✓" RESET : RED "✗" RESET);
+                printf("  Length: %s\n", stringLength(pass) >= 12 ? GREEN "✓" RESET : RED "✗" RESET);
                 printf("  Uppercase: %s\n", containsUppercase(pass) ? GREEN "✓" RESET : RED "✗" RESET);
                 printf("  Lowercase: %s\n", containsLowercase(pass) ? GREEN "✓" RESET : RED "✗" RESET);
                 printf("  Digits: %s\n", containsDigit(pass) ? GREEN "✓" RESET : RED "✗" RESET);
@@ -427,7 +428,7 @@ void auditAnalysisMenu() {
                 fgets(text, 100, stdin);
                 text[strcspn(text, "\n")] = 0;
                 
-                if (checkLoginFormat(text)) {
+                if (checkLoginFormat(text) == 1 ) {
                     printSuccess("Valid login format!");
                 } else {
                     printError("Invalid format!");

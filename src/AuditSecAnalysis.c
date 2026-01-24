@@ -69,26 +69,32 @@ void displayTextStats(char text[]){
 
 }
 
-bool veryStrongPassword(char pass[]){
-      bool hasUpper = false ;
-      bool hasLower = false ;
-      bool hasSymbol = false ; 
+int veryStrongPassword(char pass[]){
+      int hasUpper = 0 ;
+      int hasLower = 0 ;
+      int hasSymbol = 0 ;
+      int stat = 0 ;
       for (int i = 0; pass[i] != '\0'; i++) {
 
             if (pass[i] >= 'A' && pass[i] <= 'Z') {
-                  hasUpper = true;
+                  hasUpper = 1;
             }
             else if (pass[i] >= 'a' && pass[i] <= 'z') {
-                  hasLower = true;
+                  hasLower = 1;
             }
             else if ((pass[i] >= 33 && pass[i] <= 47) ||(pass[i] >= 58 && pass[i] <= 64) ||(pass[i] >= 91 && pass[i] <= 96) ||(pass[i] >= 123 && pass[i] <= 126)) {
-                  hasSymbol = true;
+                  hasSymbol = 1;
             }
       }
-      if (hasLower && hasUpper && hasSymbol && textLength(pass)>= 12){
-            return true ;
+      stat = hasUpper + hasLower + hasSymbol ;
+      if (stat == 3 && textLength(pass)>= 12){
+            return 1 ;
+      }
+      else if ( stat == 2 && textLength(pass)>= 8)
+      {
+            return 2;
       }else{
-            return false ;
+            return 0 ;
       }
 }
 
@@ -176,7 +182,7 @@ void displaySecurityReport(struct User users[], int n) {
     for (int i = 0; i < n; i++) {
         if (users[i].state == 0) numUsersActive++;
         if (users[i].role == 1) numUsersAdmin++;
-        if (veryStrongPassword(users[i].password)) numUsersStrongPass++;
+        if (veryStrongPassword(users[i].password)== 1) numUsersStrongPass++;
     }
     float avgScore = averageScore(users, n);
     printf("===== User Security Report =====\n");
@@ -196,6 +202,13 @@ void displaySecurityReport(struct User users[], int n) {
     printf("Average password score: %.2f\n", avgScore);
     printf("================================\n");
 }
+int countStrongUsers(struct User users[], int n){
+      int counter = 0 ;
+      for (int i = 0 ; i <n ; i ++){
+            if (veryStrongPassword(users[i].password)) counter++;
+      }
+      return counter ;
+}
 
 
 
@@ -213,12 +226,12 @@ void showSecurityTips(){
 
 
 int checkLoginFormat(char name[]){
-      if (name[0] == '\0') return -1;
-      if(!(isAlphabetic(name[0]))) return -2; 
+      if (name[0] == '\0') return -1; //empty
+      if(!(isAlphabetic(name[0]))) return -2; // conyine s chat
       for (int i = 0 ; name[i] != '\0' ; i++){
             char c = name[i];
             if(!(isAlphabetic(c) || isdigit(c) || c =='_')){
-                  return -3;
+                  return -3; // contane bad 
             }
       }
       return 1 ;
