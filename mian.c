@@ -105,6 +105,7 @@ void userManagementMenu() {
     if (users[idxcurentu].role == 0){
         while(1){
             printError("Permission denied \n");
+            addLog(logs,logCount,currentUser,"Unauthorized entry attempt",1);
             pressEnter();
             return;
         }
@@ -725,6 +726,7 @@ void logManagementMenu() {
     if (users[idxcurentu].role == 0){
         while(1){
             printError("\n Permission denied \n");
+            addLog(logs,logCount,currentUser,"Unauthorized entry attempt",1);
             pressEnter();
             return;
         }
@@ -2121,12 +2123,15 @@ int main() {
         
         if (logincheck == -1) {
             printError("User not found!");
+            addLog(logs,logCount,currentUser,"User not found!",2);
             loginAttempts++;
         } else if (logincheck == -2) {
             printError("Account is blocked!");
+            addLog(logs,logCount,currentUser,"blocked USER ERROR",2);
             loginAttempts++;
         } else if (logincheck != 1) {
             printError("Invalid password!");
+            addLog(logs,logCount,currentUser,"EROOR: password!",2);
             loginAttempts++;
         }
 
