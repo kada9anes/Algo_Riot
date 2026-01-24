@@ -153,7 +153,7 @@ void decryptSubstitution(struct Message *m , char reverse[26]){
             m->text[i] = reverse[m->text[i] - 'a'] + ('a' - 'A');
       }
 }
-bool isValidKey(char key[27]) {
+bool isValidKey(char key[26]) {
     int freq[26] = {0};
     int idx ;
     if (key == NULL)

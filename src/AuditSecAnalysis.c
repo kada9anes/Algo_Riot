@@ -243,7 +243,7 @@ int checkLoginFormat(char name[]){
                   if (name[i] == '@')
                         conter++;
             }
-            if (conter = 1) return 1;
+            if (conter == 1) return 1;
             else return -1 ;
             
       }
