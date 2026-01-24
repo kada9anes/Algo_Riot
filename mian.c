@@ -1892,7 +1892,7 @@ void aboutMenu() {
     printf(BOLD "Developed By:\n" RESET);
     printf("  " GREEN " Ouanouki anes\n" RESET);
     printf("  " YELLOW "Group: " RESET "A3 \n\n");
-    printf("  " GREEN " Koussei\n" RESET);
+    printf("  " GREEN " Belouadah saad Eddine Koussai\n" RESET);
     printf("  " YELLOW "Group: " RESET "B3 \n\n");
     
     printf(BOLD "Module Overview:\n" RESET);
@@ -1972,7 +1972,7 @@ void mainMenu() {
         printf("│  " BOLD "6. " RED "⚡ INTEGRATED WORKFLOWS" RESET "\n");
         printf("│     └─ Complete security scenarios & automated pipelines\n");
         printf("│\n");
-        printf("│  " BOLD "9. " GREEN " LOGOUT" RESET "\n");
+        printf("│  " BOLD "7. " GREEN " LOGOUT" RESET "\n");
         printf("│     └─ You can change user from here !!\n");
         printf("│\n");
         printf("├─ System Info\n");
@@ -1980,8 +1980,8 @@ void mainMenu() {
                                  userCount, logCount, currentUser);
         printf("│\n");
         printf("├─ Information\n");
-        printf("│  " BOLD "7. " GREEN " Help & Documentation\n" RESET);
-        printf("│  " BOLD "8. " BLUE "ℹ  About SecureC Toolkit\n" RESET);
+        printf("│  " BOLD "8. " GREEN " Help & Documentation\n" RESET);
+        printf("│  " BOLD "9. " BLUE "ℹ  About SecureC Toolkit\n" RESET);
         printf("│\n");
         printf("└─ " BOLD "0. " RED "Exit\n" RESET);
         
@@ -2018,16 +2018,18 @@ void mainMenu() {
                 addLog(logs, &logCount, currentUser, "Accessed Integrated Workflows", 0);
                 integratedWorkflowMenu();
                 break;
-            case 7:
+            case 8:
                 helpMenu();
                 break;
     
-            case 8:
+            case 9:
                 aboutMenu();
                 break; 
-            case 9:
+            case 7:
                 addLog(logs,&logCount,currentUser,"logout",0);
-                main();   
+                saveUsers(users,userCount);
+                main(); 
+
             case 0:
                 clearScreen();
                 printHeader("SYSTEM SHUTDOWN");

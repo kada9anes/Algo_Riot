@@ -295,7 +295,13 @@ void userStatistics(struct User users[] , int n){
       printf("Blocked users : %d\n", blocked);
       printf("Admins        : %d\n", admins);
       printf("Regular users : %d\n", regular);
-}      
+}     
+void simpleEncrypt(char *text, int key) {
+    for (int i = 0; text[i] != '\0'; i++) {
+        text[i] = text[i] ^ key;
+    }
+}
+
 void saveUsers(struct User users[], int n){
       FILE *f = fopen("users.txt" , "w");
       if (f == NULL){
@@ -305,9 +311,13 @@ void saveUsers(struct User users[], int n){
       fprintf(f,"%i\n",n);
       for (int i = 0; i < n; i++)
       {
+            char temppass[20];
+            strcpy(temppass, users[i].password);
+            simpleEncrypt(temppass, 13);
+
             fprintf(f, "%s %s %d %d\n",
                 users[i].name,
-                users[i].password,
+                temppass,
                 users[i].role,
                 users[i].state);
       }
@@ -335,6 +345,7 @@ void LoadUsers(struct User users[] , int *n){
             fclose(f);
             return;
         }
+            simpleEncrypt(users[i].password, 13);
     }
     fclose(f);
 }
