@@ -111,16 +111,18 @@ void userManagementMenu() {
         printf("│  4. " CYAN "Search User\n" RESET);
         printf("│  5. " YELLOW "Change Password\n" RESET);
         printf("│  6. " CYAN "Login Test\n" RESET);
-        printf("│  7. " RED "Block/Unblock User\n" RESET);
-        printf("│  8. " MAGENTA "Change User Role\n" RESET);
-        printf("│  9. " CYAN "List All Admins\n" RESET);
-        printf("│  10. " BLUE "Save Users to File\n" RESET);
-        printf("│  11. " BLUE "Load Users from File\n" RESET);
+        printf("│  7. " RED "Block User\n" RESET);
+        printf("│  8. " RED "Unblock User\n" RESET);
+        printf("│  9. " MAGENTA "Change User Role\n" RESET);
+        printf("│  10. " CYAN "List All Admins\n" RESET);
+        printf("│  11. " RED "Users Statistics\n" RESET);
+        printf("│  12. " BLUE "Save Users to File\n" RESET);
+        printf("│  13. " BLUE "Load Users from File\n" RESET);
         printf("│  0. " RED "← Back to Main Menu\n" RESET);
         printf(BOLD "└─────────────────────────────\n" RESET);
         
         printf(YELLOW "\n▶ Select option: " RESET);
-        choice = safeIntInput(0, 11);
+        choice = safeIntInput(0, 13);
         
         clearScreen();
         
@@ -195,15 +197,24 @@ void userManagementMenu() {
                 break;
                 
             case 7:
-                printHeader("BLOCK/UNBLOCK USER");
+                printHeader("BLOCK USER");
                 printf(YELLOW "Enter username: " RESET);
                 fgets(name, MAX_USERNAME_LENGTH, stdin);
                 name[strcspn(name, "\n")] = 0;
                 blockUser(users, userCount, name);
                 addLog(logs, &logCount, currentUser, "Modified user status", 1);
                 break;
-                
+
             case 8:
+                printHeader("UNBLOCK USER");
+                printf(YELLOW "Enter username: " RESET);
+                fgets(name, MAX_USERNAME_LENGTH, stdin);
+                name[strcspn(name, "\n")] = 0;
+                unblockUser(users, userCount, name);
+                addLog(logs, &logCount, currentUser, "Modified user status", 1);
+                break;
+                
+            case 9:
                 printHeader("CHANGE USER ROLE");
                 printf(YELLOW "Enter username: " RESET);
                 fgets(name, MAX_USERNAME_LENGTH, stdin);
@@ -215,12 +226,17 @@ void userManagementMenu() {
                 addLog(logs, &logCount, currentUser, "Changed user role", 1);
                 break;
                 
-            case 9:
+            case 10:
                 printHeader("ADMINISTRATOR LIST");
                 listAdmins(users, userCount);
                 break;
+            
+            case 11:
+                printHeader("USERS STATISTICS");
+                userStatistics(users,userCount);
+                break;
                 
-            case 10:
+            case 12:
                 printHeader("SAVE DATA");
                 if (userCount == 0) {
                     printError("No users to save!");
@@ -231,7 +247,7 @@ void userManagementMenu() {
                 addLog(logs, &logCount, currentUser, "Saved user database", 0);
                 break;
                 
-            case 11:
+            case 13:
                 printHeader("LOAD DATA");
                 int oldCount = userCount;
                 LoadUsers(users, &userCount);
@@ -2012,7 +2028,6 @@ void mainMenu() {
 int main() {
     srand(time(NULL));
     
-    // Welcome screen
     clearScreen();
     printf(BOLD CYAN "\n\n");
     printf("        ╔═══════════════════════════════════════════╗\n");
@@ -2030,7 +2045,7 @@ int main() {
         fflush(stdout);
     }
     printf("\n\n");
-    printf("Welcome to Login's page\n\n"); // then we need to add way to chose if user need to login or emport users from file ;
+    printf("Welcome to Login's page\n\n"); // then we need to add way to chose if user need to login or emport users from file ; no keep it like that ;
     printf(CYAN "        Loading user database...\n" RESET);
     LoadUsers(users, &userCount);
     printf(GREEN "        ✓ Users loaded: %d\n" RESET, userCount);

@@ -23,6 +23,7 @@ void ChangePassword(struct User users[] , int n , char name[]);
 int checkLogin(struct User users[], int n, char name[], char pass[]);
 bool strongPassword(char str[]);
 void blockUser(struct User users[], int n, char name[]);
+void unblockUser(struct User users[], int n, char name[]);
 void changeRole(struct User users[], int n, char name[],int role);
 void listAdmins(struct User users[], int n);
 int stringLength(char str[]);
@@ -30,6 +31,7 @@ bool containsDigit(char str[]);
 bool containsLowercase(char str[]);
 bool containsUppercase(char str[]);
 bool containsSymbol(char str[]);
+void userStatistics(struct User users[] , int n);
 void saveUsers(struct User users[], int n);
 void LoadUsers(struct User users[] , int *n);
 #endif 

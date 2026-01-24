@@ -1,5 +1,7 @@
 User,Action,Date,Time,Code
-"koussai","Login","2026-01-24","00:13:03",0
-"system","SecureC Toolkit started","2026-01-24","00:13:04",0
-"admin","Accessed User Management","2026-01-24","00:13:06",0
-"kada","Changed password","2026-01-24","00:13:33",0
+"koussai","Login","2026-01-24","15:10:44",0
+"system","SecureC Toolkit started","2026-01-24","15:10:45",0
+"admin","Accessed User Management","2026-01-24","15:11:30",0
+"admin","Accessed Audit & Analysis","2026-01-24","15:11:33",0
+"admin","Accessed Encryption Module","2026-01-24","15:11:37",0
+"admin","Accessed Math Security Tools","2026-01-24","15:11:40",0
