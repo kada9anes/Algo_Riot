@@ -2035,7 +2035,7 @@ void mainMenu() {
                 printf(CYAN "\nSaving system state...\n" RESET);
                 
                 if (userCount > 0) {
-                    saveUsers(users,&userCount)
+                    saveUsers(users,userCount);
                     printSuccess("✓ Users saved");
                 } else {
                     printError("✗ Failed to save users!");
