@@ -1468,24 +1468,21 @@ void integratedWorkflowMenu() {
             case 1: {
                 printHeader("COMPLETE USER REGISTRATION WORKFLOW");
                 
-                // Step 1: Create user
+                
                 printInfo("Step 1/4: User Registration");
                 addUser(users, &userCount);
                 
-                // Step 2: Validate password
                 printInfo("\nStep 2/4: Password Strength Analysis");
                 char pass[MAX_PASSWORD_LENGTH];
                 strcpy(pass, users[userCount - 1].password);
                 int score = passwordScore(pass);
                 printf(CYAN "Password Score: " RESET "%d/100\n", score);
                 
-                // Step 3: Generate security key
                 printInfo("\nStep 3/4: Generating Security Key");
                 char key[33];
                 generateHexKey(32, key);
                 printf(GREEN "Generated Key: " RESET "%s\n", key);
                 
-                // Step 4: Log everything
                 printInfo("\nStep 4/4: Logging Actions");
                 addLog(logs, &logCount, users[userCount - 1].name, "User registered", 0);
                 addLog(logs, &logCount, users[userCount - 1].name, "Security key generated", 0);
@@ -1939,7 +1936,6 @@ void mainMenu() {
     while (1) {
         clearScreen();
         
-        // Animated Banner
         printf(BOLD CYAN "\n");
         printf("███████╗███████╗ ██████╗██╗   ██╗██████╗ ███████╗ ██████╗\n");
         printf("██╔════╝██╔════╝██╔════╝██║   ██║██╔══██╗██╔════╝██╔════╝\n");
@@ -2072,7 +2068,7 @@ int main() {
     printf(BOLD CYAN "\n\n");
     printf("        ╔═══════════════════════════════════════════╗\n");
     printf("        ║                                           ║\n");
-    printf("        ║   " GREEN "🔐  SECUREC TOOLKIT LOADING...  🔐" CYAN "   ║\n");
+    printf("        ║     " GREEN "   SECUREC TOOLKIT LOADING...   " CYAN "      ║\n");
     printf("        ║                                           ║\n");
     printf("        ╚═══════════════════════════════════════════╝\n");
     printf(RESET "\n");

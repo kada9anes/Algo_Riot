@@ -219,7 +219,6 @@ void exportLogsCSV(struct Log logs[], int n) {
         return;
     }
     
-    // Write header
     fprintf(f, "User,Action,Date,Time,Code\n");
     
     for (int i = 0; i < n; i++) {
