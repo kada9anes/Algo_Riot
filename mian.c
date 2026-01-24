@@ -1933,6 +1933,7 @@ void aboutMenu() {
     pressEnter();
 }
 void mainMenu() {
+    int main();
     int choice;
     addLog(logs, &logCount, "system", "SecureC Toolkit started", 0);
     
@@ -1972,7 +1973,7 @@ void mainMenu() {
         printf("│  " BOLD "6. " RED "⚡ INTEGRATED WORKFLOWS" RESET "\n");
         printf("│     └─ Complete security scenarios & automated pipelines\n");
         printf("│\n");
-        printf("│  " BOLD "9. " GREEN "⚡ LOGOUT" RESET "\n");
+        printf("│  " BOLD "9. " GREEN " LOGOUT" RESET "\n");
         printf("│     └─ You can change user from here !!\n");
         printf("│\n");
         printf("├─ System Info\n");
@@ -2026,7 +2027,7 @@ void mainMenu() {
                 aboutMenu();
                 break; 
             case 9:
-                return;   
+                main();   
             case 0:
                 clearScreen();
                 printHeader("SYSTEM SHUTDOWN");
