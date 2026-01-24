@@ -1972,6 +1972,9 @@ void mainMenu() {
         printf("│  " BOLD "6. " RED "⚡ INTEGRATED WORKFLOWS" RESET "\n");
         printf("│     └─ Complete security scenarios & automated pipelines\n");
         printf("│\n");
+        printf("│  " BOLD "9. " GREEN "⚡ LOGOUT" RESET "\n");
+        printf("│     └─ You can change user from here !!\n");
+        printf("│\n");
         printf("├─ System Info\n");
         printf("│  " CYAN "Users: " RESET "%d  " CYAN "Logs: " RESET "%d  " CYAN "Current User: " RESET BOLD "%s\n" RESET, 
                                  userCount, logCount, currentUser);
@@ -1983,7 +1986,7 @@ void mainMenu() {
         printf("└─ " BOLD "0. " RED "Exit\n" RESET);
         
         printf(BOLD YELLOW "\n▶ Select module: " RESET);
-        choice = safeIntInput(0, 8);
+        choice = safeIntInput(0, 9);
         
         switch (choice) {
             case 1:
@@ -2021,7 +2024,9 @@ void mainMenu() {
     
             case 8:
                 aboutMenu();
-                break;    
+                break; 
+            case 9:
+                return;   
             case 0:
                 clearScreen();
                 printHeader("SYSTEM SHUTDOWN");
