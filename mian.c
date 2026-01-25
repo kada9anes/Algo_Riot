@@ -1527,9 +1527,9 @@ void integratedWorkflowMenu() {
                 encryptCesar(&msg, 7);
                 printf(GREEN "Encrypted: " RESET);
                 displaymessage(&msg);
-                
-                printInfo("\nStep 3/5: XOR Encryption (key=42)");
-                encryptXOR(&msg, 42);
+
+                printInfo("\nStep 3/5: XOR Encryption (key=38)");
+                encryptXOR(&msg, 38);
                 printf(GREEN "Double-encrypted: " RESET);
                 displaymessage(&msg);
                 
