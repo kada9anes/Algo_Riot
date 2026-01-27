@@ -1062,7 +1062,10 @@ void mathSecToolMenu() {
                     break;
                 }
                     getchar();
-                
+                if (a == 0 || b == 0){
+                    printError("LCM with zero is undefined.");
+                    break;
+                }
                 long long l = lcm(a, b);
                 printf(GREEN "\nLCM(%d, %d) = " RESET BOLD "%lld\n" RESET, a, b, l);
                 break;
