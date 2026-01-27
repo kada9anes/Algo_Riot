@@ -1035,7 +1035,13 @@ void mathSecToolMenu() {
                     break;
                 }
                 int g = gcd(a, b);
-                printf(GREEN "\nGCD(%d, %d) = " RESET BOLD "%d\n" RESET, a, b, g);
+                if (g == 0){
+                    printError("gcd(0,0) indefind");
+                }
+                else{
+                    printf(GREEN "\nGCD(%d, %d) = " RESET BOLD "%d\n" RESET, a, b, g);
+
+                }
                 break;
                 
             case 3:
