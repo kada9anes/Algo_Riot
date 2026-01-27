@@ -105,12 +105,12 @@ void encryptCesar(struct Message *m, int key){
 void decryptCesar(struct Message *m, int key){
       encryptCesar(m, -key);
 }
-void encryptXOR(struct Message *m, int key){
+void encryptXOR(struct Message *m, char key){
       for (int i = 0 ; i < m->length ; i++ ){
             m->text[i]=m->text[i]^key ;
       }
 }
-void decryptXOR(struct Message *m, int key){ // same as encrypt 
+void decryptXOR(struct Message *m, char key){ // same as encrypt 
       encryptXOR(m, key);
 }
 void encryptSubstitution(struct Message *m, char key[26]){

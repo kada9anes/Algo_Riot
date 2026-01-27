@@ -27,6 +27,7 @@ void initUsers(struct User users[], int *n) {
         
         printf("Enter user %d password: ", i+1);
         scanf("%19s", users[i].password);
+        simpleEncrypt(users[i].password, 13);
         
         do {
             printf("Enter user %d role [0] user, [1] admin: ", i+1);
@@ -83,6 +84,7 @@ void addUser(struct User users[], int *n) {
     }while(checkLoginFormat(users[i].name) != 1 && searchUser(users,*n, users[i].name) != -1);
     printf("Enter user %d password: ", i+1);
     scanf("%19s", users[i].password);
+    simpleEncrypt(users[i].password, 13);
     do {
         printf("Enter user %d role [0] user, [1] admin: ", i+1);
         if (scanf("%d", &users[i].role) != 1) {
@@ -296,10 +298,17 @@ void userStatistics(struct User users[] , int n){
       printf("Admins        : %d\n", admins);
       printf("Regular users : %d\n", regular);
 }     
-void simpleEncrypt(char *text, int key) {
-    for (int i = 0; text[i] != '\0'; i++) {
-        text[i] = text[i] ^ key;
-    }
+void simpleEncrypt(char *text, char key) {
+      for (int i = 0; text[i] != '\0'; i++) {
+            if(isUppercase(text[i])) {
+                  text[i] = ((text[i] - 'A' + key) % 26) + 'A';
+            } else if(isLowercase(text[i])) {
+                  text[i] = ((text[i] - 'a' + key) % 26) + 'a';
+            }
+      }
+      for (int i = 0; text[i] != '\0'; i++) {
+            text[i] ^= key;
+      }
 }
 
 void saveUsers(struct User users[], int n){
@@ -311,13 +320,10 @@ void saveUsers(struct User users[], int n){
       fprintf(f,"%i\n",n);
       for (int i = 0; i < n; i++)
       {
-            char temppass[20];
-            strcpy(temppass, users[i].password);
-            simpleEncrypt(temppass, 13);
 
             fprintf(f, "%s %s %d %d\n",
                 users[i].name,
-                temppass,
+                users[i].password,
                 users[i].role,
                 users[i].state);
       }
@@ -345,7 +351,6 @@ void LoadUsers(struct User users[] , int *n){
             fclose(f);
             return;
         }
-            simpleEncrypt(users[i].password, 13);
     }
     fclose(f);
 }

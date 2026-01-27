@@ -8,3 +8,6 @@ User: kada | Action: Routine security check performed | Date: 2026-01-25 | Time:
 User: kada | Action: Generated RSA parameters | Date: 2026-01-25 | Time: 08:52:56 | Code: 0
 User: kada | Action: Generated RSA parameters | Date: 2026-01-25 | Time: 08:52:58 | Code: 0
 User: kada | Action: Multi-layer encryption performed | Date: 2026-01-25 | Time: 08:53:07 | Code: 0
+User: koussai | Action: Login | Date: 2026-01-27 | Time: 08:58:15 | Code: 0
+User: system | Action: SecureC Toolkit started | Date: 2026-01-27 | Time: 08:58:16 | Code: 0
+User: koussai | Action: Accessed Log Management | Date: 2026-01-27 | Time: 08:58:41 | Code: 0

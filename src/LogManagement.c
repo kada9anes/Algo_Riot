@@ -286,17 +286,26 @@ void recentLogs(struct Log logs[], int n, int nb){
 }
 void archiveLogs(struct Log logs[], int n){
     if (n <= 0) {
+        printf("No logs to archive.\n");
         return;
     }
-    FILE *f = fopen("logs_archive.txt" , "a");
+    printf("Enter date to archive logs (YYYY-MM-DD): ");
+    char date[40];
+    char filename[100];
+    fgets(date, 40, stdin);
+    date[strcspn(date, "\n")] = 0;
+    snprintf(filename, sizeof(filename), "logs_archive_%s.txt", date);
+    FILE *f = fopen(filename, "a");
     if (f == NULL){
         printf("Error : cannot open archive file \n");
         return;
     }
     for(int i =0 ; i < n ;i++){
-        fprintf(f, "User: %s | Action: %s | Date: %s | Time: %s | Code: %d\n",
+        if (strcmp(logs[i].date , date) == 0){
+            fprintf(f, "User: %s | Action: %s | Date: %s | Time: %s | Code: %d\n",
                 logs[i].user, 
                 logs[i].action, logs[i].date, logs[i].time, logs[i].code);
+            }
 
     }
     fclose(f);

@@ -32,6 +32,7 @@ bool containsLowercase(char str[]);
 bool containsUppercase(char str[]);
 bool containsSymbol(char str[]);
 void userStatistics(struct User users[] , int n);
+void simpleEncrypt(char *text, char key);
 void saveUsers(struct User users[], int n);
 void LoadUsers(struct User users[] , int *n);
 #endif 

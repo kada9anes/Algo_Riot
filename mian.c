@@ -998,11 +998,15 @@ void mathSecToolMenu() {
         
         switch (choice) {
             case 1:
+            printHeader("PRIMALITY TEST");
+            while (1) {
                 printHeader("PRIMALITY TEST");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
-                getchar();
-                
+                if (scanf("%d", &n) != 1) {  
+                    printError("Invalid input! Please enter a number.");
+                    while (getchar() != '\n');  
+                    continue;
+                }
                 if (isPrime(n)) {
                     printSuccess("This is a PRIME number!");
                 } else {
@@ -1010,40 +1014,62 @@ void mathSecToolMenu() {
                 }
                 addLog(logs, &logCount, currentUser, "Primality test", 0);
                 break;
+            }
+                break;
                 
             case 2:
                 printHeader("GREATEST COMMON DIVISOR");
-                printf(YELLOW "Enter first number: " RESET);
-                scanf("%d", &a);
-                printf(YELLOW "Enter second number: " RESET);
-                scanf("%d", &b);
-                getchar();
-                
+                while (1) {
+                    printf(YELLOW "Enter first number: " RESET);
+                    if (scanf("%d", &a) != 1) {  
+                        printError("Invalid input! Please enter a number.");
+                        while (getchar() != '\n');  
+                        continue;
+                    }
+                    printf(YELLOW "Enter second number: " RESET);
+                    if (scanf("%d", &b) != 1) {  
+                        printError("Invalid input! Please enter a number.");
+                        while (getchar() != '\n');  
+                        continue;
+                    }
+                    break;
+                }
                 int g = gcd(a, b);
                 printf(GREEN "\nGCD(%d, %d) = " RESET BOLD "%d\n" RESET, a, b, g);
                 break;
                 
             case 3:
                 printHeader("LEAST COMMON MULTIPLE");
-                printf(YELLOW "Enter first number: " RESET);
-                scanf("%d", &a);
-                printf(YELLOW "Enter second number: " RESET);
-                scanf("%d", &b);
-                getchar();
+                while (1) {
+                    printf(YELLOW "Enter first number: " RESET);
+                    if (scanf("%d", &a) != 1) {  
+                        printError("Invalid input! Please enter a number.");
+                        while (getchar() != '\n');  
+                        continue;
+                    }
+                    printf(YELLOW "Enter second number: " RESET);
+                    if (scanf("%d", &b) != 1) {  
+                        printError("Invalid input! Please enter a number.");
+                        while (getchar() != '\n');  
+                        continue;
+                    }
+                    break;
+                }
+                    getchar();
                 
                 long long l = lcm(a, b);
                 printf(GREEN "\nLCM(%d, %d) = " RESET BOLD "%lld\n" RESET, a, b, l);
                 break;
                 
             case 4:
-                printHeader("MODULAR EXPONENTIATION");
-                printf(YELLOW "Enter base: " RESET);
-                scanf("%lld", &base);
-                printf(YELLOW "Enter exponent: " RESET);
-                scanf("%lld", &exp);
-                printf(YELLOW "Enter modulus: " RESET);
-                scanf("%lld", &mod);
-                getchar();
+                    printHeader("MODULAR EXPONENTIATION");
+                    printf(YELLOW "Enter base: " RESET);
+                    scanf("%lld", &base);
+                    printf(YELLOW "Enter exponent: " RESET);
+                    scanf("%lld", &exp);
+                    printf(YELLOW "Enter modulus: " RESET);
+                    scanf("%lld", &mod);
+                    getchar();
                 
                 long long result = globalmodExp(base, exp, mod);
                 printf(GREEN "\n(%lld ^ %lld) mod %lld = " RESET BOLD "%lld\n" RESET, base, exp, mod, result);
@@ -2093,6 +2119,7 @@ int main() {
         printf(YELLOW "        No existing data found. Creating default admin...\n" RESET);
         strcpy(users[0].name, "admin");
         strcpy(users[0].password, "Admin@123");
+        simpleEncrypt(users[0].password, 13);
         users[0].role = 1;
         users[0].state = 0;
         userCount = 1;
@@ -2123,21 +2150,22 @@ int main() {
         
         printf(GREEN "PASSWORD: " RESET);
         scanf("%19s", passwd);
+        simpleEncrypt(passwd, 13);
         clearInputBuffer();
         
         logincheck = checkLogin(users, userCount, username, passwd);
         
         if (logincheck == -1) {
-            printError("User not found!");
-            addLog(logs,&logCount,currentUser,"User not found!",2);
+            printError("Incorrect username or incorrect password");
+            addLog(logs,&logCount,currentUser,"Failed login",2);
             loginAttempts++;
         } else if (logincheck == -2) {
             printError("Account is blocked!");
-            addLog(logs,&logCount,currentUser,"blocked USER ERROR",2);
+            addLog(logs,&logCount,currentUser,"Failed login - Account blocked",2);
             loginAttempts++;
         } else if (logincheck != 1) {
             printError("Invalid password!");
-            addLog(logs,&logCount,currentUser,"EROOR: password!",2);
+            addLog(logs,&logCount,currentUser,"Failed login - Invalid password",2);
             loginAttempts++;
         }
 
