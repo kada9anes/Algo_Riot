@@ -71,7 +71,7 @@ long long  globalmodExp(long long  base , long long exponent, long long  mod){
         if (exponent % 2 ==1){
             result = (result * base) % mod;
         }
-        base = base * base % mod;
+        base = (base * base) % mod;
         exponent = exponent /2;
 
     }
