@@ -25,6 +25,8 @@
 #define MAX_ACTION_LENGTH 50
 #define MAX_LOGIN_ATTEMPTS 3
 #define MIN_PASSWORD_LENGTH 8
+#define INT_MIN -2147483648
+#define INT_MAX 2147483647
 
 struct User users[MAX_USERS];
 int userCount = 0;
@@ -1000,7 +1002,6 @@ void mathSecToolMenu() {
             case 1:
             printHeader("PRIMALITY TEST");
             while (1) {
-                printHeader("PRIMALITY TEST");
                 printf(YELLOW "Enter number: " RESET);
                 if (scanf("%d", &n) != 1) {  
                     printError("Invalid input! Please enter a number.");
@@ -1089,7 +1090,12 @@ void mathSecToolMenu() {
             case 5:
                 printHeader("FACTORIAL CALCULATOR");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                if(scanf("%d", &n) != 1){
+                    printError("Invalid input! Please enter a number.");
+                    while (getchar() != '\n');
+                    break;
+                }
+
                 getchar();
                 
                 if (n < 0) {
@@ -1104,7 +1110,7 @@ void mathSecToolMenu() {
             case 6:
                 printHeader("EVEN/ODD CHECK");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 if (isEven(n)) {
@@ -1117,7 +1123,7 @@ void mathSecToolMenu() {
             case 7:
                 printHeader("DIGIT COUNTER");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 printf(CYAN "\nNumber of digits: " RESET BOLD "%d\n" RESET, countDigits(n));
@@ -1126,7 +1132,7 @@ void mathSecToolMenu() {
             case 8:
                 printHeader("SUM OF DIGITS");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 printf(GREEN "\nSum of digits: " RESET BOLD "%d\n" RESET, sumDigits(n));
@@ -1135,7 +1141,7 @@ void mathSecToolMenu() {
             case 9:
                 printHeader("REVERSE NUMBER");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 printf(CYAN "\nReversed: " RESET BOLD "%d\n" RESET, reverseNumber(n));
@@ -1144,7 +1150,7 @@ void mathSecToolMenu() {
             case 10:
                 printHeader("PALINDROME CHECK");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 if (isPalindromeNumber(n)) {
@@ -1157,7 +1163,7 @@ void mathSecToolMenu() {
             case 11:
                 printHeader("SUM OF DIVISORS");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 printf(GREEN "\nSum of divisors: " RESET BOLD "%d\n" RESET, sumDivisors(n));
@@ -1166,7 +1172,7 @@ void mathSecToolMenu() {
             case 12:
                 printHeader("PERFECT NUMBER CHECK");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 if (isPerfectNumber(n)) {
@@ -1180,7 +1186,7 @@ void mathSecToolMenu() {
             case 13:
                 printHeader("ARMSTRONG NUMBER CHECK");
                 printf(YELLOW "Enter number: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 if (isArmstrong(n)) {
@@ -1194,9 +1200,9 @@ void mathSecToolMenu() {
                 printHeader("RANDOM NUMBER GENERATOR");
                 int min, max;
                 printf(YELLOW "Enter min: " RESET);
-                scanf("%d", &min);
+                min = safeIntInput(INT_MIN, INT_MAX);
                 printf(YELLOW "Enter max: " RESET);
-                scanf("%d", &max);
+                max = safeIntInput(INT_MIN, INT_MAX);
                 getchar();
                 
                 printf(GREEN "\nRandom number: " RESET BOLD "%d\n" RESET, randomNumber(min, max));
@@ -1205,11 +1211,11 @@ void mathSecToolMenu() {
             case 15:
                 printHeader("ARRAY SUM");
                 printf(YELLOW "Enter array size: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 printf(YELLOW "Enter %d elements:\n" RESET, n);
                 for (int i = 0; i < n; i++) {
                     printf("  [%d]: ", i + 1);
-                    scanf("%d", &arr[i]);
+                    arr[i] = safeIntInput(INT_MIN, INT_MAX);
                 }
                 getchar();
                 
@@ -1219,11 +1225,11 @@ void mathSecToolMenu() {
             case 16:
                 printHeader("ARRAY AVERAGE");
                 printf(YELLOW "Enter array size: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 printf(YELLOW "Enter %d elements:\n" RESET, n);
                 for (int i = 0; i < n; i++) {
                     printf("  [%d]: ", i + 1);
-                    scanf("%d", &arr[i]);
+                    arr[i] = safeIntInput(INT_MIN, INT_MAX);
                 }
                 getchar();
                 
@@ -1233,11 +1239,11 @@ void mathSecToolMenu() {
             case 17:
                 printHeader("MAX IN ARRAY");
                 printf(YELLOW "Enter array size: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 printf(YELLOW "Enter %d elements:\n" RESET, n);
                 for (int i = 0; i < n; i++) {
                     printf("  [%d]: ", i + 1);
-                    scanf("%d", &arr[i]);
+                    arr[i] = safeIntInput(INT_MIN, INT_MAX);
                 }
                 getchar();
                 
@@ -1247,11 +1253,11 @@ void mathSecToolMenu() {
             case 18:
                 printHeader("MIN IN ARRAY");
                 printf(YELLOW "Enter array size: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 printf(YELLOW "Enter %d elements:\n" RESET, n);
                 for (int i = 0; i < n; i++) {
                     printf("  [%d]: ", i + 1);
-                    scanf("%d", &arr[i]);
+                    arr[i] = safeIntInput(INT_MIN, INT_MAX);
                 }
                 getchar();
                 
@@ -1261,11 +1267,11 @@ void mathSecToolMenu() {
             case 19:
                 printHeader("SORT ARRAY");
                 printf(YELLOW "Enter array size: " RESET);
-                scanf("%d", &n);
+                n = safeIntInput(INT_MIN, INT_MAX);
                 printf(YELLOW "Enter %d elements:\n" RESET, n);
                 for (int i = 0; i < n; i++) {
                     printf("  [%d]: ", i + 1);
-                    scanf("%d", &arr[i]);
+                    arr[i] = safeIntInput(INT_MIN, INT_MAX);
                 }
                 getchar();
                 
@@ -1319,9 +1325,9 @@ void mathSecToolMenu() {
             case 21:
                 printHeader("MATRIX ADDITION");
                 printf(YELLOW "Enter rows: " RESET);
-                scanf("%d", &M1.n);
+                M1.n = safeIntInput(1, 10);
                 printf(YELLOW "Enter columns: " RESET);
-                scanf("%d", &M1.p);
+                M1.p = safeIntInput(1, 10);
                 M2.n = M1.n;
                 M2.p = M1.p;
                 
@@ -1329,7 +1335,7 @@ void mathSecToolMenu() {
                 for (int i = 0; i < M1.n; i++) {
                     for (int j = 0; j < M1.p; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &M1.data[i][j]);
+                        M1.data[i][j] = safeIntInput(INT_MIN, INT_MAX);
                     }
                 }
                 
@@ -1337,7 +1343,7 @@ void mathSecToolMenu() {
                 for (int i = 0; i < M2.n; i++) {
                     for (int j = 0; j < M2.p; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &M2.data[i][j]);
+                        M2.data[i][j] = safeIntInput(INT_MIN, INT_MAX);
                     }
                 }
                 getchar();
@@ -1350,18 +1356,18 @@ void mathSecToolMenu() {
             case 22:
                 printHeader("MATRIX MULTIPLICATION");
                 printf(YELLOW "First matrix rows: " RESET);
-                scanf("%d", &M1.n);
+                M1.n = safeIntInput(1, 10);
                 printf(YELLOW "First matrix columns (= Second matrix rows): " RESET);
-                scanf("%d", &M1.p);
+                M1.p = safeIntInput(1, 10);
                 M2.n = M1.p;
                 printf(YELLOW "Second matrix columns: " RESET);
-                scanf("%d", &M2.p);
+                M2.p = safeIntInput(1, 10);
                 
                 printf(CYAN "\nFirst Matrix:\n" RESET);
                 for (int i = 0; i < M1.n; i++) {
                     for (int j = 0; j < M1.p; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &M1.data[i][j]);
+                        M1.data[i][j] = safeIntInput(INT_MIN, INT_MAX);
                     }
                 }
                 
@@ -1369,7 +1375,7 @@ void mathSecToolMenu() {
                 for (int i = 0; i < M2.n; i++) {
                     for (int j = 0; j < M2.p; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &M2.data[i][j]);
+                        M2.data[i][j] = safeIntInput(INT_MIN, INT_MAX);
                     }
                 }
                 getchar();
@@ -1382,15 +1388,15 @@ void mathSecToolMenu() {
             case 23:
                 printHeader("TRANSPOSE MATRIX");
                 printf(YELLOW "Enter rows: " RESET);
-                scanf("%d", &M1.n);
+                M1.n = safeIntInput(1, 10);
                 printf(YELLOW "Enter columns: " RESET);
-                scanf("%d", &M1.p);
+                M1.p = safeIntInput(1, 10);
                 
                 printf(YELLOW "Enter matrix elements:\n" RESET);
                 for (int i = 0; i < M1.n; i++) {
                     for (int j = 0; j < M1.p; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &M1.data[i][j]);
+                        M1.data[i][j] = safeIntInput(INT_MIN, INT_MAX);
                     }
                 }
                 getchar();
@@ -1407,7 +1413,7 @@ void mathSecToolMenu() {
                 for (int i = 0; i < 2; i++) {
                     for (int j = 0; j < 2; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &A[i][j]);
+                        A[i][j] = safeIntInput(INT_MIN, INT_MAX);
                     }
                 }
                 getchar();
@@ -1418,14 +1424,14 @@ void mathSecToolMenu() {
             case 25:
                 printHeader("SYMMETRIC MATRIX CHECK");
                 printf(YELLOW "Enter size (n x n): " RESET);
-                scanf("%d", &M1.n);
+                M1.n = safeIntInput(1, 10);
                 M1.p = M1.n;
                 
                 printf(YELLOW "Enter matrix elements:\n" RESET);
                 for (int i = 0; i < M1.n; i++) {
                     for (int j = 0; j < M1.p; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &M1.data[i][j]);
+                        M1.data[i][j] = safeIntInput(INT_MIN, INT_MAX);
                     }
                 }
                 getchar();
@@ -1440,14 +1446,14 @@ void mathSecToolMenu() {
             case 26:
                 printHeader("IDENTITY MATRIX CHECK");
                 printf(YELLOW "Enter size (n x n): " RESET);
-                scanf("%d", &M1.n);
+                M1.n = safeIntInput(1, 10);
                 M1.p = M1.n;
                 
                 printf(YELLOW "Enter matrix elements:\n" RESET);
                 for (int i = 0; i < M1.n; i++) {
                     for (int j = 0; j < M1.p; j++) {
                         printf("  [%d][%d]: ", i, j);
-                        scanf("%d", &M1.data[i][j]);
+                        M1.data[i][j] = safeIntInput(INT_MIN, INT_MAX);
                     }
                 }
                 getchar();

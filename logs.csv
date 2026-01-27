@@ -1,10 +1,12 @@
 User,Action,Date,Time,Code
-"koussai","Login","2026-01-27","09:21:29",0
-"system","SecureC Toolkit started","2026-01-27","09:21:30",0
-"koussai","Accessed Log Management","2026-01-27","09:21:34",0
-"koussai","logout","2026-01-27","09:23:32",0
-"gsgs","Failed login","2026-01-27","09:23:35",2
-"saad","Login","2026-01-27","09:23:43",0
-"system","SecureC Toolkit started","2026-01-27","09:23:44",0
-"saad","Accessed Audit & Analysis","2026-01-27","09:23:52",0
-"system","SecureC Toolkit shutdown","2026-01-27","09:24:58",0
+"koussai","Failed login","2026-01-27","17:32:25",2
+"saad","Failed login","2026-01-27","17:35:39",2
+"koussai","Login","2026-01-27","17:39:25",0
+"system","SecureC Toolkit started","2026-01-27","17:39:26",0
+"koussai","Accessed Math Security Tools","2026-01-27","17:39:39",0
+"koussai","Accessed User Management","2026-01-27","17:42:30",0
+"koussai","Added new user","2026-01-27","17:42:42",0
+"koussai","logout","2026-01-27","17:42:52",0
+"kada","Login","2026-01-27","17:42:57",0
+"system","SecureC Toolkit started","2026-01-27","17:42:58",0
+"system","SecureC Toolkit shutdown","2026-01-27","17:43:15",0
