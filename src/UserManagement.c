@@ -312,11 +312,12 @@ void simpleEncrypt(char *text, char key) {
 }
 
 void saveUsers(struct User users[], int n){
-      FILE *f = fopen("users.txt" , "w");
+      FILE *f = fopen("users.csv" , "w");
       if (f == NULL){
             printf("ERROR: can not open file \n");
             return;
       }
+      fprintf(f ,"User   , Password   , Role, State\n");
       fprintf(f,"%i\n",n);
       for (int i = 0; i < n; i++)
       {
@@ -331,10 +332,16 @@ void saveUsers(struct User users[], int n){
       
 }
 void LoadUsers(struct User users[] , int *n){
-      FILE *f = fopen("users.txt" , "r" );
+      FILE *f = fopen("users.csv" , "r" );
       if (f == NULL){
             printf("ERROR: can not open file \n");
             return;
+      }
+      char header[100];
+      if(fgets(header, sizeof(header), f) == NULL) {
+        printf("Failed to read header\n");
+        fclose(f);
+        return;
       }
       if (fscanf(f, "%d", n) != 1) {
         printf("Failed to read number of users\n");

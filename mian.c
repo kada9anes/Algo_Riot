@@ -1728,7 +1728,7 @@ void helpMenu() {
                 printf("  • Can be reversed with unblock\n\n");
                 
                 printf(CYAN "File Operations:\n" RESET);
-                printf("  • Save: Writes all users to 'users.txt'\n");
+                printf("  • Save: Writes all users to 'users.csv'\n");
                 printf("  • Load: Imports users from file\n");
                 printf("  • Always save before exiting!\n");
                 break;
